@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Requisitos Técnicos - TSHOOT</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #0f1523;
+            line-height: 1.6;
+            background: #fff;
+            padding: 50px 60px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 25px;
+            border-bottom: 3px solid #0f1523;
+            margin-bottom: 35px;
+        }
+
+        .company-info {
+            text-align: right;
+            font-size: 11px;
+            color: #666;
+        }
+
+        .company-info strong {
+            color: #0f1523;
+            font-size: 13px;
+        }
+
+        .date {
+            font-size: 11px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        .subject {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f1523;
+            margin-bottom: 25px;
+            padding: 14px 18px;
+            background: #f0f0f5;
+            border-left: 4px solid #5B6EF5;
+        }
+
+        .greeting {
+            font-size: 13px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .content {
+            font-size: 12.5px;
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        .content strong {
+            color: #0f1523;
+        }
+
+        /* Tech Stack Section */
+        .tech-section {
+            background: #f5f5f8;
+            border-radius: 8px;
+            padding: 22px;
+            margin: 22px 0;
+        }
+
+        .tech-section h3 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #0f1523;
+            margin-bottom: 14px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #5B6EF5;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .tech-card {
+            background: #fff;
+            border-radius: 6px;
+            padding: 14px;
+            border: 1px solid #e8e8ee;
+        }
+
+        .tech-card h4 {
+            font-size: 11px;
+            font-weight: 700;
+            color: #5B6EF5;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .tech-card p {
+            font-size: 11.5px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .tech-card .tag {
+            display: inline-block;
+            background: #0f1523;
+            color: #fff;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin: 2px 2px 2px 0;
+        }
+
+        .tech-card .tag.blue {
+            background: #5B6EF5;
+        }
+
+        /* Requirements Section */
+        .requirements {
+            background: #f5f5f8;
+            border-radius: 8px;
+            padding: 22px;
+            margin: 22px 0;
+        }
+
+        .requirements h3 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #0f1523;
+            margin-bottom: 14px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #5B6EF5;
+        }
+
+        .requirements ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .requirements li {
+            padding: 5px 0;
+            font-size: 12px;
+            color: #444;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .requirements li::before {
+            content: "✓";
+            color: #5B6EF5;
+            font-weight: bold;
+            font-size: 13px;
+            min-width: 16px;
+        }
+
+        /* Hosting Plans Section */
+        .hosting-section {
+            margin: 25px 0;
+        }
+
+        .hosting-section h2 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0f1523;
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #5B6EF5;
+        }
+
+        .plan-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+            margin-bottom: 20px;
+        }
+
+        .plan-table th {
+            background: #0f1523;
+            color: #fff;
+            padding: 10px 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 10.5px;
+        }
+
+        .plan-table th:first-child {
+            text-align: left;
+            border-radius: 6px 0 0 0;
+        }
+
+        .plan-table th:last-child {
+            border-radius: 0 6px 0 0;
+        }
+
+        .plan-table td {
+            padding: 9px 8px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            font-size: 11px;
+        }
+
+        .plan-table td:first-child {
+            text-align: left;
+            font-weight: 600;
+            color: #0f1523;
+        }
+
+        .plan-table tr:nth-child(even) {
+            background: #f8f8fb;
+        }
+
+        .plan-table .recommended {
+            background: #f8f6f0;
+            border: 2px solid #5B6EF5;
+        }
+
+        .plan-table .badge {
+            display: inline-block;
+            background: #5B6EF5;
+            color: #fff;
+            font-size: 9px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .plan-table .check { color: #5B6EF5; font-weight: bold; }
+        .plan-table .cross { color: #ccc; }
+
+        /* Comparison Notes */
+        .comparison-note {
+            background: #0f1523;
+            color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison-note h3 {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #5B6EF5;
+        }
+
+        .comparison-note ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .comparison-note li {
+            padding: 5px 0;
+            font-size: 11.5px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .comparison-note li::before {
+            content: "•";
+            color: #5B6EF5;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .closing {
+            font-size: 12.5px;
+            color: #444;
+            margin-top: 25px;
+        }
+
+        .signature {
+            margin-top: 35px;
+            font-size: 12.5px;
+        }
+
+        .signature strong {
+            color: #0f1523;
+        }
+
+        .footer {
+            margin-top: 50px;
+            padding-top: 18px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            font-size: 10px;
+            color: #999;
+        }
+
+        .footer a {
+            color: #5B6EF5;
+            text-decoration: none;
+        }
+
+        @media print {
+            body { padding: 40px; }
+            .page-break { page-break-before: always; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <img src="logo-horizontal.jpeg" alt="CodingLife Dev" style="height: 65px;">
+        <div class="company-info">
+            <strong>CodingLife Dev</strong><br>
+            Soluções Tecnológicas<br>
+            Luanda, Angola<br>
+            <span class="date">25 de Julho de 2026</span>
+        </div>
+    </div>
+
+    <div class="subject">Requisitos Técnicos Hospedagem do Projecto TSHOOT</div>
+
+    <p class="greeting">Bom dia,</p>
+
+    <p class="content">
+        Gostaria de apresentar os requisitos técnicos do projecto <strong>TSHOOT Troubleshoot Soluções Tecnológicas</strong> 
+        e solicitar recomendação de plano de hospedagem compatível com as tecnologias utilizadas.
+    </p>
+
+    <!-- ==================== TECH STACK ==================== -->
+    <div class="tech-section">
+        <h3>Tecnologias Utilizadas no Projecto</h3>
+        <div class="tech-grid">
+            <div class="tech-card">
+                <h4>Frontend Site Institucional</h4>
+                <p>
+                    <span class="tag">HTML5</span>
+                    <span class="tag">CSS3</span>
+                    <span class="tag">JavaScript ES6+</span>
+                    <span class="tag">Vue.js 3</span>
+                    <span class="tag">Chart.js</span>
+                    <span class="tag">Font Awesome</span>
+                </p>
+                <p style="margin-top: 6px; font-size: 10.5px; color: #777;">
+                    Site estático com framework Vue.js via CDN. Animações CSS, carrossel de imagens, 
+                    formulário de contacto, tracking de visitantes via API.
+                </p>
+            </div>
+            <div class="tech-card">
+                <h4>Backend CRM Administrativo</h4>
+                <p>
+                    <span class="tag blue">PHP 8.2</span>
+                    <span class="tag blue">Laravel 12</span>
+                    <span class="tag blue">SQLite / MySQL</span>
+                    <span class="tag blue">Composer</span>
+                </p>
+                <p style="margin-top: 6px; font-size: 10.5px; color: #777;">
+                    Sistema CRM completo com dashboard, gestão de contactos, 
+                    tracking de visitantes, CMS para conteúdo do site, upload de imagens.
+                </p>
+            </div>
+            <div class="tech-card">
+                <h4>Base de Dados</h4>
+                <p>
+                    <span class="tag">SQLite</span>
+                    <span class="tag">MariaDB 11.4</span>
+                </p>
+                <p style="margin-top: 6px; font-size: 10.5px; color: #777;">
+                    SQLite para desenvolvimento local. MySQL/MariaDB para produção. 
+                    Múltiplas tabelas: users, contacts, visitors, banners, site_contents, site_settings.
+                </p>
+            </div>
+            <div class="tech-card">
+                <h4>Funcionalidades</h4>
+                <p>
+                    <span class="tag">CMS Admin</span>
+                    <span class="tag">API REST</span>
+                    <span class="tag">Tracking</span>
+                    <span class="tag">Charts</span>
+                    <span class="tag">Upload</span>
+                </p>
+                <p style="margin-top: 6px; font-size: 10.5px; color: #777;">
+                    Banners CRUD, editor de conteúdo, configurações do site, 
+                    dashboard com 6 gráficos, formulário de contacto, geolocalização IP.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== REQUIREMENTS ==================== -->
+    <div class="requirements">
+        <h3>Requisitos Mínimos do Servidor</h3>
+        <ul>
+            <li>PHP 8.1 ou superior (projecto usa PHP 8.2)</li>
+            <li>MySQL ou MariaDB (base de dados relacional)</li>
+            <li>Extensões PHP: openssl, pdo, pdo_mysql, mbstring, tokenizer, xml, ctype, json, bcmath, fileinfo, gd</li>
+            <li>Composer (gestor de dependências PHP)</li>
+            <li>Mod_rewrite activo no Apache</li>
+            <li>Permissões de escrita na pasta storage/</li>
+            <li>Certificado SSL/HTTPS</li>
+            <li>Acesso SSH para comandos de instalação</li>
+            <li>Suporte a ficheiros .htaccess (Apache)</li>
+        </ul>
+    </div>
+
+    <!-- ==================== ANGOWEB PLANS ==================== -->
+    <div class="hosting-section">
+        <h2>Análise de Planos AngoWeb Compatibilidade</h2>
+
+        <p style="font-size: 12px; color: #555; margin-bottom: 15px;">
+            A AngoWeb disponibiliza planos de alojamento de sites com cPanel, compatíveis com PHP, Python, NodeJS e mais.
+            Abaixo a análise dos planos face aos requisitos do projecto TSHOOT:
+        </p>
+
+        <table class="plan-table">
+            <thead>
+                <tr>
+                    <th>Plano</th>
+                    <th>Preço/mês</th>
+                    <th>Espaço</th>
+                    <th>RAM</th>
+                    <th>Sites</th>
+                    <th>SSH</th>
+                    <th>PHP</th>
+                    <th>SSL</th>
+                    <th>Ficheiros</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Pessoal</td>
+                    <td>Kz 1,575</td>
+                    <td>10 GB</td>
+                    <td>1 GB</td>
+                    <td>1</td>
+                    <td><span class="check">✓</span></td>
+                    <td><span class="check">✓</span></td>
+                    <td><span class="check">✓</span></td>
+                    <td>50 mil</td>
+                </tr>
+                <tr class="recommended">
+                    <td>Essencial <span class="badge">RECOMENDADO</span></td>
+                    <td>Kz 3,150</td>
+                    <td>50 GB</td>
+                    <td>2 GB</td>
+                    <td>5</td>
+                    <td><span class="check">✓</span></td>
+                    <td><span class="check">✓</span></td>
+                    <td><span class="check">✓</span></td>
+                    <td>300 mil</td>
+                </tr>
+                <tr>
+                    <td>Profissional</td>
+                    <td>Kz 4,796</td>
+                    <td>100 GB</td>
+                    <td>3 GB</td>
+                    <td>50</td>
+                    <td><span class="check">✓</span></td>
+                    <td><span class="check">✓</span></td>
+                    <td><span class="check">✓</span></td>
+                    <td>1 milhão</td>
+                </tr>
+                <tr>
+                    <td>Business</td>
+                    <td>Kz 6,672</td>
+                    <td>200 GB</td>
+                    <td>4 GB</td>
+                    <td>100</td>
+                    <td><span class="check">✓</span></td>
+                    <td><span class="check">✓</span></td>
+                    <td><span class="check">✓</span></td>
+                    <td>2 milhões</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="font-size: 10.5px; color: #888; margin-bottom: 20px;">
+            * Preços baseados no ciclo de 3 anos (poupa até 70%). Incluem domínio .AO grátis e teste grátis de 7 dias.
+        </p>
+
+        <div class="comparison-note">
+            <h3>Porquê o Plano Essencial (Kz 3,150/mês)?</h3>
+            <ul>
+                <li><strong>2 GB de RAM</strong> mínimo recomendado para Laravel 12 em produção</li>
+                <li><strong>50 GB de armazenamento SSD</strong> suficiente para site + CRM + imagens</li>
+                <li><strong>Terminal SSH</strong> necessário para Composer e comandos artisan</li>
+                <li><strong>cPanel com Imunify360</strong> gestão fácil + protecção de segurança</li>
+                <li><strong>500 mil ficheiros</strong> Laravel gera muitos ficheiros, 300K é seguro</li>
+                <li><strong>Até 5 sites</strong> permite hospedar o site público e o admin CRM separadamente</li>
+                <li><strong>Certificado SSL gratuito</strong> HTTPS obrigatório para formulários</li>
+                <li><strong>Teste grátis 7 dias</strong> sem compromisso para validar antes de contratar</li>
+            </ul>
+        </div>
+
+        <div class="comparison-note" style="background: #f0f0f8; color: #0f1523;">
+            <h3 style="color: #0f1523;">Observações Importantes</h3>
+            <ul>
+                <li>O plano Pessoal (1 GB RAM) pode ser insuficiente para Laravel risco de timeout em operações pesadas</li>
+                <li>Todos os planos incluem cPanel com instalador de aplicações (Softaculous)</li>
+                <li>Compatível com PHP, Python, NodeJS suporta todo o stack do projecto</li>
+                <li>Backup automático incluído em todos os planos</li>
+                <li>Suporte técnico local em Luanda</li>
+                <li>Activación imediata após confirmação do pagamento</li>
+            </ul>
+        </div>
+    </div>
+
+    <p class="closing">
+        Aguardo retorno para prosseguir com a contratação do plano de hospedagem adequado.
+    </p>
+
+    <div class="signature">
+        <p>Atenciosamente,</p>
+        <p style="margin-top: 25px;">
+            <strong>Masukul Miguel</strong><br>
+            CodingLife Dev<br>
+            <span style="color: #666;">+244 935 603 163</span>
+        </p>
+    </div>
+
+    <div class="footer">
+        <p>Este documento foi gerado pelo sistema da <strong style="color: #0f1523;">CodingLife Dev</strong></p>
+        <p style="margin-top: 4px;">Build • Collaborate • Innovate</p>
+    </div>
+
+</body>
+</html>
