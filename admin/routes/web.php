@@ -1,9 +1,13 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ContentApiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\SiteContentController;
+use App\Http\Controllers\SiteSettingController;
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\ApiController;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +20,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::post('/api/track', [ApiController::class, 'trackVisitor']);
 Route::post('/api/contact', [ApiController::class, 'submitContact']);
+Route::get('/api/content', [ContentApiController::class, 'getAll']);
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -29,4 +34,11 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
     Route::resource('images', ImageController::class);
     Route::post('images-reorder', [ImageController::class, 'reorder'])->name('images.reorder');
+
+    Route::resource('banners', BannerController::class)->except(['show']);
+    Route::get('content', [SiteContentController::class, 'index'])->name('content.index');
+    Route::get('content/{section}/edit', [SiteContentController::class, 'edit'])->name('content.edit');
+    Route::put('content/{section}', [SiteContentController::class, 'update'])->name('content.update');
+    Route::get('settings', [SiteSettingController::class, 'index'])->name('settings.index');
+    Route::put('settings', [SiteSettingController::class, 'update'])->name('settings.update');
 });

@@ -135,6 +135,31 @@
                 <span class="font-medium text-sm">Imagens</span>
             </a>
 
+            <a href="{{ route('admin.banners.index') }}"
+               class="nav-link flex items-center gap-3 px-6 py-3 text-gray-300 hover:text-white {{ request()->routeIs('admin.banners.*') ? 'active' : '' }}">
+                <svg class="w-5 h-5 flex-shrink-0 {{ request()->routeIs('admin.banners.*') ? 'text-gold' : '' }}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                </svg>
+                <span class="font-medium text-sm">Banners</span>
+            </a>
+
+            <a href="{{ route('admin.content.index') }}"
+               class="nav-link flex items-center gap-3 px-6 py-3 text-gray-300 hover:text-white {{ request()->routeIs('admin.content.*') ? 'active' : '' }}">
+                <svg class="w-5 h-5 flex-shrink-0 {{ request()->routeIs('admin.content.*') ? 'text-gold' : '' }}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                </svg>
+                <span class="font-medium text-sm">Conteúdo</span>
+            </a>
+
+            <a href="{{ route('admin.settings.index') }}"
+               class="nav-link flex items-center gap-3 px-6 py-3 text-gray-300 hover:text-white {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
+                <svg class="w-5 h-5 flex-shrink-0 {{ request()->routeIs('admin.settings.*') ? 'text-gold' : '' }}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                <span class="font-medium text-sm">Configurações</span>
+            </a>
+
             <div class="px-4 my-3">
                 <div class="border-t border-navy-light/50"></div>
             </div>
@@ -339,11 +364,9 @@
                 <p class="text-xs text-gray-500">
                     &copy; {{ date('Y') }} <span class="font-semibold text-navy">TSHOOT Soluções Tecnológicas</span>. Todos os direitos reservados.
                 </p>
-                <div class="flex items-center gap-4 text-xs text-gray-400">
-                    <a href="#" class="hover:text-navy transition-colors">Termos</a>
-                    <a href="#" class="hover:text-navy transition-colors">Privacidade</a>
-                    <span>v1.0.0</span>
-                </div>
+                <p class="text-xs text-gray-400">
+                    Desenvolvido por <a href="https://wa.me/244935603163" target="_blank" class="font-semibold text-gold hover:underline">CodingLife Dev</a>
+                </p>
             </div>
         </footer>
     </div>
