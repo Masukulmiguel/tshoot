@@ -1,5 +1,8 @@
 /admin/vendor
-/admin/storage
+/admin/storage/framework/views/*
+/admin/storage/framework/sessions/*
+/admin/storage/framework/cache/*
+/admin/storage/logs/*
 /admin/node_modules
 /admin/.env
 /admin/.env.backup
