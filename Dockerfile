@@ -19,6 +19,7 @@ RUN composer install --no-dev --no-interaction --prefer-dist
 RUN php artisan key:generate --force
 
 RUN touch database/database.sqlite \
+    && php artisan session:table \
     && php artisan migrate --force
 
 RUN mkdir -p storage/app/public \
