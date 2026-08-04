@@ -18,13 +18,18 @@ RUN composer install --no-dev --no-interaction --prefer-dist
 
 RUN php artisan key:generate --force
 
-RUN sed -i "s|APP_DEBUG=false|APP_DEBUG=true|g" .env
-
 RUN touch database/database.sqlite \
     && php artisan migrate --force
 
-RUN mkdir -p storage/app/public storage/framework/{views,sessions,cache} storage/logs \
-    && chmod -R 775 storage bootstrap/cache
+RUN mkdir -p storage/app/public \
+    storage/framework/views \
+    storage/framework/sessions \
+    storage/framework/cache/data \
+    storage/framework/cache/lock-files \
+    storage/logs \
+    bootstrap/cache \
+    && chmod -R 775 storage \
+    && chmod -R 775 bootstrap/cache
 
 EXPOSE 8000
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
