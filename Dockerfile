@@ -28,8 +28,8 @@ RUN mkdir -p storage/app/public \
     storage/framework/cache/lock-files \
     storage/logs \
     bootstrap/cache \
-    && chmod -R 775 storage \
-    && chmod -R 775 bootstrap/cache
+    && chmod -R 777 storage \
+    && chmod -R 777 bootstrap/cache
 
 EXPOSE 8000
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
