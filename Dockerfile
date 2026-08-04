@@ -19,7 +19,8 @@ RUN composer install --no-dev --no-interaction --prefer-dist
 
 RUN php artisan key:generate --force
 
-RUN php artisan migrate --force
+RUN php artisan migrate --force \
+    && php artisan db:seed --force
 
 RUN mkdir -p storage/app/public \
     storage/framework/views \
