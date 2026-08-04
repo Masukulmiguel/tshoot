@@ -3,49 +3,100 @@
 
 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
     <div>
-        <h1 class="text-2xl font-bold text-navy">Equipa</h1>
+        <h1 class="text-2xl font-bold text-navy flex items-center gap-2">
+            <i class="fas fa-users text-gold"></i> Equipa
+        </h1>
         <p class="text-sm text-gray-500 mt-1">Gerir os membros da equipa</p>
     </div>
-    <a href="{{ route('admin.team.create') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gold text-white text-sm font-medium rounded-lg hover:bg-gold/90 transition-colors">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-        Novo Membro
+    <a href="{{ route('admin.team.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-gold text-white text-sm font-semibold rounded-lg hover:bg-gold/90 transition-colors shadow-sm">
+        <i class="fas fa-plus"></i> Novo Membro
     </a>
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-navy/10 flex items-center justify-center">
+            <i class="fas fa-users text-navy text-xl"></i>
+        </div>
+        <div>
+            <p class="text-2xl font-bold text-navy">{{ $members->count() }}</p>
+            <p class="text-xs text-gray-500">Total de Membros</p>
+        </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center">
+            <i class="fas fa-user-check text-green-500 text-xl"></i>
+        </div>
+        <div>
+            <p class="text-2xl font-bold text-navy">{{ $members->where('is_active', true)->count() }}</p>
+            <p class="text-xs text-gray-500">Activos</p>
+        </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center">
+            <i class="fas fa-user-slash text-gray-400 text-xl"></i>
+        </div>
+        <div>
+            <p class="text-2xl font-bold text-navy">{{ $members->where('is_active', false)->count() }}</p>
+            <p class="text-xs text-gray-500">Inactivos</p>
+        </div>
+    </div>
 </div>
 
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
     @forelse($members as $member)
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
-            <div class="p-4">
-                <div class="flex items-center gap-3 mb-3">
-                    @if($member->photo)
-                        <img src="{{ asset('uploads/' . $member->photo) }}" alt="{{ $member->name }}" class="w-12 h-12 rounded-full object-cover">
-                    @else
-                        <div class="w-12 h-12 rounded-full bg-gold/20 flex items-center justify-center flex-shrink-0">
-                            <span class="text-gold font-bold text-lg">{{ strtoupper(substr($member->name, 0, 1)) }}</span>
-                        </div>
-                    @endif
-                    <div class="min-w-0">
-                        <h3 class="font-semibold text-navy text-sm truncate">{{ $member->name }}</h3>
-                        <p class="text-xs text-gray-500 truncate">{{ $member->role }}</p>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all group">
+            <div class="relative">
+                @if($member->photo)
+                    <img src="{{ asset('uploads/' . $member->photo) }}" alt="{{ $member->name }}" class="w-full h-40 object-cover">
+                @else
+                    <div class="w-full h-40 bg-gradient-to-br from-navy to-navy-light flex items-center justify-center">
+                        <span class="text-gold font-bold text-4xl">{{ strtoupper(substr($member->name, 0, 1)) }}</span>
                     </div>
-                </div>
-                @if($member->bio)
-                    <p class="text-xs text-gray-500 mb-3 line-clamp-2">{{ Str::limit($member->bio, 80) }}</p>
                 @endif
-                <div class="flex items-center justify-between">
+                <div class="absolute top-2 right-2">
                     @if($member->is_active)
-                        <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-green-50 text-green-600">Activo</span>
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-500 text-white shadow"><i class="fas fa-check-circle"></i> Activo</span>
                     @else
-                        <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-500">Inactivo</span>
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-gray-400 text-white shadow"><i class="fas fa-times-circle"></i> Inactivo</span>
                     @endif
-                    <div class="flex items-center gap-1">
-                        <a href="{{ route('admin.team.edit', $member) }}" class="p-1.5 text-gray-400 hover:text-navy hover:bg-gray-100 rounded-lg transition-colors">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                </div>
+            </div>
+            <div class="p-4">
+                <h3 class="font-bold text-navy text-base">{{ $member->name }}</h3>
+                <p class="text-gold text-xs font-semibold uppercase tracking-wide mt-0.5">{{ $member->role }}</p>
+                @if($member->bio)
+                    <p class="text-xs text-gray-500 mt-2 line-clamp-2">{{ Str::limit($member->bio, 100) }}</p>
+                @endif
+                <div class="flex items-center gap-1 mt-3 pt-3 border-t border-gray-100">
+                    @if($member->email)
+                        <a href="mailto:{{ $member->email }}" class="p-2 text-gray-400 hover:text-navy hover:bg-navy/5 rounded-lg transition-colors" title="Email">
+                            <i class="fas fa-envelope text-sm"></i>
                         </a>
-                        <form method="POST" action="{{ route('admin.team.destroy', $member) }}" onsubmit="return confirm('Eliminar este membro?')" class="inline">
+                    @endif
+                    @if($member->phone)
+                        <a href="tel:{{ $member->phone }}" class="p-2 text-gray-400 hover:text-navy hover:bg-navy/5 rounded-lg transition-colors" title="Telefone">
+                            <i class="fas fa-phone text-sm"></i>
+                        </a>
+                    @endif
+                    @if($member->linkedin)
+                        <a href="{{ $member->linkedin }}" target="_blank" class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="LinkedIn">
+                            <i class="fab fa-linkedin text-sm"></i>
+                        </a>
+                    @endif
+                    @if($member->facebook)
+                        <a href="{{ $member->facebook }}" target="_blank" class="p-2 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors" title="Facebook">
+                            <i class="fab fa-facebook text-sm"></i>
+                        </a>
+                    @endif
+                    <div class="ml-auto flex items-center gap-1">
+                        <a href="{{ route('admin.team.edit', $member) }}" class="p-2 text-gray-400 hover:text-gold hover:bg-gold/10 rounded-lg transition-colors" title="Editar">
+                            <i class="fas fa-pen text-sm"></i>
+                        </a>
+                        <form method="POST" action="{{ route('admin.team.destroy', $member) }}" onsubmit="return confirm('Eliminar este membro da equipa?')" class="inline">
                             @csrf @method('DELETE')
-                            <button class="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                            <button class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Eliminar">
+                                <i class="fas fa-trash text-sm"></i>
                             </button>
                         </form>
                     </div>
@@ -53,7 +104,15 @@
             </div>
         </div>
     @empty
-        <div class="col-span-full py-12 text-gray-400 text-center">Nenhum membro da equipa criado.</div>
+        <div class="col-span-full py-16 text-center">
+            <div class="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-users text-gray-300 text-3xl"></i>
+            </div>
+            <p class="text-gray-500 font-medium">Nenhum membro da equipa criado.</p>
+            <a href="{{ route('admin.team.create') }}" class="inline-flex items-center gap-2 mt-3 text-gold hover:text-gold/80 text-sm font-semibold">
+                <i class="fas fa-plus"></i> Adicionar primeiro membro
+            </a>
+        </div>
     @endforelse
 </div>
 @endsection

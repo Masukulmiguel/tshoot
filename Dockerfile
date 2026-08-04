@@ -21,7 +21,6 @@ RUN php artisan key:generate --force
 
 RUN rm -f database/database.sqlite \
     && touch database/database.sqlite \
-    && sed -i 's/APP_DEBUG=false/APP_DEBUG=true/g' .env \
     && php artisan migrate --force \
     && php artisan db:seed --force
 
