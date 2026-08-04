@@ -12,15 +12,19 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /app
 COPY admin/ .
 
-RUN cp .env.example .env \
-    && php artisan key:generate --force
+RUN cp .env.example .env
 
-RUN composer install --no-dev --no-interaction --prefer-dist \
-    && chown -R www-data:www-data storage bootstrap/cache \
-    && chmod -R 775 storage bootstrap/cache
+RUN composer install --no-dev --no-interaction --prefer-dist
+
+RUN php artisan key:generate --force
+
+RUN sed -i "s|APP_DEBUG=false|APP_DEBUG=true|g" .env
 
 RUN touch database/database.sqlite \
     && php artisan migrate --force
+
+RUN mkdir -p storage/app/public storage/framework/{views,sessions,cache} storage/logs \
+    && chmod -R 775 storage bootstrap/cache
 
 EXPOSE 8000
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
