@@ -15,7 +15,13 @@ use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\ApiController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn () => redirect()->route('login'));
+Route::get('/', function () {
+    $path = public_path('site.html');
+    if (file_exists($path)) {
+        return response()->file($path);
+    }
+    return redirect()->route('login');
+});
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
