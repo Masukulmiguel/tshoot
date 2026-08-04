@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script>
         tailwind.config = {
             theme: {
@@ -171,8 +172,6 @@
                class="nav-link flex items-center gap-3 px-6 py-3 text-gray-300 hover:text-white">
                 <i class="fas fa-external-link-alt flex-shrink-0 w-5 text-center text-green-400"></i>
                 <span class="font-medium text-sm">Ver Site</span>
-            </a>
-                </svg>
             </a>
         </nav>
 
