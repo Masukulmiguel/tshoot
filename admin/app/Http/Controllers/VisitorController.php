@@ -30,16 +30,14 @@ class VisitorController extends Controller
             $query->where('first_visit', '<=', $request->date_to . ' 23:59:59');
         }
 
-        $visitors = $query->latest('last_visit')->paginate(15)->withQueryString();
+        $totalVisitors = Visitor::count();
+        $todayVisitors = Visitor::whereDate('last_visit', today())->count();
+        $weekVisitors = Visitor::where('last_visit', '>=', now()->subWeek())->count();
+        $monthVisitors = Visitor::where('last_visit', '>=', now()->subMonth())->count();
 
-        $stats = [
-            'total' => Visitor::count(),
-            'today' => Visitor::whereDate('last_visit', today())->count(),
-            'thisWeek' => Visitor::where('last_visit', '>=', now()->subWeek())->count(),
-            'thisMonth' => Visitor::where('last_visit', '>=', now()->subMonth())->count(),
-        ];
+        $visitors = $query->latest('last_visit')->paginate(10)->withQueryString();
 
-        return view('admin.visitors.index', compact('visitors', 'stats'));
+        return view('admin.visitors.index', compact('visitors', 'totalVisitors', 'todayVisitors', 'weekVisitors', 'monthVisitors'));
     }
 
     public function show(Visitor $visitor)
@@ -57,44 +55,68 @@ class VisitorController extends Controller
 
     public function analytics()
     {
-        $browsers = Visitor::select('browser', DB::raw('count(*) as total'))
+        $totalVisitors = Visitor::count();
+
+        $topBrowsers = Visitor::select('browser', DB::raw('count(*) as count'))
             ->whereNotNull('browser')
             ->groupBy('browser')
-            ->orderByDesc('total')
+            ->orderByDesc('count')
             ->take(10)
-            ->get();
+            ->get()
+            ->each(function ($item) use ($totalVisitors) {
+                $item->percentage = $totalVisitors > 0 ? round(($item->count / $totalVisitors) * 100) : 0;
+            });
 
-        $os = Visitor::select('os', DB::raw('count(*) as total'))
+        $topOs = Visitor::select('os', DB::raw('count(*) as count'))
             ->whereNotNull('os')
             ->groupBy('os')
-            ->orderByDesc('total')
+            ->orderByDesc('count')
             ->take(10)
-            ->get();
+            ->get()
+            ->each(function ($item) use ($totalVisitors) {
+                $item->percentage = $totalVisitors > 0 ? round(($item->count / $totalVisitors) * 100) : 0;
+            });
 
-        $devices = Visitor::select('device', DB::raw('count(*) as total'))
+        $topDevices = Visitor::select('device', DB::raw('count(*) as count'))
             ->whereNotNull('device')
             ->groupBy('device')
-            ->get();
+            ->get()
+            ->each(function ($item) use ($totalVisitors) {
+                $item->percentage = $totalVisitors > 0 ? round(($item->count / $totalVisitors) * 100) : 0;
+            });
 
-        $countries = Visitor::select('country', DB::raw('count(*) as total'))
+        $topCountries = Visitor::select('country', DB::raw('count(*) as count'))
             ->whereNotNull('country')
             ->groupBy('country')
-            ->orderByDesc('total')
+            ->orderByDesc('count')
             ->take(10)
-            ->get();
+            ->get()
+            ->each(function ($item) use ($totalVisitors) {
+                $item->percentage = $totalVisitors > 0 ? round(($item->count / $totalVisitors) * 100) : 0;
+            });
 
-        $daily = Visitor::select(DB::raw('DATE(first_visit) as date'), DB::raw('count(*) as total'))
+        $dailyVisitors = Visitor::select(DB::raw('DATE(first_visit) as day'), DB::raw('count(*) as count'))
             ->where('first_visit', '>=', now()->subDays(30))
-            ->groupBy('date')
-            ->orderBy('date')
+            ->groupBy('day')
+            ->orderBy('day')
             ->get();
 
-        $pages = \App\Models\VisitorLog::select('page', DB::raw('count(*) as total'))
+        $maxDaily = $dailyVisitors->max('count') ?: 1;
+        $dailyVisitors->each(function ($item) use ($maxDaily) {
+            $item->percentage = round(($item->count / $maxDaily) * 100);
+        });
+
+        $topPages = \App\Models\VisitorLog::select('page', DB::raw('count(*) as count'))
             ->groupBy('page')
-            ->orderByDesc('total')
+            ->orderByDesc('count')
             ->take(10)
             ->get();
 
-        return view('admin.visitors.analytics', compact('browsers', 'os', 'devices', 'countries', 'daily', 'pages'));
+        $maxPages = $topPages->max('count') ?: 1;
+        $topPages->each(function ($item) use ($maxPages) {
+            $item->percentage = round(($item->count / $maxPages) * 100);
+        });
+
+        return view('admin.visitors.analytics', compact('topBrowsers', 'topOs', 'topDevices', 'topCountries', 'dailyVisitors', 'topPages'));
     }
 }

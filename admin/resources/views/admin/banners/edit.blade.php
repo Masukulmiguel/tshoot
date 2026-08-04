@@ -36,7 +36,7 @@
         @if($banner->image)
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Imagem Actual</label>
-                <img src="{{ asset('storage/' . $banner->image) }}" alt="" class="w-40 h-24 object-cover rounded-lg">
+                <img src="{{ asset('uploads/' . $banner->image) }}" alt="" class="w-40 h-24 object-cover rounded-lg">
             </div>
         @endif
 

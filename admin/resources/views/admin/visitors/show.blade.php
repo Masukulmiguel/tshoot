@@ -14,7 +14,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
                 <p class="text-sm text-gray-500">IP</p>
-                <p class="font-medium" style="color: #1B2A41;">{{ $visitor->ip }}</p>
+                <p class="font-medium" style="color: #1B2A41;">{{ $visitor->ip_address }}</p>
             </div>
             <div>
                 <p class="text-sm text-gray-500">País</p>
@@ -46,7 +46,7 @@
             </div>
             <div>
                 <p class="text-sm text-gray-500">Páginas Visitadas</p>
-                <p class="font-medium" style="color: #1B2A41;">{{ $visitor->pages_count }}</p>
+                <p class="font-medium" style="color: #1B2A41;">{{ $visitor->pages_visited }}</p>
             </div>
             <div>
                 <p class="text-sm text-gray-500">Primeira Visita</p>
@@ -73,7 +73,7 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
-                    @forelse($visitor->visitLogs as $log)
+                    @forelse($logs as $log)
                     <tr class="hover:bg-gray-50">
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $log->page }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $log->referrer ?? 'N/A' }}</td>
@@ -88,7 +88,7 @@
             </table>
         </div>
         <div class="px-6 py-4 border-t border-gray-200">
-            {{ $visitor->visitLogs->links() }}
+            {{ $logs->links() }}
         </div>
     </div>
 </div>

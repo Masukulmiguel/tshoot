@@ -30,7 +30,7 @@
                 </div>
                 <div>
                     <h3 class="font-semibold text-gray-800 group-hover:text-gold transition-colors">{{ $info['label'] }}</h3>
-                    <p class="text-xs text-gray-400 mt-0.5">{{ $sections[$key]->count() ?? 0 }} campos</p>
+                    <p class="text-xs text-gray-400 mt-0.5">{{ isset($sections[$key]) ? $sections[$key]->count() : 0 }} campos</p>
                 </div>
             </div>
         </a>

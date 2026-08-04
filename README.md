@@ -35,11 +35,38 @@ tshoot-angola/
 - Design 100% responsivo
 
 ### Admin CRM (`/admin/public/login`)
-- Dashboard com gráficos (Chart.js): visitantes, browsers, países, dispositivos, páginas
-- Gestão de contactos (ver, responder, alterar estado)
-- Gestão de visitantes (detalhes, logs, analytics)
-- Gestão de imagens (upload, editar, reordenar)
-- Botão "Ver Site" na sidebar
+
+#### Dashboard
+- Gráficos (Chart.js): visitantes, browsers, países, dispositivos, páginas
+- Estatísticas: contactos, visitantes, imagens, actividade diária
+
+#### Gestão de Conteúdo
+- **Banners/Carrossel**: CRUD completo, activar/desactivar, reordenar
+- **Serviços**: CRUD completo com categorias, ícones, ordem
+- **Equipa**: Gestão de membros (foto, cargo, redes sociais)
+- **Blog/Notícias**: Publicação de artigos com categorias e destaque
+- **Conteúdo das Secções**: Editor de texto para 8 secções do site
+- **Imagens**: Upload, categorias (hero, about, gallery, infra, partners), reordenar
+
+#### Gestão de Contactos
+- Listagem com filtros (novo, lido, respondido, arquivado)
+- Resposta por email (envio automático)
+- Alteração de estado
+
+#### Gestão de Visitantes
+- Tracking completo (IP, geolocalização, browser, OS, dispositivo)
+- Analytics com gráficos detalhados
+- Histórico de visitas por utilizador
+
+#### Definições
+- Dados da empresa (nome, slogan, contactos)
+- Redes sociais
+- Horário de funcionamento
+- **SEO**: Meta títulos, descrições, palavras-chave, Open Graph, Google Analytics
+
+#### Autenticação
+- Login com email/password
+- Rate limiting (5 tentativas por IP)
 - Loading screen animado
 - Sidebar responsiva com menu mobile
 

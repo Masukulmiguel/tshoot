@@ -66,13 +66,13 @@
                 <tbody class="divide-y divide-gray-200">
                     @forelse($visitors as $visitor)
                     <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $visitor->ip }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $visitor->ip_address }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $visitor->country }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $visitor->city }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $visitor->browser }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $visitor->os }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $visitor->device }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $visitor->pages_count }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $visitor->pages_visited }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $visitor->last_visit->format('d/m/Y H:i') }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm">
                             <div class="flex gap-2">

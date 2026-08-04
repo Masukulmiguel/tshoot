@@ -238,6 +238,47 @@
         .partner-stat-label { font-size: 0.8rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
         .partner-stat-divider { width: 1px; height: 40px; background: var(--gray-200); }
 
+        /* TEAM */
+        .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+        .team-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative; }
+        .team-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--gold); transform: scaleX(0); transition: transform 0.4s ease; }
+        .team-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-xl); border-color: transparent; }
+        .team-card:hover::after { transform: scaleX(1); }
+        .team-card-image { height: 280px; overflow: hidden; position: relative; }
+        .team-card-image::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 60%; background: linear-gradient(to top, rgba(27,42,65,0.1) 0%, transparent 100%); pointer-events: none; }
+        .team-card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .team-card:hover .team-card-image img { transform: scale(1.08); }
+        .team-card-info { padding: 1.5rem; text-align: center; position: relative; }
+        .team-card-name { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.3rem; transition: color 0.3s; }
+        .team-card:hover .team-card-name { color: var(--gold); }
+        .team-card-role { font-size: 0.8rem; color: var(--gold); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.8rem; }
+        .team-card-bio { font-size: 0.85rem; color: var(--gray-500); line-height: 1.7; margin-bottom: 1rem; }
+        .team-card-social { display: flex; justify-content: center; gap: 10px; }
+        .team-social-link { width: 38px; height: 38px; border-radius: 50%; background: var(--gray-50); border: 1px solid var(--gray-200); display: flex; align-items: center; justify-content: center; color: var(--navy); font-size: 0.85rem; transition: all 0.3s ease; text-decoration: none; }
+        .team-social-link:hover { background: var(--gold); border-color: var(--gold); color: var(--white); transform: translateY(-3px); box-shadow: 0 4px 12px rgba(212,161,29,0.3); }
+        @media (max-width: 1024px) { .team-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 640px) { .team-grid { grid-template-columns: 1fr; max-width: 360px; margin: 0 auto; } }
+
+        /* BLOG */
+        .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .blog-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative; }
+        .blog-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--gold); transform: scaleX(0); transition: transform 0.4s ease; }
+        .blog-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-xl); border-color: transparent; }
+        .blog-card:hover::after { transform: scaleX(1); }
+        .blog-card-image { height: 220px; overflow: hidden; position: relative; }
+        .blog-card-image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(27,42,65,0.05) 0%, transparent 50%); pointer-events: none; }
+        .blog-card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .blog-card:hover .blog-card-image img { transform: scale(1.08); }
+        .blog-card-category { position: absolute; top: 12px; left: 12px; background: var(--gold); color: var(--white); padding: 5px 14px; border-radius: 50px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; z-index: 2; }
+        .blog-card-content { padding: 1.5rem; }
+        .blog-card-title { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.6rem; line-height: 1.4; transition: color 0.3s; }
+        .blog-card:hover .blog-card-title { color: var(--gold); }
+        .blog-card-excerpt { font-size: 0.85rem; color: var(--gray-500); line-height: 1.7; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .blog-card-meta { display: flex; gap: 1rem; font-size: 0.75rem; color: var(--gray-400); padding-top: 1rem; border-top: 1px solid var(--gray-100); }
+        .blog-card-meta i { margin-right: 4px; color: var(--gold); }
+        @media (max-width: 1024px) { .blog-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 640px) { .blog-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; } }
+
         /* GALLERY */
         .gallery-section { background: var(--white); }
         .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
@@ -471,16 +512,8 @@
         <section class="hero" id="top">
             <div class="hero-carousel">
                 <div class="hero-carousel-track" :style="{ transform: `translateX(-${heroSlide * 100}%)` }">
-                    <div class="hero-carousel-slide">
-                        <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=1920&q=80" alt="Tecnologia" />
-                        <div class="hero-carousel-overlay"></div>
-                    </div>
-                    <div class="hero-carousel-slide">
-                        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1920&q=80" alt="Infraestrutura" />
-                        <div class="hero-carousel-overlay"></div>
-                    </div>
-                    <div class="hero-carousel-slide">
-                        <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=1920&q=80" alt="Desenvolvimento" />
+                    <div v-for="(banner, index) in banners" :key="banner.id" class="hero-carousel-slide">
+                        <img :src="banner.image ? 'http://localhost/tshoot-angola/admin/public/uploads/' + banner.image : 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=1920&q=80'" :alt="banner.title" />
                         <div class="hero-carousel-overlay"></div>
                     </div>
                 </div>
@@ -488,21 +521,20 @@
             <button class="hero-nav hero-nav-prev" @click="prevHeroSlide"><i class="fas fa-chevron-left"></i></button>
             <button class="hero-nav hero-nav-next" @click="nextHeroSlide"><i class="fas fa-chevron-right"></i></button>
             <div class="hero-dots">
-                <button v-for="i in 3" :key="i" class="hero-dot" :class="{ active: heroSlide === (i-1) }" @click="heroSlide = i-1"></button>
+                <button v-for="(banner, index) in banners" :key="'dot-'+index" class="hero-dot" :class="{ active: heroSlide === index }" @click="heroSlide = index"></button>
             </div>
             <div class="hero-counter">
                 <span class="hero-counter-current">{{ String(heroSlide + 1).padStart(2, '0') }}</span>
                 <span class="hero-counter-sep">/</span>
-                <span class="hero-counter-total">03</span>
+                <span class="hero-counter-total">{{ String(banners.length).padStart(2, '0') }}</span>
             </div>
             <div class="container">
                 <div class="hero-content">
-                    <h1>Transformamos as suas <span>ideias</span> em <span>soluções</span></h1>
-                    <p class="tagline">TROUBLESHOOT</p>
-                    <p class="subtitle">Soluções tecnológicas completas para impulsionar o sucesso do seu negócio. Assistência técnica, desenvolvimento de software e infraestrutura de rede.</p>
-                    <div class="hero-buttons">
-                        <a href="#services" class="btn btn-gold" @click.prevent="scrollTo('services')">
-                            <i class="fas fa-arrow-right"></i> Nossos Serviços
+                    <h1 v-if="banners[heroSlide]">{{ banners[heroSlide].title }}</h1>
+                    <p v-if="banners[heroSlide] && banners[heroSlide].subtitle" class="subtitle">{{ banners[heroSlide].subtitle }}</p>
+                    <div class="hero-buttons" v-if="banners[heroSlide] && banners[heroSlide].button_text">
+                        <a :href="banners[heroSlide].button_link || '#'" class="btn btn-gold">
+                            <i class="fas fa-arrow-right"></i> {{ banners[heroSlide].button_text }}
                         </a>
                         <a href="#contact" class="btn btn-outline" @click.prevent="scrollTo('contact')">
                             <i class="fas fa-phone"></i> Contactar
@@ -726,6 +758,97 @@
                         <span class="partner-stat-number">100%</span>
                         <span class="partner-stat-label">Satisfação</span>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TEAM -->
+        <section class="section" id="team" data-animate="up">
+            <div class="container">
+                <div class="section-header slide-up" :class="{ visible: visibleSections.team }">
+                    <h2 class="section-title">Nossa <span>Equipa</span></h2>
+                    <p class="section-subtitle">Profissionais dedicados e qualificados ao seu serviço</p>
+                </div>
+                <div class="team-grid">
+                    <template v-if="teamMembers.length > 0">
+                        <div v-for="member in teamMembers" :key="member.id" class="team-card slide-up" :class="{ visible: visibleSections.team }">
+                            <div class="team-card-image">
+                                <img :src="member.photo ? 'http://localhost/tshoot-angola/admin/public/uploads/' + member.photo : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(member.name) + '&background=1B2A41&color=fff&size=200'" :alt="member.name" />
+                            </div>
+                            <div class="team-card-info">
+                                <h3 class="team-card-name">{{ member.name }}</h3>
+                                <p class="team-card-role">{{ member.role }}</p>
+                                <p v-if="member.bio" class="team-card-bio">{{ member.bio }}</p>
+                                <div class="team-card-social">
+                                    <a v-if="member.linkedin" :href="member.linkedin" target="_blank" class="team-social-link"><i class="fab fa-linkedin-in"></i></a>
+                                    <a v-if="member.facebook" :href="member.facebook" target="_blank" class="team-social-link"><i class="fab fa-facebook-f"></i></a>
+                                    <a v-if="member.twitter" :href="member.twitter" target="_blank" class="team-social-link"><i class="fab fa-twitter"></i></a>
+                                    <a v-if="member.email" :href="'mailto:' + member.email" class="team-social-link"><i class="fas fa-envelope"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                    <template v-else>
+                        <div v-for="(member, index) in defaultTeam" :key="'dt-'+index" class="team-card slide-up" :class="{ visible: visibleSections.team }" :style="'transition-delay:' + (index * 0.1) + 's'">
+                            <div class="team-card-image">
+                                <img :src="member.photo" :alt="member.name" />
+                            </div>
+                            <div class="team-card-info">
+                                <h3 class="team-card-name">{{ member.name }}</h3>
+                                <p class="team-card-role">{{ member.role }}</p>
+                                <p class="team-card-bio">{{ member.bio }}</p>
+                                <div class="team-card-social">
+                                    <a href="#" class="team-social-link"><i class="fab fa-linkedin-in"></i></a>
+                                    <a href="#" class="team-social-link"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="mailto:info@tshoot-angola.com" class="team-social-link"><i class="fas fa-envelope"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </section>
+
+        <!-- BLOG -->
+        <section class="section" id="blog" data-animate="up" style="background: #f8fafc;">
+            <div class="container">
+                <div class="section-header slide-up" :class="{ visible: visibleSections.blog }">
+                    <h2 class="section-title">Últimas <span>Notícias</span></h2>
+                    <p class="section-subtitle">Fique por dentro das novidades e actualizações</p>
+                </div>
+                <div class="blog-grid">
+                    <template v-if="blogPosts.length > 0">
+                        <div v-for="post in blogPosts" :key="post.id" class="blog-card slide-up" :class="{ visible: visibleSections.blog }">
+                            <div class="blog-card-image">
+                                <img :src="post.image ? 'http://localhost/tshoot-angola/admin/public/uploads/' + post.image : 'https://images.unsplash.com/photo-1504711434969-e33886168d5c?w=600&q=80'" :alt="post.title" />
+                                <span v-if="post.category" class="blog-card-category">{{ post.category }}</span>
+                            </div>
+                            <div class="blog-card-content">
+                                <h3 class="blog-card-title">{{ post.title }}</h3>
+                                <p class="blog-card-excerpt">{{ post.excerpt }}</p>
+                                <div class="blog-card-meta">
+                                    <span v-if="post.author"><i class="fas fa-user"></i> {{ post.author }}</span>
+                                    <span v-if="post.published_at"><i class="fas fa-calendar"></i> {{ new Date(post.published_at).toLocaleDateString('pt-PT') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                    <template v-else>
+                        <div v-for="(post, index) in defaultPosts" :key="'dp-'+index" class="blog-card slide-up" :class="{ visible: visibleSections.blog }" :style="'transition-delay:' + (index * 0.1) + 's'">
+                            <div class="blog-card-image">
+                                <img :src="post.image" :alt="post.title" />
+                                <span class="blog-card-category">{{ post.category }}</span>
+                            </div>
+                            <div class="blog-card-content">
+                                <h3 class="blog-card-title">{{ post.title }}</h3>
+                                <p class="blog-card-excerpt">{{ post.excerpt }}</p>
+                                <div class="blog-card-meta">
+                                    <span><i class="fas fa-user"></i> {{ post.author }}</span>
+                                    <span><i class="fas fa-calendar"></i> {{ post.date }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
                 </div>
             </div>
         </section>
@@ -960,8 +1083,28 @@
                 const heroSlide = ref(0);
                 const heroAutoplay = ref(null);
 
-                const nextHeroSlide = () => { heroSlide.value = (heroSlide.value + 1) % 3; };
-                const prevHeroSlide = () => { heroSlide.value = heroSlide.value === 0 ? 2 : heroSlide.value - 1; };
+                const banners = ref([]);
+                const bannerFallback = [
+                    { id: 1, title: 'Soluções Tecnológicas Completas', subtitle: 'Infraestrutura, software, segurança e suporte para impulsionar o seu negócio.', button_text: 'Nossos Serviços', button_link: '#services', image: null },
+                    { id: 2, title: 'Desenvolvimento de Software', subtitle: 'Aplicações web, mobile e desktop à medida para automatizar processos.', button_text: 'Solicitar Orçamento', button_link: '#contact', image: null },
+                    { id: 3, title: 'Infraestrutura de Redes', subtitle: 'Projecto, instalação e manutenção de redes com as melhores tecnologias.', button_text: 'Saiba Mais', button_link: '#infraestrutura', image: null }
+                ];
+                const teamMembers = ref([]);
+                const blogPosts = ref([]);
+                const defaultTeam = [
+                    { name: 'Masukul Miguel', role: 'CEO & Fundador', bio: 'Especialista em infraestrutura de redes e soluções tecnológicas com mais de 10 anos de experiência no mercado angolano.', photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80' },
+                    { name: 'Técnico de Redes', role: 'Especialista em Infraestrutura', bio: 'Projecto, instalação e manutenção de redes de dados, servidores e soluções cloud para empresas.', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80' },
+                    { name: 'Desenvolvedor Full Stack', role: 'Engenheiro de Software', bio: 'Desenvolvimento de aplicações web, mobile e desktop utilizando as mais modernas tecnologias.', photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80' },
+                    { name: 'Especialista de Suporte', role: 'Suporte Técnico', bio: 'Assistência técnica profissional, diagnóstico e reparação de equipamentos informáticos.', photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80' }
+                ];
+                const defaultPosts = [
+                    { title: 'Novas Soluções Cloud para Empresas', excerpt: 'A Troubleshoot apresenta novas soluções de cloud computing para optimizar a infraestrutura da sua empresa com segurança e eficiência.', category: 'Tecnologia', author: 'Masukul Miguel', date: '01/08/2026', image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80' },
+                    { title: 'Segurança Informática: Dicas Essenciais', excerpt: 'Conheça as melhores práticas para proteger os seus dados e sistemas contra ameaças cibernéticas crescentes.', category: 'Segurança', author: 'Equipa Técnica', date: '25/07/2026', image: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=600&q=80' },
+                    { title: 'Infraestrutura de Redes: Guia Completo', excerpt: 'Tudo o que precisa de saber sobre projecto e implementação de redes de dados profissionais para a sua empresa.', category: 'Redes', author: 'Masukul Miguel', date: '18/07/2026', image: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=600&q=80' }
+                ];
+
+                const nextHeroSlide = () => { heroSlide.value = (heroSlide.value + 1) % banners.value.length; };
+                const prevHeroSlide = () => { heroSlide.value = heroSlide.value === 0 ? banners.value.length - 1 : heroSlide.value - 1; };
                 const startHeroAutoplay = () => { heroAutoplay.value = setInterval(nextHeroSlide, 5000); };
                 const stopHeroAutoplay = () => { clearInterval(heroAutoplay.value); };
 
@@ -969,6 +1112,8 @@
                     { id: 'top', label: 'Home' },
                     { id: 'about', label: 'Sobre Nós' },
                     { id: 'services', label: 'Serviços' },
+                    { id: 'team', label: 'Equipa' },
+                    { id: 'blog', label: 'Blog' },
                     { id: 'portfolio', label: 'Parceiros' }
                 ];
 
@@ -1059,13 +1204,14 @@
 
                 const visibleSections = reactive({
                     about: false, services: false, galleryHardware: false, info: false,
-                    gallerySoftware: false, galleryNetwork: false, partners: false, contact: false
+                    gallerySoftware: false, galleryNetwork: false, partners: false, contact: false,
+                    team: false, blog: false
                 });
 
                 const sectionMap = {
                     about: 'about', services: 'services', 'gallery-hardware': 'galleryHardware',
                     info: 'info', 'gallery-software': 'gallerySoftware', 'gallery-network': 'galleryNetwork',
-                    portfolio: 'partners', contact: 'contact'
+                    portfolio: 'partners', contact: 'contact', team: 'team', blog: 'blog'
                 };
 
                 const handleScroll = () => {
@@ -1083,14 +1229,36 @@
                     if (el) window.scrollTo({ top: el.offsetTop - 70, behavior: 'smooth' });
                 };
 
-                onMounted(() => { window.addEventListener('scroll', handleScroll); handleScroll(); startAutoplay(); startHeroAutoplay(); initScrollAnimations(); });
+                onMounted(() => {
+                    window.addEventListener('scroll', handleScroll);
+                    handleScroll();
+                    startAutoplay();
+                    initScrollAnimations();
+
+                    fetch('http://localhost/tshoot-angola/admin/public/api/content')
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.banners && data.banners.length > 0) {
+                                banners.value = data.banners;
+                            } else {
+                                banners.value = bannerFallback;
+                            }
+                            if (data.team) teamMembers.value = data.team;
+                            if (data.posts) blogPosts.value = data.posts;
+                            startHeroAutoplay();
+                        })
+                        .catch(() => {
+                            banners.value = bannerFallback;
+                            startHeroAutoplay();
+                        });
+                });
                 onUnmounted(() => { window.removeEventListener('scroll', handleScroll); stopAutoplay(); stopHeroAutoplay(); });
 
                 return {
                     scrolled, menuOpen, navLinks, services, infoCards, infraItems, partners,
                     visibleSections, scrollTo, carouselIndex, carouselSlides, nextSlide, prevSlide,
                     form, formSubmitting, formSent, sendForm,
-                    heroSlide, nextHeroSlide, prevHeroSlide
+                    heroSlide, nextHeroSlide, prevHeroSlide, banners, teamMembers, blogPosts, defaultTeam, defaultPosts
                 };
             }
         }).mount('#app');

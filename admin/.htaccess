@@ -1,1 +1,8 @@
-# Laravel admin - access via /admin/public/
+<Files "setup_db.php">
+    Order Allow,Deny
+    Deny from all
+</Files>
+<Files "fix.php">
+    Order Allow,Deny
+    Deny from all
+</Files>

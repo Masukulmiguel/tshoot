@@ -90,6 +90,61 @@
             </div>
         </div>
 
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h3 class="text-sm font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <i class="fas fa-search text-gold"></i> SEO (Search Engine Optimization)
+            </h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Meta Título</label>
+                    <input type="text" name="meta_title" value="{{ $settings['seo']['meta_title'] ?? '' }}" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none" placeholder="Título que aparece no Google">
+                    <p class="text-xs text-gray-400 mt-1">Máximo 60 caracteres</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Meta Descrição</label>
+                    <textarea name="meta_description" rows="2" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none resize-y" placeholder="Descrição que aparece nos resultados de busca">{{ $settings['seo']['meta_description'] ?? '' }}</textarea>
+                    <p class="text-xs text-gray-400 mt-1">Máximo 160 caracteres</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Palavras-chave</label>
+                    <input type="text" name="meta_keywords" value="{{ $settings['seo']['meta_keywords'] ?? '' }}" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none" placeholder="informática, assistência técnica, software">
+                    <p class="text-xs text-gray-400 mt-1">Separadas por vírgula</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h3 class="text-sm font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <i class="fas fa-share-alt text-gold"></i> Open Graph (Redes Sociais)
+            </h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">OG Título</label>
+                    <input type="text" name="og_title" value="{{ $settings['seo']['og_title'] ?? '' }}" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none" placeholder="Título ao partilhar nas redes sociais">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">OG Descrição</label>
+                    <textarea name="og_description" rows="2" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none resize-y" placeholder="Descrição ao partilhar nas redes sociais">{{ $settings['seo']['og_description'] ?? '' }}</textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">OG Imagem URL</label>
+                    <input type="url" name="og_image" value="{{ $settings['seo']['og_image'] ?? '' }}" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none" placeholder="https://tshoot-angola.com/assets/img/logo.png">
+                    <p class="text-xs text-gray-400 mt-1">Imagem recomendada: 1200x630 pixels</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h3 class="text-sm font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <i class="fas fa-chart-line text-gold"></i> Google Analytics
+            </h3>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Google Analytics ID</label>
+                <input type="text" name="google_analytics" value="{{ $settings['seo']['google_analytics'] ?? '' }}" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none" placeholder="G-XXXXXXXXXX">
+                <p class="text-xs text-gray-400 mt-1">ID do Google Analytics (ex: G-XXXXXXXXXX)</p>
+            </div>
+        </div>
+
         <div class="flex items-center gap-3">
             <button type="submit" class="px-5 py-2.5 bg-gold text-white text-sm font-medium rounded-lg hover:bg-gold/90 transition-colors">Guardar Configurações</button>
         </div>

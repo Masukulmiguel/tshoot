@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ContactReplyMail;
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
@@ -56,8 +58,17 @@ class ContactController extends Controller
             'replied_at' => now(),
         ]);
 
+        try {
+            if ($contact->email) {
+                Mail::to($contact->email)->send(new ContactReplyMail($contact, $request->admin_reply));
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('admin.contacts.show', $contact)
+                ->with('warning', 'Resposta guardada, mas o email não pôde ser enviado. Verifique a configuração de email.');
+        }
+
         return redirect()->route('admin.contacts.show', $contact)
-            ->with('success', 'Resposta enviada com sucesso!');
+            ->with('success', 'Resposta enviada com sucesso por email!');
     }
 
     public function updateStatus(Request $request, Contact $contact)

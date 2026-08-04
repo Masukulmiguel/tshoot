@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Banner;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class BannerController extends Controller
 {
@@ -26,13 +25,16 @@ class BannerController extends Controller
             'subtitle' => 'nullable|string|max:255',
             'button_text' => 'nullable|string|max:100',
             'button_link' => 'nullable|string|max:255',
-            'image' => 'nullable|image|max:5120',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             'order' => 'nullable|integer',
             'active' => 'nullable',
         ]);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('banners', 'public');
+            $file = $request->file('image');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads'), $filename);
+            $validated['image'] = $filename;
         }
 
         $validated['active'] = $request->boolean('active');
@@ -55,13 +57,22 @@ class BannerController extends Controller
             'subtitle' => 'nullable|string|max:255',
             'button_text' => 'nullable|string|max:100',
             'button_link' => 'nullable|string|max:255',
-            'image' => 'nullable|image|max:5120',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             'order' => 'nullable|integer',
             'active' => 'nullable',
         ]);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('banners', 'public');
+            if ($banner->image) {
+                $oldPath = public_path('uploads/' . $banner->image);
+                if (file_exists($oldPath)) {
+                    unlink($oldPath);
+                }
+            }
+            $file = $request->file('image');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads'), $filename);
+            $validated['image'] = $filename;
         }
 
         $validated['active'] = $request->boolean('active');
@@ -73,6 +84,16 @@ class BannerController extends Controller
 
     public function destroy(Banner $banner)
     {
+        if ($banner->image) {
+            $path = public_path('uploads/' . $banner->image);
+            if (file_exists($path)) {
+                unlink($path);
+                $dir = dirname($path);
+                if (is_dir($dir) && count(scandir($dir)) <= 2) {
+                    rmdir($dir);
+                }
+            }
+        }
         $banner->delete();
         return redirect()->route('admin.banners.index')->with('success', 'Banner eliminado!');
     }
