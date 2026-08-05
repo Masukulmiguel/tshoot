@@ -15,6 +15,8 @@ COPY admin/ .
 
 RUN cp .env.example .env
 
+RUN mkdir -p bootstrap/cache
+
 RUN composer install --no-dev --no-interaction --prefer-dist
 
 RUN php artisan key:generate --force
