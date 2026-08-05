@@ -122,12 +122,6 @@
                 @endif
             </a>
 
-            <a href="{{ route('admin.images.index') }}"
-               class="nav-link flex items-center gap-3 px-6 py-3 text-gray-300 hover:text-white {{ request()->routeIs('admin.images.*') ? 'active' : '' }}">
-                <i class="fas fa-images flex-shrink-0 w-5 text-center {{ request()->routeIs('admin.images.*') ? 'text-gold' : '' }}"></i>
-                <span class="font-medium text-sm">Imagens</span>
-            </a>
-
             <a href="{{ route('admin.banners.index') }}"
                class="nav-link flex items-center gap-3 px-6 py-3 text-gray-300 hover:text-white {{ request()->routeIs('admin.banners.*') ? 'active' : '' }}">
                 <i class="fas fa-panorama flex-shrink-0 w-5 text-center {{ request()->routeIs('admin.banners.*') ? 'text-gold' : '' }}"></i>
@@ -150,12 +144,6 @@
                class="nav-link flex items-center gap-3 px-6 py-3 text-gray-300 hover:text-white {{ request()->routeIs('admin.posts.*') ? 'active' : '' }}">
                 <i class="fas fa-newspaper flex-shrink-0 w-5 text-center {{ request()->routeIs('admin.posts.*') ? 'text-gold' : '' }}"></i>
                 <span class="font-medium text-sm">Blog</span>
-            </a>
-
-            <a href="{{ route('admin.content.index') }}"
-               class="nav-link flex items-center gap-3 px-6 py-3 text-gray-300 hover:text-white {{ request()->routeIs('admin.content.*') ? 'active' : '' }}">
-                <i class="fas fa-file-alt flex-shrink-0 w-5 text-center {{ request()->routeIs('admin.content.*') ? 'text-gold' : '' }}"></i>
-                <span class="font-medium text-sm">Conteúdo</span>
             </a>
 
             <a href="{{ route('admin.settings.index') }}"

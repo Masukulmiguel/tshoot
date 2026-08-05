@@ -5,10 +5,8 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContentApiController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\SiteContentController;
 use App\Http\Controllers\SiteSettingController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\VisitorController;
@@ -41,16 +39,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('visitors', VisitorController::class)->only(['index', 'show', 'destroy']);
     Route::get('visitors-analytics', [VisitorController::class, 'analytics'])->name('visitors.analytics');
 
-    Route::resource('images', ImageController::class);
-    Route::post('images-reorder', [ImageController::class, 'reorder'])->name('images.reorder');
-
     Route::resource('banners', BannerController::class)->except(['show']);
     Route::resource('services', ServiceController::class)->except(['show']);
     Route::resource('team', TeamMemberController::class)->except(['show'])->parameters(['team' => 'member']);
     Route::resource('posts', PostController::class)->except(['show']);
-    Route::get('content', [SiteContentController::class, 'index'])->name('content.index');
-    Route::get('content/{section}/edit', [SiteContentController::class, 'edit'])->name('content.edit');
-    Route::put('content/{section}', [SiteContentController::class, 'update'])->name('content.update');
     Route::get('settings', [SiteSettingController::class, 'index'])->name('settings.index');
     Route::put('settings', [SiteSettingController::class, 'update'])->name('settings.update');
 });

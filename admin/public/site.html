@@ -1117,7 +1117,7 @@
                     { id: 'portfolio', label: 'Parceiros' }
                 ];
 
-                const services = [
+                const services = ref([
                     { icon: 'fas fa-tools', title: 'Assistência Técnica', description: 'Diagnóstico e reparação profissional de computadores, impressoras e equipamentos de rede.' },
                     { icon: 'fas fa-laptop-code', title: 'Desenvolvimento de Software', description: 'Aplicações web, mobile e desktop à medida para automatizar os seus processos.' },
                     { icon: 'fas fa-network-wired', title: 'Infraestrutura', description: 'Instalação e manutenção de redes, servidores, cabeamento estruturado e cloud.' },
@@ -1126,7 +1126,7 @@
                     { icon: 'fas fa-shield-alt', title: 'Segurança', description: 'Soluções de segurança informática, antivirus, firewall e backup de dados.' },
                     { icon: 'fas fa-print', title: 'Impressoras', description: 'Venda, manutenção e reparação de impressoras de todos os modelos e marcas.' },
                     { icon: 'fas fa-headset', title: 'Suporte Remoto', description: 'Assistência técnica à distância para resolução rápida de problemas.' }
-                ];
+                ]);
 
                 const infoCards = [
                     { title: 'Solicitar um Serviço', description: 'Os nossos serviços são à medida do seu bolso. Solicite já o seu orçamento sem compromisso.', image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&q=80', icon: 'fas fa-concierge-bell', cta: 'Saiba Mais', link: 'mailto:comercial@tshoot-angola.com' },
@@ -1242,6 +1242,9 @@
                                 banners.value = data.banners;
                             } else {
                                 banners.value = bannerFallback;
+                            }
+                            if (data.services && data.services.length > 0) {
+                                services.value = data.services;
                             }
                             if (data.team) teamMembers.value = data.team;
                             if (data.posts) blogPosts.value = data.posts;
