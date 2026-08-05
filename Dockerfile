@@ -4,7 +4,8 @@ RUN apt-get update && apt-get install -y \
     git \
     unzip \
     libsqlite3-dev \
-    && docker-php-ext-install pdo_sqlite \
+    libzip-dev \
+    && docker-php-ext-install pdo_sqlite mbstring zip bcmath \
     && a2enmod rewrite \
     && rm -rf /var/lib/apt/lists/*
 
@@ -17,7 +18,9 @@ RUN cp .env.example .env
 
 RUN composer install --no-dev --no-interaction --prefer-dist
 
-RUN php artisan key:generate --force
+RUN php artisan key:generate --force \
+    && php artisan config:clear \
+    && php artisan cache:clear
 
 RUN rm -f database/database.sqlite \
     && touch database/database.sqlite \
