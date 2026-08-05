@@ -79,8 +79,8 @@
         .nav-cta { background: var(--gold); color: var(--white) !important; padding: 10px 24px !important; border-radius: 8px; font-weight: 600 !important; }
         .nav-cta:hover { background: var(--gold-dark); }
         .nav-cta::after { display: none !important; }
-        .nav-toggle { display: none; background: none; border: none; color: var(--navy); font-size: 1.5rem; cursor: pointer; transition: var(--transition); }
-        .navbar.scrolled .nav-toggle { color: var(--white); }
+        .nav-toggle { display: none; background: rgba(255,255,255,0.9); border: 1px solid var(--gray-200); color: var(--navy); font-size: 1.5rem; cursor: pointer; transition: var(--transition); width: 44px; height: 44px; border-radius: 8px; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; }
+        .navbar.scrolled .nav-toggle { background: rgba(27,42,65,0.9); border-color: rgba(255,255,255,0.15); color: var(--white); }
 
         /* HERO CAROUSEL */
         .hero { min-height: 100vh; position: relative; display: flex; align-items: center; overflow: hidden; }
@@ -509,7 +509,8 @@
                     <li><a href="#contact" class="nav-cta" @click.prevent="scrollTo('contact'); menuOpen = false">Contactar</a></li>
                 </ul>
                 <button class="nav-toggle" @click="menuOpen = !menuOpen">
-                    <i :class="menuOpen ? 'fas fa-times' : 'fas fa-bars'"></i>
+                    <span v-if="!menuOpen">&#9776;</span>
+                    <span v-else>&times;</span>
                 </button>
             </div>
         </nav>
@@ -1045,8 +1046,8 @@
         </footer>
 
         <!-- WHATSAPP -->
-        <a href="https://wa.me/244993314247?text=Olá! Gostaria de saber mais sobre os vossos serviços." class="whatsapp-float" target="_blank">
-            <i class="fab fa-whatsapp"></i>
+        <a href="https://wa.me/244993314247?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20os%20vossos%20servi%C3%A7os." class="whatsapp-float" target="_blank" aria-label="WhatsApp">
+            <span style="font-size:1.8rem;">&#128172;</span>
         </a>
 
         <!-- BACK TO TOP -->
