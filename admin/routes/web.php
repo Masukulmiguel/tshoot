@@ -23,6 +23,17 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+Route::get('/debug-env', function () {
+    return response()->json([
+        'app_debug' => env('APP_DEBUG'),
+        'app_key_set' => !empty(env('APP_KEY')),
+        'db_connection' => env('DB_CONNECTION'),
+        'session_driver' => env('SESSION_DRIVER'),
+        'php_version' => PHP_VERSION,
+        'laravel_version' => app()->version(),
+    ]);
+});
+
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
