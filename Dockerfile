@@ -21,6 +21,8 @@ RUN composer install --no-dev --no-interaction --prefer-dist
 
 RUN php artisan key:generate --force
 
+RUN php artisan config:cache
+
 RUN rm -f database/database.sqlite \
     && touch database/database.sqlite \
     && php artisan migrate --force \

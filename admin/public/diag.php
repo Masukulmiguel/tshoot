@@ -18,6 +18,39 @@ $dbPath = __DIR__ . '/../database/database.sqlite';
 echo "SQLite DB exists: " . (file_exists($dbPath) ? 'yes (' . filesize($dbPath) . ' bytes)' : 'MISSING') . "\n";
 echo "SQLite DB writable: " . (is_writable($dbPath) ? 'yes' : 'no') . "\n";
 
+echo "\n--- Check for .env override files ---\n";
+foreach (['.env', '.env.local', '.env.production', '.env.staging', '.env.testing'] as $envFile) {
+    $path = __DIR__ . '/../' . $envFile;
+    if (file_exists($path)) {
+        echo "$envFile EXISTS (" . filesize($path) . " bytes)\n";
+        $content = file_get_contents($path);
+        if (preg_match('/APP_KEY=(.+)/', $content, $m)) {
+            echo "  APP_KEY in $envFile: length=" . strlen(trim($m[1])) . " starts_with=" . substr(trim($m[1]), 0, 10) . "...\n";
+        } else {
+            echo "  No APP_KEY in $envFile\n";
+        }
+    } else {
+        echo "$envFile not found\n";
+    }
+}
+
+echo "\n--- Check cached config ---\n";
+$cachePath = __DIR__ . '/../bootstrap/cache/config.php';
+if (file_exists($cachePath)) {
+    echo "config.php cache EXISTS (" . filesize($cachePath) . " bytes)\n";
+    $cacheContent = file_get_contents($cachePath);
+    if (strpos($cacheContent, 'app') !== false) {
+        echo "  Contains 'app' key: yes\n";
+    }
+    if (preg_match('/"key"\s*=>\s*"([^"]*)"/', $cacheContent, $m)) {
+        echo "  Cached APP_KEY: length=" . strlen($m[1]) . " starts_with=" . substr($m[1], 0, 10) . "...\n";
+    } else {
+        echo "  Cached APP_KEY: NOT FOUND in cache\n";
+    }
+} else {
+    echo "No config cache found\n";
+}
+
 echo "\n--- .env file ---\n";
 $envPath = __DIR__ . '/../.env';
 if (file_exists($envPath)) {
