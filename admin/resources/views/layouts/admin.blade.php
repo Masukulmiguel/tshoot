@@ -156,7 +156,7 @@
                 <div class="border-t border-navy-light/50"></div>
             </div>
 
-            <a href="{{ url('/') }}" target="_blank"
+            <a href="https://tshoot.vercel.app" target="_blank"
                class="nav-link flex items-center gap-3 px-6 py-3 text-gray-300 hover:text-white">
                 <i class="fas fa-external-link-alt flex-shrink-0 w-5 text-center text-green-400"></i>
                 <span class="font-medium text-sm">Ver Site</span>
