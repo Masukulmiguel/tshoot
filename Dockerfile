@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libsqlite3-dev \
     libzip-dev \
+    libbz2-dev \
     && docker-php-ext-install pdo_sqlite mbstring zip bcmath \
     && a2enmod rewrite \
     && rm -rf /var/lib/apt/lists/*
