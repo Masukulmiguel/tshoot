@@ -7,7 +7,6 @@
 /admin/.env
 /admin/.env.backup
 /admin/database/database.sqlite
-/admin/composer.lock
 /admin/.fleet
 /admin/.idea
 /admin/.vscode
@@ -34,5 +33,4 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-composer.lock
 analizar.jpeg
