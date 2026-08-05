@@ -11,8 +11,16 @@ services:
       - key: APP_KEY
         generateValue: true
       - key: APP_URL
-        value: https://tshoot-admin.onrender.com
+        value: https://tshoot-admin-6t0l.onrender.com
       - key: DB_CONNECTION
         value: sqlite
       - key: DB_DATABASE
         value: database/database.sqlite
+      - key: SESSION_DRIVER
+        value: file
+      - key: SESSION_SECURE_COOKIE
+        value: "true"
+      - key: CACHE_STORE
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
