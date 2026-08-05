@@ -256,6 +256,12 @@
         .team-card-social { display: flex; justify-content: center; gap: 10px; }
         .team-social-link { width: 38px; height: 38px; border-radius: 50%; background: var(--gray-50); border: 1px solid var(--gray-200); display: flex; align-items: center; justify-content: center; color: var(--navy); font-size: 0.85rem; transition: all 0.3s ease; text-decoration: none; }
         .team-social-link:hover { background: var(--gold); border-color: var(--gold); color: var(--white); transform: translateY(-3px); box-shadow: 0 4px 12px rgba(212,161,29,0.3); }
+        .carousel-wrap { position: relative; }
+        .carousel-nav-btn { display: none; position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; width: 44px; height: 44px; border-radius: 50%; background: var(--white); border: 1px solid var(--gray-200); color: var(--navy); font-size: 1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: var(--shadow-md); align-items: center; justify-content: center; }
+        .carousel-nav-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--white); }
+        .carousel-nav-prev { left: -8px; }
+        .carousel-nav-next { right: -8px; }
+        @media (max-width: 768px) { .carousel-nav-btn { display: flex; } }
         @media (max-width: 1024px) { .team-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 640px) { .team-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 1rem; padding: 0.5rem 0 1.5rem; -webkit-overflow-scrolling: touch; scrollbar-width: none; } .team-grid::-webkit-scrollbar { display: none; } .team-grid .team-card, .team-grid > div { min-width: 85vw; max-width: 320px; scroll-snap-align: center; flex-shrink: 0; } .team-scroll-hint { display: block; text-align: center; font-size: 0.75rem; color: var(--gray-400); margin-top: 0.5rem; } }
 
@@ -769,7 +775,9 @@
                     <h2 class="section-title">Nossa <span>Equipa</span></h2>
                     <p class="section-subtitle">Profissionais dedicados e qualificados ao seu serviço</p>
                 </div>
-                <div class="team-grid">
+                <div class="carousel-wrap">
+                    <button class="carousel-nav-btn carousel-nav-prev" onclick="scrollCarousel('teamGrid', -1)"><i class="fas fa-chevron-left"></i></button>
+                    <div class="team-grid" id="teamGrid">
                     <template v-if="teamMembers.length > 0">
                         <div v-for="member in teamMembers" :key="member.id" class="team-card slide-up" :class="{ visible: visibleSections.team }">
                             <div class="team-card-image">
@@ -806,6 +814,8 @@
                         </div>
                     </template>
                 </div>
+                    <button class="carousel-nav-btn carousel-nav-next" onclick="scrollCarousel('teamGrid', 1)"><i class="fas fa-chevron-right"></i></button>
+                </div>
             </div>
         </section>
 
@@ -816,7 +826,9 @@
                     <h2 class="section-title">Últimas <span>Notícias</span></h2>
                     <p class="section-subtitle">Fique por dentro das novidades e actualizações</p>
                 </div>
-                <div class="blog-grid">
+                <div class="carousel-wrap">
+                    <button class="carousel-nav-btn carousel-nav-prev" onclick="scrollCarousel('blogGrid', -1)"><i class="fas fa-chevron-left"></i></button>
+                    <div class="blog-grid" id="blogGrid">
                     <template v-if="blogPosts.length > 0">
                         <div v-for="post in blogPosts" :key="post.id" class="blog-card slide-up" :class="{ visible: visibleSections.blog }">
                             <div class="blog-card-image">
@@ -849,6 +861,8 @@
                             </div>
                         </div>
                     </template>
+                </div>
+                    <button class="carousel-nav-btn carousel-nav-next" onclick="scrollCarousel('blogGrid', 1)"><i class="fas fa-chevron-right"></i></button>
                 </div>
             </div>
         </section>
@@ -1050,6 +1064,14 @@
                 document.getElementById('loader').classList.add('hidden');
             }, 800);
         });
+
+        // Carousel scroll function
+        function scrollCarousel(id, dir) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            var w = el.offsetWidth * 0.8;
+            el.scrollBy({ left: dir * w, behavior: 'smooth' });
+        }
 
         // Scroll Progress Bar
         window.addEventListener('scroll', () => {
