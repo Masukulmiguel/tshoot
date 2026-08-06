@@ -34,8 +34,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('contacts', ContactController::class)->only(['index', 'show', 'destroy']);
-    Route::post('contacts/{contact}/reply', [ContactController::class, 'reply'])->name('contacts.reply');
-    Route::post('contacts/{contact}/status', [ContactController::class, 'updateStatus'])->name('contacts.status');
+    Route::match(['post', 'patch'], 'contacts/{contact}/reply', [ContactController::class, 'reply'])->name('contacts.reply');
+    Route::match(['post', 'patch'], 'contacts/{contact}/status', [ContactController::class, 'updateStatus'])->name('contacts.status');
 
     Route::resource('visitors', VisitorController::class)->only(['index', 'show', 'destroy']);
     Route::get('visitors-analytics', [VisitorController::class, 'analytics'])->name('visitors.analytics');
