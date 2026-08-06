@@ -7,7 +7,7 @@
         <p class="text-sm text-gray-500 mt-1">Informações gerais, contactos e redes sociais</p>
     </div>
 
-    <form method="POST" action="{{ route('admin.settings.update') }}" class="space-y-6">
+    <form method="POST" action="{{ route('admin.settings.update') }}" enctype="multipart/form-data" class="space-y-6">
         @csrf @method('PUT')
 
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
@@ -142,6 +142,34 @@
                 <label class="block text-sm font-medium text-gray-700 mb-1">Google Analytics ID</label>
                 <input type="text" name="google_analytics" value="{{ $settings['seo']['google_analytics'] ?? '' }}" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none" placeholder="G-XXXXXXXXXX">
                 <p class="text-xs text-gray-400 mt-1">ID do Google Analytics (ex: G-XXXXXXXXXX)</p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h3 class="text-sm font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <i class="fas fa-image text-gold"></i> Imagens do Site
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Imagem - Sobre Nós</label>
+                    @if($settings['general']['about_image ?? null'])
+                        <div class="mb-2">
+                            <img src="{{ asset($settings['general']['about_image'] ?? '') }}" alt="Sobre" class="h-32 rounded-lg object-cover border">
+                        </div>
+                    @endif
+                    <input type="file" name="about_image" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-gold file:text-white hover:file:bg-yellow-600">
+                    <p class="text-xs text-gray-400 mt-1">Imagem da secção Sobre Nós</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Imagem - Fundo Contacto</label>
+                    @if($settings['general']['contact_bg'] ?? null)
+                        <div class="mb-2">
+                            <img src="{{ asset($settings['general']['contact_bg'] ?? '') }}" alt="Contacto" class="h-32 rounded-lg object-cover border">
+                        </div>
+                    @endif
+                    <input type="file" name="contact_bg" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-gold file:text-white hover:file:bg-yellow-600">
+                    <p class="text-xs text-gray-400 mt-1">Imagem de fundo da secção Contacto</p>
+                </div>
             </div>
         </div>
 

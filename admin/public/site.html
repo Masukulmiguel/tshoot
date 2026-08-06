@@ -558,7 +558,7 @@
                 <div class="about-grid">
                     <div class="about-image" data-aos="fade-right">
                         <div class="about-image-main">
-                            <img :src="siteImages.about_main || 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&q=80'" alt="Sobre a Troubleshoot" />
+                            <img :src="siteImages.about_main || settings.about_image || 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&q=80'" alt="Sobre a Troubleshoot" />
                         </div>
                         <div class="about-image-accent">
                             <span class="number">10+</span>
@@ -872,7 +872,7 @@
         <!-- CONTACT -->
         <section class="contact-section" id="contact" data-aos="fade-up">
             <div class="contact-bg">
-                <img :src="siteImages.contact_bg || 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80'" alt="Escritório" />
+                <img :src="siteImages.contact_bg || settings.contact_bg || 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80'" alt="Escritório" />
                 <div class="contact-bg-overlay"></div>
             </div>
             <div class="container">
@@ -1114,6 +1114,7 @@
                     { id: 3, title: 'Infraestrutura de Redes', subtitle: 'Projecto, instalação e manutenção de redes com as melhores tecnologias.', button_text: 'Saiba Mais', button_link: '#infraestrutura', image: null }
                 ];
                 const siteImages = ref({});
+                const settings = ref({});
                 const teamMembers = ref([]);
                 const blogPosts = ref([]);
                 const defaultTeam = [
@@ -1273,6 +1274,7 @@
                             }
                             if (data.team) teamMembers.value = data.team;
                             if (data.posts) blogPosts.value = data.posts;
+                            if (data.settings) settings.value = data.settings;
                             if (data.imagesByKey) {
                                 siteImages.value = data.imagesByKey;
                                 if (data.imagesByKey.card_request) infoCards.value[0].image = data.imagesByKey.card_request;
@@ -1297,7 +1299,7 @@
                     visibleSections, scrollTo, carouselIndex, carouselSlides, nextSlide, prevSlide,
                     form, formSubmitting, formSent, sendForm,
                     heroSlide, nextHeroSlide, prevHeroSlide, banners, teamMembers, blogPosts, defaultTeam, defaultPosts,
-                    siteImages
+                    siteImages, settings
                 };
             }
         }).mount('#app');

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class SiteSettingController extends Controller
 {
     private array $allowedSettings = [
-        'general' => ['company_name', 'company_slogan', 'email', 'phone', 'address', 'website', 'logo'],
+        'general' => ['company_name', 'company_slogan', 'email', 'phone', 'address', 'website', 'logo', 'about_image', 'contact_bg'],
         'seo' => ['meta_title', 'meta_description', 'meta_keywords', 'og_title', 'og_description', 'og_image', 'google_analytics'],
     ];
 
@@ -44,6 +44,16 @@ class SiteSettingController extends Controller
 
             if ($validated !== null) {
                 SiteSetting::set($key, $validated, $group);
+            }
+        }
+
+        $imageFields = ['about_image', 'contact_bg'];
+        foreach ($imageFields as $field) {
+            if ($request->hasFile($field)) {
+                $file = $request->file($field);
+                $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('uploads'), $filename);
+                SiteSetting::set($field, 'uploads/' . $filename, 'general');
             }
         }
 
