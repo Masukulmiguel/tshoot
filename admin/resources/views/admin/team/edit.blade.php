@@ -37,7 +37,7 @@
             <label class="block text-sm font-semibold text-gray-700 mb-1"><i class="fas fa-camera text-gold mr-1"></i> Foto</label>
             @if($member->photo)
                 <div class="mb-2 flex items-center gap-3">
-                    <img src="{{ asset('uploads/' . $member->photo) }}" alt="" class="w-16 h-16 rounded-full object-cover shadow">
+                    <img src="{{ str_starts_with($member->photo, 'http') ? $member->photo : asset('uploads/' . $member->photo) }}" alt="" class="w-16 h-16 rounded-full object-cover shadow">
                     <span class="text-xs text-gray-400"><i class="fas fa-info-circle mr-1"></i> Nova imagem substitui a actual</span>
                 </div>
             @endif

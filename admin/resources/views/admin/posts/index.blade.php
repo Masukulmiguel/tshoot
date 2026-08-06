@@ -71,7 +71,7 @@
                     <tr class="border-b border-gray-50 last:border-0 hover:bg-gray-50/50 transition-colors">
                         <td class="px-5 py-3">
                             @if($post->image)
-                                <img src="{{ asset('uploads/' . $post->image) }}" alt="" class="w-16 h-10 object-cover rounded-lg shadow-sm">
+                                <img src="{{ str_starts_with($post->image, 'http') ? $post->image : asset('uploads/' . $post->image) }}" alt="" class="w-16 h-10 object-cover rounded-lg shadow-sm">
                             @else
                                 <div class="w-16 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
                                     <i class="fas fa-image text-xs"></i>

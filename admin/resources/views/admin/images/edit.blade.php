@@ -14,7 +14,7 @@
     @endif
     <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
         <div class="mb-4 flex items-center justify-center bg-gray-100 rounded-lg overflow-hidden">
-            <img src="{{ asset($image->path) }}" alt="{{ $image->title }}" class="max-h-48 object-contain">
+            <img src="{{ str_starts_with($image->path, 'http') ? $image->path : asset($image->path) }}" alt="{{ $image->title }}" class="max-h-48 object-contain">
         </div>
         <form action="{{ route('admin.images.update', $image) }}" method="POST" enctype="multipart/form-data">
             @csrf @method('PUT')

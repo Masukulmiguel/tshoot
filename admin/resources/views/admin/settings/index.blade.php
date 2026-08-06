@@ -154,7 +154,7 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">Imagem - Sobre Nós</label>
                     @if(!empty($settings['general']['about_image']))
                         <div class="mb-2">
-                            <img src="{{ asset($settings['general']['about_image']) }}" alt="Sobre" class="h-32 rounded-lg object-cover border">
+                            <img src="{{ str_starts_with($settings['general']['about_image'], 'http') ? $settings['general']['about_image'] : asset($settings['general']['about_image']) }}" alt="Sobre" class="h-32 rounded-lg object-cover border">
                         </div>
                     @endif
                     <input type="file" name="about_image" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-gold file:text-white hover:file:bg-yellow-600">
@@ -164,7 +164,7 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">Imagem - Fundo Contacto</label>
                     @if(!empty($settings['general']['contact_bg']))
                         <div class="mb-2">
-                            <img src="{{ asset($settings['general']['contact_bg']) }}" alt="Contacto" class="h-32 rounded-lg object-cover border">
+                            <img src="{{ str_starts_with($settings['general']['contact_bg'], 'http') ? $settings['general']['contact_bg'] : asset($settings['general']['contact_bg']) }}" alt="Contacto" class="h-32 rounded-lg object-cover border">
                         </div>
                     @endif
                     <input type="file" name="contact_bg" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-gold file:text-white hover:file:bg-yellow-600">

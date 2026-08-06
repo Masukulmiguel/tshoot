@@ -49,7 +49,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Imagem</label>
             @if($service->image)
                 <div class="mb-2">
-                    <img src="{{ asset('uploads/' . $service->image) }}" alt="" class="w-32 h-20 object-cover rounded-lg">
+                    <img src="{{ str_starts_with($service->image, 'http') ? $service->image : asset('uploads/' . $service->image) }}" alt="" class="w-32 h-20 object-cover rounded-lg">
                 </div>
             @endif
             <input type="file" name="image" accept="image/*" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none">

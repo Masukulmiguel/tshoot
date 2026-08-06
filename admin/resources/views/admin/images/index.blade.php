@@ -62,7 +62,7 @@
                     @foreach($grouped[$catKey] as $image)
                         <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition">
                             <div class="aspect-video bg-gray-100 flex items-center justify-center overflow-hidden relative">
-                                <img src="{{ asset($image->path) }}" alt="{{ $image->title }}" class="w-full h-full object-cover">
+                                <img src="{{ str_starts_with($image->path, 'http') ? $image->path : asset($image->path) }}" alt="{{ $image->title }}" class="w-full h-full object-cover">
                                 @if($image->key)
                                     <span class="absolute top-2 left-2 text-[10px] px-2 py-0.5 rounded-full bg-navy/80 text-white font-medium">{{ $image->key }}</span>
                                 @endif

@@ -48,7 +48,7 @@
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all group">
             <div class="relative">
                 @if($member->photo)
-                    <img src="{{ asset('uploads/' . $member->photo) }}" alt="{{ $member->name }}" class="w-full h-40 object-cover">
+                    <img src="{{ str_starts_with($member->photo, 'http') ? $member->photo : asset('uploads/' . $member->photo) }}" alt="{{ $member->name }}" class="w-full h-40 object-cover">
                 @else
                     <div class="w-full h-40 bg-gradient-to-br from-navy to-navy-light flex items-center justify-center">
                         <span class="text-gold font-bold text-4xl">{{ strtoupper(substr($member->name, 0, 1)) }}</span>

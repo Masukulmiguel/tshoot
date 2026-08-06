@@ -54,7 +54,7 @@
                 <label class="block text-sm font-semibold text-gray-700 mb-1"><i class="fas fa-image text-gold mr-1"></i> Imagem</label>
                 @if($post->image)
                     <div class="mb-2 flex items-center gap-3">
-                        <img src="{{ asset('uploads/' . $post->image) }}" alt="" class="w-32 h-20 object-cover rounded-lg shadow">
+                        <img src="{{ str_starts_with($post->image, 'http') ? $post->image : asset('uploads/' . $post->image) }}" alt="" class="w-32 h-20 object-cover rounded-lg shadow">
                         <span class="text-xs text-gray-400"><i class="fas fa-info-circle mr-1"></i> Nova imagem substitui a actual</span>
                     </div>
                 @endif

@@ -31,7 +31,7 @@
                     <tr class="border-b border-gray-50 last:border-0 hover:bg-gray-50/50">
                         <td class="px-5 py-3">
                             @if($banner->image)
-                                <img src="{{ asset('uploads/' . $banner->image) }}" alt="" class="w-20 h-12 object-cover rounded-lg">
+                                <img src="{{ str_starts_with($banner->image, 'http') ? $banner->image : asset('uploads/' . $banner->image) }}" alt="" class="w-20 h-12 object-cover rounded-lg">
                             @else
                                 <div class="w-20 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 text-xs">Sem imagem</div>
                             @endif
