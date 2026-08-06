@@ -36,4 +36,10 @@ php artisan key:generate --force 2>/dev/null || true
 echo "Running migrations..."
 php artisan migrate --force 2>&1 || echo "Migration completed"
 
+echo "Seeding admin user..."
+php artisan db:seed --class=AdminSeeder --force 2>&1 || echo "AdminSeeder completed"
+
+echo "Seeding default content..."
+php artisan db:seed --class=DefaultContentSeeder --force 2>&1 || echo "ContentSeeder completed"
+
 exec "$@"
