@@ -15,7 +15,7 @@ services:
       - key: DB_CONNECTION
         value: pgsql
       - key: DATABASE_URL
-        sync: false
+        value: postgresql://postgres:191925Pmg%40%40%40@db.vjpixuykkjyofspfkmzo.supabase.co:5432/postgres
       - key: SESSION_DRIVER
         value: file
       - key: CACHE_STORE
