@@ -30,23 +30,21 @@ Route::post('/api/track', [ApiController::class, 'trackVisitor'])->middleware('t
 Route::post('/api/contact', [ApiController::class, 'submitContact'])->middleware('throttle:contact');
 Route::get('/api/content', [ContentApiController::class, 'getAll'])->middleware('throttle:api');
 
+Route::get('/debug-env', function () {
+    return response()->json([
+        'DB_CONNECTION' => env('DB_CONNECTION'),
+        'DB_HOST' => env('DB_HOST'),
+        'DB_PORT' => env('DB_PORT'),
+        'DB_DATABASE' => env('DB_DATABASE'),
+        'DB_USERNAME' => env('DB_USERNAME'),
+        'DB_PASSWORD' => env('DB_PASSWORD') ? '***SET***' : 'EMPTY',
+        'DB_PASSWORD_LEN' => strlen(env('DB_PASSWORD', '')),
+        'SUPABASE_URL' => env('SUPABASE_URL') ? '***SET***' : 'EMPTY',
+    ]);
+});
+
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-
-    Route::get('/debug-cloudinary', function () {
-        $cloudName = config('services.cloudinary.cloud_name') ?? 'NOT SET';
-        $apiKey = config('services.cloudinary.api_key') ?? 'NOT SET';
-        $apiSecret = config('services.cloudinary.api_secret') ?? 'NOT SET';
-        $configured = !empty($cloudName) && $cloudName !== 'NOT SET';
-        
-        return response()->json([
-            'cloud_name' => $cloudName,
-            'api_key' => $apiKey ? substr($apiKey, 0, 6) . '...' : 'NOT SET',
-            'api_secret' => $apiSecret ? '***hidden***' : 'NOT SET',
-            'configured' => $configured,
-            'app_url' => config('app.url'),
-        ]);
-    });
 
     Route::resource('contacts', ContactController::class)->only(['index', 'show', 'destroy']);
     Route::match(['post', 'patch'], 'contacts/{contact}/reply', [ContactController::class, 'reply'])->name('contacts.reply');
