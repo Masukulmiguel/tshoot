@@ -40,12 +40,57 @@ class ContactController extends Controller
         return view('admin.contacts.index', compact('contacts', 'counts'));
     }
 
+    public function create()
+    {
+        return view('admin.contacts.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'nullable|string|max:50',
+            'subject' => 'nullable|string|max:255',
+            'message' => 'required|string',
+        ]);
+
+        $validated['status'] = 'new';
+
+        Contact::create($validated);
+
+        return redirect()->route('admin.contacts.index')
+            ->with('success', 'Contacto criado com sucesso!');
+    }
+
     public function show(Contact $contact)
     {
         if ($contact->status === 'new') {
             $contact->update(['status' => 'read']);
         }
         return view('admin.contacts.show', compact('contact'));
+    }
+
+    public function edit(Contact $contact)
+    {
+        return view('admin.contacts.edit', compact('contact'));
+    }
+
+    public function update(Request $request, Contact $contact)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'nullable|string|max:50',
+            'subject' => 'nullable|string|max:255',
+            'message' => 'required|string',
+            'status' => 'required|in:new,read,replied,archived',
+        ]);
+
+        $contact->update($validated);
+
+        return redirect()->route('admin.contacts.show', $contact)
+            ->with('success', 'Contacto actualizado com sucesso!');
     }
 
     public function reply(Request $request, Contact $contact)

@@ -46,7 +46,7 @@ Route::get('/debug-env', function () {
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::resource('contacts', ContactController::class)->only(['index', 'show', 'destroy']);
+    Route::resource('contacts', ContactController::class);
     Route::match(['post', 'patch'], 'contacts/{contact}/reply', [ContactController::class, 'reply'])->name('contacts.reply');
     Route::match(['post', 'patch'], 'contacts/{contact}/status', [ContactController::class, 'updateStatus'])->name('contacts.status');
 
