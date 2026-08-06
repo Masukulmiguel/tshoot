@@ -17,6 +17,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/img/simbole.png" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -552,19 +553,19 @@
         </section>
 
         <!-- ABOUT -->
-        <section class="section" id="about" data-animate="up">
+        <section class="section" id="about" data-aos="fade-up">
             <div class="container">
                 <div class="about-grid">
-                    <div class="about-image slide-up" :class="{ visible: visibleSections.about }">
+                    <div class="about-image" data-aos="fade-right">
                         <div class="about-image-main">
-                            <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&q=80" alt="Sobre a Troubleshoot" />
+                            <img :src="siteImages.about_main ? 'https://tshoot-admin-6t0l.onrender.com/' + siteImages.about_main : 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&q=80'" alt="Sobre a Troubleshoot" />
                         </div>
                         <div class="about-image-accent">
                             <span class="number">10+</span>
                             <span class="label">Anos de Experiência</span>
                         </div>
                     </div>
-                    <div class="about-content slide-up" :class="{ visible: visibleSections.about }">
+                    <div class="about-content" data-aos="fade-left">
                         <h2>A Troubleshoot tem o que você precisa!</h2>
                         <p>A Troubleshoot - Soluções Tecnológicas é uma empresa de direito Angolano com actuação na área da tecnologia de informação, fornecendo soluções completas e oferecendo aos seus clientes sistemas integrados que proporcionam vantagens e benefícios significativos.</p>
                         <p>A estratégia da diferenciação, a qualidade dos serviços prestados, constitui a nossa aposta para estabelecer relações de confiança com nossos clientes.</p>
@@ -583,14 +584,14 @@
         </section>
 
         <!-- SERVICES -->
-        <section class="section" id="services" style="background:var(--gray-50)" data-animate="left">
+        <section class="section" id="services" style="background:var(--gray-50)" data-aos="fade-right">
             <div class="container">
                 <div class="section-header">
                     <h2 class="section-title">Nossos Serviços</h2>
                     <p class="section-subtitle">Oferecemos soluções completas para todas as suas necessidades em tecnologia de informação</p>
                 </div>
                 <div class="services-grid">
-                    <div v-for="(service, index) in services" :key="index" class="service-card slide-up" :class="{ visible: visibleSections.services }" :style="{ transitionDelay: (index * 0.08) + 's' }">
+                    <div v-for="(service, index) in services" :key="index" class="service-card" data-aos="fade-up" :data-aos-delay="index * 80">
                         <div class="service-icon">
                             <i :class="service.icon"></i>
                         </div>
@@ -602,14 +603,14 @@
         </section>
 
         <!-- CARDS -->
-        <section class="section" id="info" data-animate="right">
+        <section class="section" id="info" data-aos="fade-left">
             <div class="container">
                 <div class="section-header">
                     <h2 class="section-title">Como Trabalhamos</h2>
                     <p class="section-subtitle">Processo simples e transparente para todos os nossos clientes</p>
                 </div>
                 <div class="cards-grid">
-                    <div v-for="(card, index) in infoCards" :key="index" class="info-card slide-up" :class="{ visible: visibleSections.info }" :style="{ transitionDelay: (index * 0.15) + 's' }">
+                    <div v-for="(card, index) in infoCards" :key="index" class="info-card" data-aos="fade-up" :data-aos-delay="index * 150">
                         <div class="info-card-img">
                             <img :src="card.image" :alt="card.title" />
                             <div class="info-card-img-overlay">
@@ -633,29 +634,29 @@
         </section>
 
         <!-- GALLERY: Hardware -->
-        <section class="section gallery-section" id="gallery-hardware" style="background:var(--gray-50)" data-animate="scale">
+        <section class="section gallery-section" id="gallery-hardware" style="background:var(--gray-50)" data-aos="zoom-in">
             <div class="container">
                 <div class="section-header">
                     <h2 class="section-title">Assistência Técnica</h2>
                     <p class="section-subtitle">Trabalhamos com os melhores equipamentos e tecnologias do mercado</p>
                 </div>
                 <div class="gallery-grid">
-                    <div class="gallery-item slide-up" :class="{ visible: visibleSections.galleryHardware }">
-                        <img src="https://images.unsplash.com/photo-1597852074816-d933c7d2b988?w=600&q=80" alt="Reparação" />
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="0">
+                        <img :src="siteImages.gallery_repair ? 'https://tshoot-admin-6t0l.onrender.com/' + siteImages.gallery_repair : 'https://images.unsplash.com/photo-1597852074816-d933c7d2b988?w=600&q=80'" alt="Reparação" />
                         <div class="gallery-overlay">
                             <h4>Reparação de Computadores</h4>
                             <p>Diagnóstico e reparação profissional</p>
                         </div>
                     </div>
-                    <div class="gallery-item slide-up" :class="{ visible: visibleSections.galleryHardware }" style="transition-delay:0.1s">
-                        <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&q=80" alt="Impressoras" />
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
+                        <img :src="siteImages.gallery_printers ? 'https://tshoot-admin-6t0l.onrender.com/' + siteImages.gallery_printers : 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&q=80'" alt="Impressoras" />
                         <div class="gallery-overlay">
                             <h4>Impressoras</h4>
                             <p>Manutenção e reparação</p>
                         </div>
                     </div>
-                    <div class="gallery-item slide-up" :class="{ visible: visibleSections.galleryHardware }" style="transition-delay:0.2s">
-                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&q=80" alt="Componentes" />
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
+                        <img :src="siteImages.gallery_components ? 'https://tshoot-admin-6t0l.onrender.com/' + siteImages.gallery_components : 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&q=80'" alt="Componentes" />
                         <div class="gallery-overlay">
                             <h4>Componentes</h4>
                             <p>Substituição e actualizações</p>
@@ -666,7 +667,7 @@
         </section>
 
         <!-- INFRASTRUCTURE -->
-        <section class="infra-section" id="gallery-network" data-animate="up">
+        <section class="infra-section" id="gallery-network" data-aos="fade-up">
             <div class="infra-pattern"></div>
             <div class="container">
                 <div class="section-header">
@@ -675,7 +676,7 @@
                 </div>
 
                 <div class="infra-grid">
-                    <div v-for="(item, index) in infraItems" :key="index" class="infra-card slide-up" :class="{ visible: visibleSections.galleryNetwork }" :style="{ transitionDelay: (index * 0.1) + 's' }">
+                    <div v-for="(item, index) in infraItems" :key="index" class="infra-card" data-aos="fade-up" :data-aos-delay="index * 100">
                         <div class="infra-card-icon"><i :class="item.icon"></i></div>
                         <h4>{{ item.title }}</h4>
                         <p>{{ item.description }}</p>
@@ -687,7 +688,7 @@
                     </div>
                 </div>
 
-                <div class="infra-tech-bar slide-up" :class="{ visible: visibleSections.galleryNetwork }" style="transition-delay:0.4s">
+                <div class="infra-tech-bar" data-aos="fade-up" data-aos-delay="400">
                     <div class="infra-tech-list">
                         <span class="infra-tech-item">Cisco</span>
                         <span class="infra-tech-item">MikroTik</span>
@@ -703,7 +704,7 @@
         </section>
 
         <!-- PARTNERS -->
-        <section class="section partners-section" id="portfolio" data-animate="fade">
+        <section class="section partners-section" id="portfolio" data-aos="fade-up">
             <div class="container">
                 <div class="section-header">
                     <h2 class="section-title">Nossos Clientes e Parceiros</h2>
@@ -711,7 +712,7 @@
                 </div>
 
                 <!-- Carousel -->
-                <div class="carousel-wrapper slide-up" :class="{ visible: visibleSections.partners }">
+                <div class="carousel-wrapper" data-aos="fade-up">
                     <div class="carousel-track" :style="{ transform: `translateX(-${carouselIndex * 100}%)` }">
                         <div v-for="(slide, i) in carouselSlides" :key="i" class="carousel-slide">
                             <div class="carousel-slide-inner" :style="{ backgroundImage: `url(${slide.image})` }">
@@ -750,7 +751,7 @@
                 </div>
 
                 <!-- Stats -->
-                <div class="partners-stats slide-up" :class="{ visible: visibleSections.partners }" style="transition-delay:0.25s">
+                <div class="partners-stats" data-aos="fade-up" data-aos-delay="250">
                     <div class="partner-stat">
                         <span class="partner-stat-number">13+</span>
                         <span class="partner-stat-label">Parceiros Activos</span>
@@ -770,7 +771,7 @@
         </section>
 
         <!-- TEAM -->
-        <section class="section" id="team" data-animate="up">
+        <section class="section" id="team" data-aos="fade-up">
             <div class="container">
                 <div class="section-header slide-up" :class="{ visible: visibleSections.team }">
                     <h2 class="section-title">Nossa <span>Equipa</span></h2>
@@ -780,7 +781,7 @@
                     <button class="carousel-nav-btn carousel-nav-prev" onclick="scrollCarousel('teamGrid', -1)"><i class="fas fa-chevron-left"></i></button>
                     <div class="team-grid" id="teamGrid">
                     <template v-if="teamMembers.length > 0">
-                        <div v-for="member in teamMembers" :key="member.id" class="team-card slide-up" :class="{ visible: visibleSections.team }">
+                        <div v-for="member in teamMembers" :key="member.id" class="team-card" data-aos="fade-up">
                             <div class="team-card-image">
                                 <img :src="member.photo ? 'https://tshoot-admin-6t0l.onrender.com/uploads/' + member.photo : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(member.name) + '&background=1B2A41&color=fff&size=200'" :alt="member.name" />
                             </div>
@@ -798,7 +799,7 @@
                         </div>
                     </template>
                     <template v-else>
-                        <div v-for="(member, index) in defaultTeam" :key="'dt-'+index" class="team-card slide-up" :class="{ visible: visibleSections.team }" :style="'transition-delay:' + (index * 0.1) + 's'">
+                        <div v-for="(member, index) in defaultTeam" :key="'dt-'+index" class="team-card" data-aos="fade-up" :data-aos-delay="index * 100">
                             <div class="team-card-image">
                                 <img :src="member.photo" :alt="member.name" />
                             </div>
@@ -821,7 +822,7 @@
         </section>
 
         <!-- BLOG -->
-        <section class="section" id="blog" data-animate="up" style="background: #f8fafc;">
+        <section class="section" id="blog" data-aos="fade-up" style="background: #f8fafc;">
             <div class="container">
                 <div class="section-header slide-up" :class="{ visible: visibleSections.blog }">
                     <h2 class="section-title">Últimas <span>Notícias</span></h2>
@@ -831,7 +832,7 @@
                     <button class="carousel-nav-btn carousel-nav-prev" onclick="scrollCarousel('blogGrid', -1)"><i class="fas fa-chevron-left"></i></button>
                     <div class="blog-grid" id="blogGrid">
                     <template v-if="blogPosts.length > 0">
-                        <div v-for="post in blogPosts" :key="post.id" class="blog-card slide-up" :class="{ visible: visibleSections.blog }">
+                        <div v-for="post in blogPosts" :key="post.id" class="blog-card" data-aos="fade-up">
                             <div class="blog-card-image">
                                 <img :src="post.image ? 'https://tshoot-admin-6t0l.onrender.com/uploads/' + post.image : 'https://images.unsplash.com/photo-1504711434969-e33886168d5c?w=600&q=80'" :alt="post.title" />
                                 <span v-if="post.category" class="blog-card-category">{{ post.category }}</span>
@@ -847,7 +848,7 @@
                         </div>
                     </template>
                     <template v-else>
-                        <div v-for="(post, index) in defaultPosts" :key="'dp-'+index" class="blog-card slide-up" :class="{ visible: visibleSections.blog }" :style="'transition-delay:' + (index * 0.1) + 's'">
+                        <div v-for="(post, index) in defaultPosts" :key="'dp-'+index" class="blog-card" data-aos="fade-up" :data-aos-delay="index * 100">
                             <div class="blog-card-image">
                                 <img :src="post.image" :alt="post.title" />
                                 <span class="blog-card-category">{{ post.category }}</span>
@@ -869,14 +870,14 @@
         </section>
 
         <!-- CONTACT -->
-        <section class="contact-section" id="contact" data-animate="up">
+        <section class="contact-section" id="contact" data-aos="fade-up">
             <div class="contact-bg">
-                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80" alt="Escritório" />
+                <img :src="siteImages.contact_bg ? 'https://tshoot-admin-6t0l.onrender.com/' + siteImages.contact_bg : 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80'" alt="Escritório" />
                 <div class="contact-bg-overlay"></div>
             </div>
             <div class="container">
                 <div class="contact-wrapper">
-                    <div class="contact-info slide-up" :class="{ visible: visibleSections.contact }">
+                    <div class="contact-info" data-aos="fade-right">
                         <h2 class="contact-title">Ligue para Nós<br/><span>Estamos aqui para ajudar</span></h2>
                         <p class="contact-desc">Estamos prontos para ajudar a transformar as suas ideias em soluções tecnológicas.</p>
                         <div class="contact-details">
@@ -904,7 +905,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="contact-form-box slide-up" :class="{ visible: visibleSections.contact }" style="transition-delay:0.15s">
+                    <div class="contact-form-box" data-aos="fade-left" data-aos-delay="150">
                         <div class="form-header">
                             <h3>Envie-nos uma mensagem</h3>
                             <p>Preencha o formulário e entraremos em contacto.</p>
@@ -1112,6 +1113,7 @@
                     { id: 2, title: 'Desenvolvimento de Software', subtitle: 'Aplicações web, mobile e desktop à medida para automatizar processos.', button_text: 'Solicitar Orçamento', button_link: '#contact', image: null },
                     { id: 3, title: 'Infraestrutura de Redes', subtitle: 'Projecto, instalação e manutenção de redes com as melhores tecnologias.', button_text: 'Saiba Mais', button_link: '#infraestrutura', image: null }
                 ];
+                const siteImages = ref({});
                 const teamMembers = ref([]);
                 const blogPosts = ref([]);
                 const defaultTeam = [
@@ -1151,11 +1153,11 @@
                     { icon: 'fas fa-headset', title: 'Suporte Remoto', description: 'Assistência técnica à distância para resolução rápida de problemas.' }
                 ]);
 
-                const infoCards = [
+                const infoCards = ref([
                     { title: 'Solicitar um Serviço', description: 'Os nossos serviços são à medida do seu bolso. Solicite já o seu orçamento sem compromisso.', image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&q=80', icon: 'fas fa-concierge-bell', cta: 'Saiba Mais', link: 'mailto:comercial@tshoot-angola.com' },
                     { title: 'Nossos Preços', description: 'Economize ao escolher a Troubleshoot. Preços competitivos e qualidade garantida.', image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&q=80', icon: 'fas fa-tags', cta: 'Pedir Orçamento', link: 'mailto:comercial@tshoot-angola.com' },
                     { title: 'Tempo de Entrega', description: 'Não hesite, eficiência é o nosso lema. Entregas rápidas com qualidade profissional.', image: 'https://images.unsplash.com/photo-1501084817091-a4f3d1d19e07?w=600&q=80', icon: 'fas fa-clock', cta: 'Contactar', link: 'https://wa.me/244993314247' }
-                ];
+                ]);
 
                 const infraItems = [
                     { icon: 'fas fa-network-wired', title: 'Redes de Dados', description: 'Projecto, instalação e manutenção de redes locais e amplas com cabeamento estruturado.', features: ['Cat6/6a', 'Switches', 'VLANs', 'PoE'] },
@@ -1184,15 +1186,15 @@
 
                 const carouselIndex = ref(0);
                 const carouselAutoplay = ref(null);
-                const carouselSlides = [
+                const carouselSlides = ref([
                     { image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&q=80', icon: 'fas fa-handshake', title: 'Parcerias Estratégicas', description: 'Trabalhamos lado a lado com as melhores empresas de Angola.' },
                     { image: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200&q=80', icon: 'fas fa-chart-line', title: 'Crescimento Conjunto', description: 'Os nossos parceiros crescem connosco.' },
                     { image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&q=80', icon: 'fas fa-users', title: 'Confiança e Qualidade', description: 'Mais de 13 empresas confiam nos nossos serviços.' },
                     { image: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=1200&q=80', icon: 'fas fa-globe-africa', title: 'Alcance Nacional', description: 'De Luanda para todo o Angola.' }
-                ];
+                ]);
 
-                const nextSlide = () => { carouselIndex.value = (carouselIndex.value + 1) % carouselSlides.length; };
-                const prevSlide = () => { carouselIndex.value = carouselIndex.value === 0 ? carouselSlides.length - 1 : carouselIndex.value - 1; };
+                const nextSlide = () => { carouselIndex.value = (carouselIndex.value + 1) % carouselSlides.value.length; };
+                const prevSlide = () => { carouselIndex.value = carouselIndex.value === 0 ? carouselSlides.value.length - 1 : carouselIndex.value - 1; };
                 const startAutoplay = () => { carouselAutoplay.value = setInterval(nextSlide, 5000); };
                 const stopAutoplay = () => { clearInterval(carouselAutoplay.value); };
 
@@ -1271,6 +1273,17 @@
                             }
                             if (data.team) teamMembers.value = data.team;
                             if (data.posts) blogPosts.value = data.posts;
+                            if (data.imagesByKey) {
+                                siteImages.value = data.imagesByKey;
+                                const imgBase = 'https://tshoot-admin-6t0l.onrender.com/';
+                                if (data.imagesByKey.card_request) infoCards.value[0].image = imgBase + data.imagesByKey.card_request;
+                                if (data.imagesByKey.card_pricing) infoCards.value[1].image = imgBase + data.imagesByKey.card_pricing;
+                                if (data.imagesByKey.card_delivery) infoCards.value[2].image = imgBase + data.imagesByKey.card_delivery;
+                                if (data.imagesByKey.carousel_1) carouselSlides.value[0].image = imgBase + data.imagesByKey.carousel_1;
+                                if (data.imagesByKey.carousel_2) carouselSlides.value[1].image = imgBase + data.imagesByKey.carousel_2;
+                                if (data.imagesByKey.carousel_3) carouselSlides.value[2].image = imgBase + data.imagesByKey.carousel_3;
+                                if (data.imagesByKey.carousel_4) carouselSlides.value[3].image = imgBase + data.imagesByKey.carousel_4;
+                            }
                             startHeroAutoplay();
                         })
                         .catch(() => {
@@ -1284,7 +1297,8 @@
                     scrolled, menuOpen, navLinks, services, infoCards, infraItems, partners,
                     visibleSections, scrollTo, carouselIndex, carouselSlides, nextSlide, prevSlide,
                     form, formSubmitting, formSent, sendForm,
-                    heroSlide, nextHeroSlide, prevHeroSlide, banners, teamMembers, blogPosts, defaultTeam, defaultPosts
+                    heroSlide, nextHeroSlide, prevHeroSlide, banners, teamMembers, blogPosts, defaultTeam, defaultPosts,
+                    siteImages
                 };
             }
         }).mount('#app');
@@ -1305,6 +1319,15 @@
                 }).catch(function(){});
             } catch(e) {}
         })();
+    </script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 50
+        });
     </script>
 </body>
 </html>

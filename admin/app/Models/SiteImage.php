@@ -10,7 +10,7 @@ class SiteImage extends Model
     use HasFactory;
 
     protected $fillable = [
-        'filename', 'path', 'category', 'title',
+        'key', 'filename', 'path', 'category', 'title',
         'description', 'sort_order', 'is_active',
     ];
 

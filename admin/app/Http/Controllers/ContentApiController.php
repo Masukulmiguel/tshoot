@@ -19,6 +19,10 @@ class ContentApiController extends Controller
         $services = Service::where('is_active', true)->orderBy('sort_order')->get();
         $contents = SiteContent::all()->groupBy('section');
         $images = SiteImage::where('is_active', true)->orderBy('sort_order')->get();
+        $imagesByKey = $images->pluck('path', 'key')->toArray();
+        $imagesByCategory = $images->groupBy('category')->map(function ($catImages) {
+            return $catImages->pluck('path', 'key')->toArray();
+        })->toArray();
         $team = TeamMember::where('is_active', true)->orderBy('sort_order')->get();
         $posts = Post::where('is_published', true)->latest()->limit(6)->get();
 
@@ -36,6 +40,8 @@ class ContentApiController extends Controller
             'contents' => $contents,
             'settings' => $settings,
             'images' => $images,
+            'imagesByKey' => $imagesByKey,
+            'imagesByCategory' => $imagesByCategory,
             'team' => $team,
             'posts' => $posts,
         ])->header('Access-Control-Allow-Origin', '*')

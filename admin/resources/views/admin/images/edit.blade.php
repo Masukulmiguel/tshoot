@@ -19,16 +19,39 @@
         <form action="{{ route('admin.images.update', $image) }}" method="POST" enctype="multipart/form-data">
             @csrf @method('PUT')
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-1">Nova Imagem (opcional)</label>
-                <input type="file" name="image" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-gold file:text-white hover:file:bg-yellow-600">
-            </div>
-            <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Categoria *</label>
                 <select name="category" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
-                    @foreach(['hero','about','gallery','infrastructure','partners'] as $cat)
-                        <option value="{{ $cat }}" {{ $image->category === $cat ? 'selected' : '' }}>{{ ucfirst($cat) }}</option>
+                    @php
+                        $categories = [
+                            'about' => 'Sobre Nós',
+                            'cards' => 'Como Trabalhamos',
+                            'gallery' => 'Assistência Técnica',
+                            'partners' => 'Parceiros / Carousel',
+                            'contact' => 'Contacto',
+                            'hero' => 'Hero / Banners',
+                            'infrastructure' => 'Infraestrutura',
+                        ];
+                    @endphp
+                    @foreach($categories as $key => $label)
+                        <option value="{{ $key }}" {{ $image->category === $key ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
                 </select>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Slot (Posição)</label>
+                <select name="key" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                    <option value="">Sem slot específico</option>
+                    @foreach($availableSlots as $slotKey => $slotLabel)
+                        @if($image->key === $slotKey || !in_array($slotKey, $existingKeys))
+                            <option value="{{ $slotKey }}" {{ $image->key === $slotKey ? 'selected' : '' }}>{{ $slotLabel }}</option>
+                        @endif
+                    @endforeach
+                </select>
+                <p class="text-xs text-gray-400 mt-1">Define onde a imagem aparece no site</p>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Nova Imagem (opcional)</label>
+                <input type="file" name="image" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-gold file:text-white hover:file:bg-yellow-600">
             </div>
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Título</label>

@@ -146,6 +146,12 @@
                 <span class="font-medium text-sm">Blog</span>
             </a>
 
+            <a href="{{ route('admin.images.index') }}"
+               class="nav-link flex items-center gap-3 px-6 py-3 text-gray-300 hover:text-white {{ request()->routeIs('admin.images.*') ? 'active' : '' }}">
+                <i class="fas fa-images flex-shrink-0 w-5 text-center {{ request()->routeIs('admin.images.*') ? 'text-gold' : '' }}"></i>
+                <span class="font-medium text-sm">Imagens do Site</span>
+            </a>
+
             <a href="{{ route('admin.settings.index') }}"
                class="nav-link flex items-center gap-3 px-6 py-3 text-gray-300 hover:text-white {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
                 <i class="fas fa-cog flex-shrink-0 w-5 text-center {{ request()->routeIs('admin.settings.*') ? 'text-gold' : '' }}"></i>

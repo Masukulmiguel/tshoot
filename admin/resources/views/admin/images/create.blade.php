@@ -15,18 +15,34 @@
     <form action="{{ route('admin.images.store') }}" method="POST" enctype="multipart/form-data" class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
         @csrf
         <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Imagem *</label>
-            <input type="file" name="image" accept="image/*" required class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-gold file:text-white hover:file:bg-yellow-600">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Categoria *</label>
+            <select name="category" id="categorySelect" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" onchange="updateSlots()">
+                @php
+                    $categories = [
+                        'about' => 'Sobre Nós',
+                        'cards' => 'Como Trabalhamos',
+                        'gallery' => 'Assistência Técnica',
+                        'partners' => 'Parceiros / Carousel',
+                        'contact' => 'Contacto',
+                        'hero' => 'Hero / Banners',
+                        'infrastructure' => 'Infraestrutura',
+                    ];
+                @endphp
+                @foreach($categories as $key => $label)
+                    <option value="{{ $key }}" {{ $category === $key ? 'selected' : '' }}>{{ $label }}</option>
+                @endforeach
+            </select>
         </div>
         <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Categoria *</label>
-            <select name="category" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
-                <option value="hero">Hero</option>
-                <option value="about">Sobre</option>
-                <option value="gallery" selected>Galeria</option>
-                <option value="infrastructure">Infraestrutura</option>
-                <option value="partners">Parceiros</option>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Slot (Posição)</label>
+            <select name="key" id="keySelect" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                <option value="">Sem slot específico</option>
             </select>
+            <p class="text-xs text-gray-400 mt-1">Define onde a imagem aparece no site</p>
+        </div>
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Imagem *</label>
+            <input type="file" name="image" accept="image/*" required class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-gold file:text-white hover:file:bg-yellow-600">
         </div>
         <div class="mb-4">
             <label class="block text-sm font-medium text-gray-700 mb-1">Título</label>
@@ -39,4 +55,35 @@
         <button type="submit" class="w-full bg-gold text-white py-2.5 rounded-lg font-medium hover:bg-yellow-600 transition">Carregar Imagem</button>
     </form>
 </div>
+
+@push('scripts')
+<script>
+const slots = @json($availableSlots);
+const existingKeys = @json($existingKeys);
+
+function updateSlots() {
+    const cat = document.getElementById('categorySelect').value;
+    const select = document.getElementById('keySelect');
+    select.innerHTML = '<option value="">Sem slot específico</option>';
+
+    fetch('{{ route("admin.images.create") }}?category=' + cat)
+        .then(r => r.json())
+        .then(data => {
+            if (data.slots) {
+                Object.entries(data.slots).forEach(([key, label]) => {
+                    if (!data.existingKeys.includes(key)) {
+                        const opt = document.createElement('option');
+                        opt.value = key;
+                        opt.textContent = label;
+                        select.appendChild(opt);
+                    }
+                });
+            }
+        })
+        .catch(() => {});
+}
+
+document.addEventListener('DOMContentLoaded', updateSlots);
+</script>
+@endpush
 @endsection

@@ -8,22 +8,67 @@ use Illuminate\Support\Str;
 
 class ImageController extends Controller
 {
+    private $categories = [
+        'about' => 'Sobre',
+        'cards' => 'Como Trabalhamos',
+        'gallery' => 'Assistência Técnica',
+        'partners' => 'Parceiros',
+        'contact' => 'Contacto',
+        'hero' => 'Hero',
+        'infrastructure' => 'Infraestrutura',
+    ];
+
+    private $slots = [
+        'about' => [
+            'about_main' => 'Imagem Principal - Sobre',
+        ],
+        'cards' => [
+            'card_request' => 'Cartão - Solicitar Serviço',
+            'card_pricing' => 'Cartão - Nossos Preços',
+            'card_delivery' => 'Cartão - Tempo de Entrega',
+        ],
+        'gallery' => [
+            'gallery_repair' => 'Reparação de Computadores',
+            'gallery_printers' => 'Impressoras',
+            'gallery_components' => 'Componentes',
+        ],
+        'partners' => [
+            'carousel_1' => 'Slide 1 - Parcerias',
+            'carousel_2' => 'Slide 2 - Crescimento',
+            'carousel_3' => 'Slide 3 - Confiança',
+            'carousel_4' => 'Slide 4 - Alcance',
+        ],
+        'contact' => [
+            'contact_bg' => 'Fundo - Secção Contacto',
+        ],
+    ];
+
     public function index()
     {
         $images = SiteImage::orderBy('category')->orderBy('sort_order')->get();
-        return view('admin.images.index', compact('images'));
+        $grouped = $images->groupBy('category');
+        return view('admin.images.index', compact('images', 'grouped'));
     }
 
     public function create()
     {
-        return view('admin.images.create');
+        $category = request('category', 'about');
+        $existingKeys = SiteImage::where('category', $category)->pluck('key')->toArray();
+        $availableSlots = $this->slots[$category] ?? [];
+
+        if (request()->wantsJson()) {
+            return response()->json(['slots' => $availableSlots, 'existingKeys' => $existingKeys]);
+        }
+
+        return view('admin.images.create', compact('category', 'existingKeys', 'availableSlots'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120',
-            'category' => 'required|in:hero,about,gallery,infrastructure,partners',
+            'category' => 'required|in:' . implode(',', array_keys($this->categories)),
+            'key' => 'nullable|string|max:100',
             'title' => 'nullable|string|max:255',
             'description' => 'nullable|string',
         ]);
@@ -33,6 +78,7 @@ class ImageController extends Controller
         $file->move(public_path('uploads/images'), $filename);
 
         SiteImage::create([
+            'key' => $request->key,
             'filename' => $filename,
             'path' => 'uploads/images/' . $filename,
             'category' => $request->category,
@@ -47,14 +93,20 @@ class ImageController extends Controller
 
     public function edit(SiteImage $image)
     {
-        return view('admin.images.edit', compact('image'));
+        $existingKeys = SiteImage::where('category', $image->category)
+            ->where('id', '!=', $image->id)
+            ->pluck('key')
+            ->toArray();
+        $availableSlots = $this->slots[$image->category] ?? [];
+        return view('admin.images.edit', compact('image', 'existingKeys', 'availableSlots'));
     }
 
     public function update(Request $request, SiteImage $image)
     {
         $request->validate([
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
-            'category' => 'required|in:hero,about,gallery,infrastructure,partners',
+            'category' => 'required|in:' . implode(',', array_keys($this->categories)),
+            'key' => 'nullable|string|max:100',
             'title' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'sort_order' => 'nullable|integer|min:0',
@@ -75,6 +127,7 @@ class ImageController extends Controller
             $image->path = 'uploads/images/' . $filename;
         }
 
+        $image->key = $request->key;
         $image->category = $request->category;
         $image->title = $request->title;
         $image->description = $request->description;

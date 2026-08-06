@@ -7,6 +7,7 @@ use App\Http\Controllers\ContentApiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\SiteSettingController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\VisitorController;
@@ -45,4 +46,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('posts', PostController::class)->except(['show']);
     Route::get('settings', [SiteSettingController::class, 'index'])->name('settings.index');
     Route::put('settings', [SiteSettingController::class, 'update'])->name('settings.update');
+
+    Route::resource('images', ImageController::class)->except(['show']);
+    Route::post('images/reorder', [ImageController::class, 'reorder'])->name('images.reorder');
 });
