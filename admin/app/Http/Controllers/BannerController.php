@@ -69,8 +69,9 @@ class BannerController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            if ($supabase->isConfigured()) {
+            if ($supabase->isConfigured() && $banner->image) {
                 $supabase->delete($banner->image);
+            }
                 $url = $supabase->upload($request->file('image'), 'uploads', 'banners');
                 $validated['image'] = $url;
             } else {

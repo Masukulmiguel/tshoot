@@ -61,7 +61,7 @@ class SupabaseService
         return null;
     }
 
-    public function delete(string $url, string $bucket = 'uploads'): bool
+    public function delete(?string $url, string $bucket = 'uploads'): bool
     {
         if (!$this->isConfigured() || empty($url)) {
             return false;
