@@ -8,9 +8,7 @@ if [ ! -f .env ]; then
     cp .env.example .env
 fi
 
-php artisan key:generate --force
-php artisan config:cache
-php artisan route:cache
+php artisan key:generate --force 2>/dev/null || true
 
 echo "Running migrations..."
 php artisan migrate --force 2>&1 || echo "Migration completed"
