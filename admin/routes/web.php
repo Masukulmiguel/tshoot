@@ -33,6 +33,21 @@ Route::get('/api/content', [ContentApiController::class, 'getAll'])->middleware(
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
+    Route::get('/debug-cloudinary', function () {
+        $cloudName = config('services.cloudinary.cloud_name') ?? 'NOT SET';
+        $apiKey = config('services.cloudinary.api_key') ?? 'NOT SET';
+        $apiSecret = config('services.cloudinary.api_secret') ?? 'NOT SET';
+        $configured = !empty($cloudName) && $cloudName !== 'NOT SET';
+        
+        return response()->json([
+            'cloud_name' => $cloudName,
+            'api_key' => $apiKey ? substr($apiKey, 0, 6) . '...' : 'NOT SET',
+            'api_secret' => $apiSecret ? '***hidden***' : 'NOT SET',
+            'configured' => $configured,
+            'app_url' => config('app.url'),
+        ]);
+    });
+
     Route::resource('contacts', ContactController::class)->only(['index', 'show', 'destroy']);
     Route::match(['post', 'patch'], 'contacts/{contact}/reply', [ContactController::class, 'reply'])->name('contacts.reply');
     Route::match(['post', 'patch'], 'contacts/{contact}/status', [ContactController::class, 'updateStatus'])->name('contacts.status');

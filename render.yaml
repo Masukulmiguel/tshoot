@@ -26,7 +26,5 @@ services:
         value: stderr
       - key: CLOUDINARY_CLOUD_NAME
         sync: false
-      - key: CLOUDINARY_API_KEY
-        sync: false
-      - key: CLOUDINARY_API_SECRET
+      - key: CLOUDINARY_UPLOAD_PRESET
         sync: false
