@@ -7,23 +7,15 @@ services:
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
-        value: "true"
+        value: "false"
       - key: APP_KEY
         generateValue: true
       - key: APP_URL
         value: https://tshoot-admin-6t0l.onrender.com
       - key: DB_CONNECTION
-        value: pgsql
-      - key: DB_HOST
-        value: aws-1-eu-west-1.pooler.supabase.com
-      - key: DB_PORT
-        value: "6543"
+        value: sqlite
       - key: DB_DATABASE
-        value: postgres
-      - key: DB_USERNAME
-        value: postgres.vjpixuykkjyofspfkmzo
-      - key: DB_PASSWORD
-        value: '9xDrlseu2nBCZyS7'
+        value: database/database.sqlite
       - key: SESSION_DRIVER
         value: file
       - key: CACHE_STORE
