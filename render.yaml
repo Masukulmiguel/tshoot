@@ -15,13 +15,13 @@ services:
       - key: DB_CONNECTION
         value: pgsql
       - key: DB_HOST
-        value: db.vjpixuykkjyofspfkmzo.supabase.co
+        value: aws-1-eu-west-1.pooler.supabase.com
       - key: DB_PORT
-        value: "5432"
+        value: "6543"
       - key: DB_DATABASE
         value: postgres
       - key: DB_USERNAME
-        value: postgres
+        value: postgres.vjpixuykkjyofspfkmzo
       - key: DB_PASSWORD
         value: '9xDrlseu2nBCZyS7'
       - key: SESSION_DRIVER
