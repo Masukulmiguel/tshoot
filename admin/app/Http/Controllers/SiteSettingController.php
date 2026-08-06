@@ -52,7 +52,7 @@ class SiteSettingController extends Controller
         foreach ($imageFields as $field) {
             if ($request->hasFile($field)) {
                 if ($cloudinary->isConfigured()) {
-                    $oldValue = SiteSetting::getValue($field);
+                    $oldValue = SiteSetting::get($field);
                     if ($oldValue && str_contains($oldValue, 'cloudinary.com')) {
                         preg_match('/\/upload\/(?:v\d+\/)?(.+?)\.\w+$/', $oldValue, $m);
                         if (!empty($m[1])) {

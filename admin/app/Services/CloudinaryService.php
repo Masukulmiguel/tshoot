@@ -11,9 +11,9 @@ class CloudinaryService
 
     public function __construct()
     {
-        $this->cloudName = config('services.cloudinary.cloud_name', '');
-        $this->apiKey = config('services.cloudinary.api_key', '');
-        $this->apiSecret = config('services.cloudinary.api_secret', '');
+        $this->cloudName = config('services.cloudinary.cloud_name') ?? '';
+        $this->apiKey = config('services.cloudinary.api_key') ?? '';
+        $this->apiSecret = config('services.cloudinary.api_secret') ?? '';
         $this->baseUrl = "https://api.cloudinary.com/v1_1/{$this->cloudName}";
     }
 
