@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TeamMember;
-use App\Services\CloudinaryService;
+use App\Services\SupabaseService;
 use Illuminate\Http\Request;
 
 class TeamMemberController extends Controller
@@ -19,7 +19,7 @@ class TeamMemberController extends Controller
         return view('admin.team.create');
     }
 
-    public function store(Request $request, CloudinaryService $cloudinary)
+    public function store(Request $request, SupabaseService $supabase)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -36,8 +36,8 @@ class TeamMemberController extends Controller
         ]);
 
         if ($request->hasFile('photo')) {
-            if ($cloudinary->isConfigured()) {
-                $url = $cloudinary->upload($request->file('photo'), 'tshoot/team');
+            if ($supabase->isConfigured()) {
+                $url = $supabase->upload($request->file('photo'), 'uploads', 'team');
                 $validated['photo'] = $url;
             } else {
                 $file = $request->file('photo');
@@ -60,7 +60,7 @@ class TeamMemberController extends Controller
         return view('admin.team.edit', compact('member'));
     }
 
-    public function update(Request $request, TeamMember $member, CloudinaryService $cloudinary)
+    public function update(Request $request, TeamMember $member, SupabaseService $supabase)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -77,17 +77,14 @@ class TeamMemberController extends Controller
         ]);
 
         if ($request->hasFile('photo')) {
-            if ($cloudinary->isConfigured()) {
-                if ($member->photo && str_contains($member->photo, 'cloudinary.com')) {
-                    preg_match('/\/upload\/(?:v\d+\/)?(.+?)\.\w+$/', $member->photo, $m);
-                    if (!empty($m[1])) {
-                        $cloudinary->delete($m[1]);
-                    }
+            if ($supabase->isConfigured()) {
+                if (str_contains($member->photo ?? '', 'supabase')) {
+                    $supabase->delete($member->photo);
                 }
-                $url = $cloudinary->upload($request->file('photo'), 'tshoot/team');
+                $url = $supabase->upload($request->file('photo'), 'uploads', 'team');
                 $validated['photo'] = $url;
             } else {
-                if ($member->photo && !str_contains($member->photo, 'cloudinary.com')) {
+                if ($member->photo && !str_contains($member->photo, 'supabase')) {
                     $oldPath = public_path('uploads/' . $member->photo);
                     if (file_exists($oldPath)) {
                         unlink($oldPath);
@@ -101,19 +98,15 @@ class TeamMemberController extends Controller
         }
 
         $validated['is_active'] = $request->boolean('is_active');
-
         $member->update($validated);
 
         return redirect()->route('admin.team.index')->with('success', 'Membro da equipa actualizado!');
     }
 
-    public function destroy(TeamMember $member, CloudinaryService $cloudinary)
+    public function destroy(TeamMember $member, SupabaseService $supabase)
     {
-        if ($member->photo && str_contains($member->photo, 'cloudinary.com')) {
-            preg_match('/\/upload\/(?:v\d+\/)?(.+?)\.\w+$/', $member->photo, $m);
-            if (!empty($m[1])) {
-                $cloudinary->delete($m[1]);
-            }
+        if (str_contains($member->photo ?? '', 'supabase')) {
+            $supabase->delete($member->photo);
         } elseif ($member->photo) {
             $path = public_path('uploads/' . $member->photo);
             if (file_exists($path)) {

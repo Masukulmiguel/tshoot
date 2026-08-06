@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Banner;
-use App\Services\CloudinaryService;
+use App\Services\SupabaseService;
 use Illuminate\Http\Request;
 
 class BannerController extends Controller
@@ -19,7 +19,7 @@ class BannerController extends Controller
         return view('admin.banners.create');
     }
 
-    public function store(Request $request, CloudinaryService $cloudinary)
+    public function store(Request $request, SupabaseService $supabase)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -32,8 +32,8 @@ class BannerController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            if ($cloudinary->isConfigured()) {
-                $url = $cloudinary->upload($request->file('image'), 'tshoot/banners');
+            if ($supabase->isConfigured()) {
+                $url = $supabase->upload($request->file('image'), 'uploads', 'banners');
                 $validated['image'] = $url;
             } else {
                 $file = $request->file('image');
@@ -56,7 +56,7 @@ class BannerController extends Controller
         return view('admin.banners.edit', compact('banner'));
     }
 
-    public function update(Request $request, Banner $banner, CloudinaryService $cloudinary)
+    public function update(Request $request, Banner $banner, SupabaseService $supabase)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -69,12 +69,12 @@ class BannerController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            if ($cloudinary->isConfigured()) {
-                $this->deleteFromCloudinary($banner->image, $cloudinary);
-                $url = $cloudinary->upload($request->file('image'), 'tshoot/banners');
+            if ($supabase->isConfigured()) {
+                $supabase->delete($banner->image);
+                $url = $supabase->upload($request->file('image'), 'uploads', 'banners');
                 $validated['image'] = $url;
             } else {
-                if ($banner->image && !str_contains($banner->image, 'cloudinary.com')) {
+                if ($banner->image && !str_contains($banner->image, 'supabase')) {
                     $oldPath = public_path('uploads/' . $banner->image);
                     if (file_exists($oldPath)) {
                         unlink($oldPath);
@@ -88,17 +88,16 @@ class BannerController extends Controller
         }
 
         $validated['active'] = $request->boolean('active');
-
         $banner->update($validated);
 
         return redirect()->route('admin.banners.index')->with('success', 'Banner actualizado!');
     }
 
-    public function destroy(Banner $banner, CloudinaryService $cloudinary)
+    public function destroy(Banner $banner, SupabaseService $supabase)
     {
-        $this->deleteFromCloudinary($banner->image, $cloudinary);
-
-        if ($banner->image && !str_contains($banner->image, 'cloudinary.com')) {
+        if ($supabase->isConfigured() && str_contains($banner->image ?? '', 'supabase')) {
+            $supabase->delete($banner->image);
+        } elseif ($banner->image && !str_contains($banner->image, 'supabase')) {
             $path = public_path('uploads/' . $banner->image);
             if (file_exists($path)) {
                 unlink($path);
@@ -107,15 +106,5 @@ class BannerController extends Controller
 
         $banner->delete();
         return redirect()->route('admin.banners.index')->with('success', 'Banner eliminado!');
-    }
-
-    private function deleteFromCloudinary(?string $image, CloudinaryService $cloudinary): void
-    {
-        if ($image && str_contains($image, 'cloudinary.com')) {
-            preg_match('/\/upload\/(?:v\d+\/)?(.+?)\.\w+$/', $image, $matches);
-            if (!empty($matches[1])) {
-                $cloudinary->delete($matches[1]);
-            }
-        }
     }
 }

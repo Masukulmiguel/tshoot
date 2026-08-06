@@ -13,9 +13,17 @@ services:
       - key: APP_URL
         value: https://tshoot-admin-6t0l.onrender.com
       - key: DB_CONNECTION
-        value: sqlite
+        value: pgsql
+      - key: DB_HOST
+        value: aws-1-eu-west-1.pooler.supabase.com
+      - key: DB_PORT
+        value: "6543"
       - key: DB_DATABASE
-        value: database/database.sqlite
+        value: postgres
+      - key: DB_USERNAME
+        value: postgres.vjpixuykkjyofspfkmzo
+      - key: DB_PASSWORD
+        value: "9xDrlseu2nBCZyS7"
       - key: SESSION_DRIVER
         value: file
       - key: CACHE_STORE
@@ -24,7 +32,9 @@ services:
         value: sync
       - key: LOG_CHANNEL
         value: stderr
-      - key: CLOUDINARY_CLOUD_NAME
-        sync: false
-      - key: CLOUDINARY_UPLOAD_PRESET
-        sync: false
+      - key: SUPABASE_URL
+        value: https://vjpixuykkjyofspfkmzo.supabase.co
+      - key: SUPABASE_ANON_KEY
+        value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqcGl4dXlra2p5b2ZzcGZrbXpvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYwMTYxMjcsImV4cCI6MjEwMTU5MjEyN30.EE_R-v0EfJcJMu_A8SuWbv-qpCgumvnO7hWraiLUwAo"
+      - key: SUPABASE_SERVICE_KEY
+        value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqcGl4dXlra2p5b2ZzcGZrbXpvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NjAxNjEyNywiZXhwIjoyMTAxNTkyMTI3fQ.EiDHJVdakDY0a_ALin9qea37tL8d6ANIv4cEcNVxjXg"

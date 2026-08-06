@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SiteImage;
-use App\Services\CloudinaryService;
+use App\Services\SupabaseService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -20,9 +20,7 @@ class ImageController extends Controller
     ];
 
     private $slots = [
-        'about' => [
-            'about_main' => 'Imagem Principal - Sobre',
-        ],
+        'about' => ['about_main' => 'Imagem Principal - Sobre'],
         'cards' => [
             'card_request' => 'Cartão - Solicitar Serviço',
             'card_pricing' => 'Cartão - Nossos Preços',
@@ -39,9 +37,7 @@ class ImageController extends Controller
             'carousel_3' => 'Slide 3 - Confiança',
             'carousel_4' => 'Slide 4 - Alcance',
         ],
-        'contact' => [
-            'contact_bg' => 'Fundo - Secção Contacto',
-        ],
+        'contact' => ['contact_bg' => 'Fundo - Secção Contacto'],
     ];
 
     public function index()
@@ -64,7 +60,7 @@ class ImageController extends Controller
         return view('admin.images.create', compact('category', 'existingKeys', 'availableSlots'));
     }
 
-    public function store(Request $request, CloudinaryService $cloudinary)
+    public function store(Request $request, SupabaseService $supabase)
     {
         $request->validate([
             'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120',
@@ -74,8 +70,8 @@ class ImageController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        if ($cloudinary->isConfigured()) {
-            $url = $cloudinary->upload($request->file('image'), 'tshoot/' . $request->category);
+        if ($supabase->isConfigured()) {
+            $url = $supabase->upload($request->file('image'), 'uploads', $request->category);
             $path = $url;
             $filename = basename($url);
         } else {
@@ -95,8 +91,7 @@ class ImageController extends Controller
             'sort_order' => SiteImage::where('category', $request->category)->max('sort_order') + 1,
         ]);
 
-        return redirect()->route('admin.images.index')
-            ->with('success', 'Imagem carregada com sucesso!');
+        return redirect()->route('admin.images.index')->with('success', 'Imagem carregada com sucesso!');
     }
 
     public function edit(SiteImage $image)
@@ -109,7 +104,7 @@ class ImageController extends Controller
         return view('admin.images.edit', compact('image', 'existingKeys', 'availableSlots'));
     }
 
-    public function update(Request $request, SiteImage $image, CloudinaryService $cloudinary)
+    public function update(Request $request, SiteImage $image, SupabaseService $supabase)
     {
         $request->validate([
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
@@ -122,18 +117,15 @@ class ImageController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            if ($cloudinary->isConfigured()) {
-                if ($image->path && str_contains($image->path, 'cloudinary.com')) {
-                    preg_match('/\/upload\/(?:v\d+\/)?(.+?)\.\w+$/', $image->path, $m);
-                    if (!empty($m[1])) {
-                        $cloudinary->delete($m[1]);
-                    }
+            if ($supabase->isConfigured()) {
+                if (str_contains($image->path ?? '', 'supabase')) {
+                    $supabase->delete($image->path);
                 }
-                $url = $cloudinary->upload($request->file('image'), 'tshoot/' . $request->category);
+                $url = $supabase->upload($request->file('image'), 'uploads', $request->category);
                 $image->path = $url;
                 $image->filename = basename($url);
             } else {
-                if ($image->path && !str_contains($image->path, 'cloudinary.com')) {
+                if ($image->path && !str_contains($image->path, 'supabase')) {
                     $oldPath = public_path($image->path);
                     if (file_exists($oldPath)) {
                         unlink($oldPath);
@@ -155,17 +147,13 @@ class ImageController extends Controller
         $image->is_active = $request->boolean('is_active', true);
         $image->save();
 
-        return redirect()->route('admin.images.index')
-            ->with('success', 'Imagem actualizada com sucesso!');
+        return redirect()->route('admin.images.index')->with('success', 'Imagem actualizada com sucesso!');
     }
 
-    public function destroy(SiteImage $image, CloudinaryService $cloudinary)
+    public function destroy(SiteImage $image, SupabaseService $supabase)
     {
-        if ($image->path && str_contains($image->path, 'cloudinary.com')) {
-            preg_match('/\/upload\/(?:v\d+\/)?(.+?)\.\w+$/', $image->path, $m);
-            if (!empty($m[1])) {
-                $cloudinary->delete($m[1]);
-            }
+        if (str_contains($image->path ?? '', 'supabase')) {
+            $supabase->delete($image->path);
         } elseif ($image->path) {
             $filePath = public_path($image->path);
             if (file_exists($filePath)) {
@@ -174,21 +162,15 @@ class ImageController extends Controller
         }
 
         $image->delete();
-
-        return redirect()->route('admin.images.index')
-            ->with('success', 'Imagem eliminada.');
+        return redirect()->route('admin.images.index')->with('success', 'Imagem eliminada.');
     }
 
     public function reorder(Request $request)
     {
-        $request->validate([
-            'ids' => 'required|array',
-        ]);
-
+        $request->validate(['ids' => 'required|array']);
         foreach ($request->ids as $index => $id) {
             SiteImage::where('id', $id)->update(['sort_order' => $index]);
         }
-
         return response()->json(['success' => true]);
     }
 }

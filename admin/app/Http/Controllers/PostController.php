@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use App\Services\CloudinaryService;
+use App\Services\SupabaseService;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -19,7 +19,7 @@ class PostController extends Controller
         return view('admin.posts.create');
     }
 
-    public function store(Request $request, CloudinaryService $cloudinary)
+    public function store(Request $request, SupabaseService $supabase)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -34,8 +34,8 @@ class PostController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            if ($cloudinary->isConfigured()) {
-                $url = $cloudinary->upload($request->file('image'), 'tshoot/posts');
+            if ($supabase->isConfigured()) {
+                $url = $supabase->upload($request->file('image'), 'uploads', 'posts');
                 $validated['image'] = $url;
             } else {
                 $file = $request->file('image');
@@ -59,7 +59,7 @@ class PostController extends Controller
         return view('admin.posts.edit', compact('post'));
     }
 
-    public function update(Request $request, Post $post, CloudinaryService $cloudinary)
+    public function update(Request $request, Post $post, SupabaseService $supabase)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -74,17 +74,14 @@ class PostController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            if ($cloudinary->isConfigured()) {
-                if ($post->image && str_contains($post->image, 'cloudinary.com')) {
-                    preg_match('/\/upload\/(?:v\d+\/)?(.+?)\.\w+$/', $post->image, $m);
-                    if (!empty($m[1])) {
-                        $cloudinary->delete($m[1]);
-                    }
+            if ($supabase->isConfigured()) {
+                if (str_contains($post->image ?? '', 'supabase')) {
+                    $supabase->delete($post->image);
                 }
-                $url = $cloudinary->upload($request->file('image'), 'tshoot/posts');
+                $url = $supabase->upload($request->file('image'), 'uploads', 'posts');
                 $validated['image'] = $url;
             } else {
-                if ($post->image && !str_contains($post->image, 'cloudinary.com')) {
+                if ($post->image && !str_contains($post->image, 'supabase')) {
                     $oldPath = public_path('uploads/' . $post->image);
                     if (file_exists($oldPath)) {
                         unlink($oldPath);
@@ -105,13 +102,10 @@ class PostController extends Controller
         return redirect()->route('admin.posts.index')->with('success', 'Publicação actualizada!');
     }
 
-    public function destroy(Post $post, CloudinaryService $cloudinary)
+    public function destroy(Post $post, SupabaseService $supabase)
     {
-        if ($post->image && str_contains($post->image, 'cloudinary.com')) {
-            preg_match('/\/upload\/(?:v\d+\/)?(.+?)\.\w+$/', $post->image, $m);
-            if (!empty($m[1])) {
-                $cloudinary->delete($m[1]);
-            }
+        if (str_contains($post->image ?? '', 'supabase')) {
+            $supabase->delete($post->image);
         } elseif ($post->image) {
             $path = public_path('uploads/' . $post->image);
             if (file_exists($path)) {

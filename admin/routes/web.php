@@ -62,6 +62,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('settings', [SiteSettingController::class, 'index'])->name('settings.index');
     Route::put('settings', [SiteSettingController::class, 'update'])->name('settings.update');
 
+    Route::get('password', [AuthController::class, 'showPasswordForm'])->name('password');
+    Route::put('password', [AuthController::class, 'updatePassword'])->name('password.update');
+
     Route::resource('images', ImageController::class)->except(['show']);
     Route::post('images/reorder', [ImageController::class, 'reorder'])->name('images.reorder');
 });
