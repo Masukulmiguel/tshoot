@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SiteSetting;
+use App\Services\CloudinaryService;
 use Illuminate\Http\Request;
 
 class SiteSettingController extends Controller
@@ -18,7 +19,7 @@ class SiteSettingController extends Controller
         return view('admin.settings.index', compact('settings'));
     }
 
-    public function update(Request $request)
+    public function update(Request $request, CloudinaryService $cloudinary)
     {
         $data = $request->except(['_token', '_method']);
         $allAllowed = array_merge(...array_values($this->allowedSettings));
@@ -50,10 +51,22 @@ class SiteSettingController extends Controller
         $imageFields = ['about_image', 'contact_bg'];
         foreach ($imageFields as $field) {
             if ($request->hasFile($field)) {
-                $file = $request->file($field);
-                $filename = uniqid() . '.' . $file->getClientOriginalExtension();
-                $file->move(public_path('uploads'), $filename);
-                SiteSetting::set($field, 'uploads/' . $filename, 'general');
+                if ($cloudinary->isConfigured()) {
+                    $oldValue = SiteSetting::getValue($field);
+                    if ($oldValue && str_contains($oldValue, 'cloudinary.com')) {
+                        preg_match('/\/upload\/(?:v\d+\/)?(.+?)\.\w+$/', $oldValue, $m);
+                        if (!empty($m[1])) {
+                            $cloudinary->delete($m[1]);
+                        }
+                    }
+                    $url = $cloudinary->upload($request->file($field), 'tshoot/settings');
+                    SiteSetting::set($field, $url, 'general');
+                } else {
+                    $file = $request->file($field);
+                    $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+                    $file->move(public_path('uploads'), $filename);
+                    SiteSetting::set($field, 'uploads/' . $filename, 'general');
+                }
             }
         }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SiteImage;
+use App\Services\CloudinaryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -63,7 +64,7 @@ class ImageController extends Controller
         return view('admin.images.create', compact('category', 'existingKeys', 'availableSlots'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, CloudinaryService $cloudinary)
     {
         $request->validate([
             'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120',
@@ -73,14 +74,21 @@ class ImageController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        $file = $request->file('image');
-        $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-        $file->move(public_path('uploads/images'), $filename);
+        if ($cloudinary->isConfigured()) {
+            $url = $cloudinary->upload($request->file('image'), 'tshoot/' . $request->category);
+            $path = $url;
+            $filename = basename($url);
+        } else {
+            $file = $request->file('image');
+            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/images'), $filename);
+            $path = 'uploads/images/' . $filename;
+        }
 
         SiteImage::create([
             'key' => $request->key,
             'filename' => $filename,
-            'path' => 'uploads/images/' . $filename,
+            'path' => $path,
             'category' => $request->category,
             'title' => $request->title,
             'description' => $request->description,
@@ -101,7 +109,7 @@ class ImageController extends Controller
         return view('admin.images.edit', compact('image', 'existingKeys', 'availableSlots'));
     }
 
-    public function update(Request $request, SiteImage $image)
+    public function update(Request $request, SiteImage $image, CloudinaryService $cloudinary)
     {
         $request->validate([
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
@@ -114,17 +122,29 @@ class ImageController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $oldPath = public_path($image->path);
-            if (file_exists($oldPath)) {
-                unlink($oldPath);
+            if ($cloudinary->isConfigured()) {
+                if ($image->path && str_contains($image->path, 'cloudinary.com')) {
+                    preg_match('/\/upload\/(?:v\d+\/)?(.+?)\.\w+$/', $image->path, $m);
+                    if (!empty($m[1])) {
+                        $cloudinary->delete($m[1]);
+                    }
+                }
+                $url = $cloudinary->upload($request->file('image'), 'tshoot/' . $request->category);
+                $image->path = $url;
+                $image->filename = basename($url);
+            } else {
+                if ($image->path && !str_contains($image->path, 'cloudinary.com')) {
+                    $oldPath = public_path($image->path);
+                    if (file_exists($oldPath)) {
+                        unlink($oldPath);
+                    }
+                }
+                $file = $request->file('image');
+                $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('uploads/images'), $filename);
+                $image->filename = $filename;
+                $image->path = 'uploads/images/' . $filename;
             }
-
-            $file = $request->file('image');
-            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/images'), $filename);
-
-            $image->filename = $filename;
-            $image->path = 'uploads/images/' . $filename;
         }
 
         $image->key = $request->key;
@@ -139,12 +159,20 @@ class ImageController extends Controller
             ->with('success', 'Imagem actualizada com sucesso!');
     }
 
-    public function destroy(SiteImage $image)
+    public function destroy(SiteImage $image, CloudinaryService $cloudinary)
     {
-        $filePath = public_path($image->path);
-        if (file_exists($filePath)) {
-            unlink($filePath);
+        if ($image->path && str_contains($image->path, 'cloudinary.com')) {
+            preg_match('/\/upload\/(?:v\d+\/)?(.+?)\.\w+$/', $image->path, $m);
+            if (!empty($m[1])) {
+                $cloudinary->delete($m[1]);
+            }
+        } elseif ($image->path) {
+            $filePath = public_path($image->path);
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
         }
+
         $image->delete();
 
         return redirect()->route('admin.images.index')

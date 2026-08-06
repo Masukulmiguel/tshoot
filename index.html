@@ -521,7 +521,7 @@
             <div class="hero-carousel">
                 <div class="hero-carousel-track" :style="{ transform: `translateX(-${heroSlide * 100}%)` }">
                     <div v-for="(banner, index) in banners" :key="banner.id" class="hero-carousel-slide">
-                        <img :src="banner.image ? 'https://tshoot-admin-6t0l.onrender.com/uploads/' + banner.image : 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=1920&q=80'" :alt="banner.title" />
+                        <img :src="banner.image_url || 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=1920&q=80'" :alt="banner.title" />
                         <div class="hero-carousel-overlay"></div>
                     </div>
                 </div>
@@ -558,7 +558,7 @@
                 <div class="about-grid">
                     <div class="about-image" data-aos="fade-right">
                         <div class="about-image-main">
-                            <img :src="siteImages.about_main ? 'https://tshoot-admin-6t0l.onrender.com/' + siteImages.about_main : (settings.about_image ? 'https://tshoot-admin-6t0l.onrender.com/' + settings.about_image : 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&q=80')" alt="Sobre a Troubleshoot" />
+                            <img :src="siteImages.about_main || settings.about_image || 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&q=80'" alt="Sobre a Troubleshoot" />
                         </div>
                         <div class="about-image-accent">
                             <span class="number">10+</span>
@@ -783,7 +783,7 @@
                     <template v-if="teamMembers.length > 0">
                         <div v-for="member in teamMembers" :key="member.id" class="team-card" data-aos="fade-up">
                             <div class="team-card-image">
-                                <img :src="member.photo ? 'https://tshoot-admin-6t0l.onrender.com/uploads/' + member.photo : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(member.name) + '&background=1B2A41&color=fff&size=200'" :alt="member.name" />
+                                <img :src="member.photo_url || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(member.name) + '&background=1B2A41&color=fff&size=200'" :alt="member.name" />
                             </div>
                             <div class="team-card-info">
                                 <h3 class="team-card-name">{{ member.name }}</h3>
@@ -834,7 +834,7 @@
                     <template v-if="blogPosts.length > 0">
                         <div v-for="post in blogPosts" :key="post.id" class="blog-card" data-aos="fade-up">
                             <div class="blog-card-image">
-                                <img :src="post.image ? 'https://tshoot-admin-6t0l.onrender.com/uploads/' + post.image : 'https://images.unsplash.com/photo-1504711434969-e33886168d5c?w=600&q=80'" :alt="post.title" />
+                                <img :src="post.image_url || 'https://images.unsplash.com/photo-1504711434969-e33886168d5c?w=600&q=80'" :alt="post.title" />
                                 <span v-if="post.category" class="blog-card-category">{{ post.category }}</span>
                             </div>
                             <div class="blog-card-content">

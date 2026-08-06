@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Services\CloudinaryService;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -18,7 +19,7 @@ class PostController extends Controller
         return view('admin.posts.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request, CloudinaryService $cloudinary)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -33,10 +34,15 @@ class PostController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads'), $filename);
-            $validated['image'] = $filename;
+            if ($cloudinary->isConfigured()) {
+                $url = $cloudinary->upload($request->file('image'), 'tshoot/posts');
+                $validated['image'] = $url;
+            } else {
+                $file = $request->file('image');
+                $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('uploads'), $filename);
+                $validated['image'] = $filename;
+            }
         }
 
         $validated['is_published'] = $request->boolean('is_published');
@@ -53,7 +59,7 @@ class PostController extends Controller
         return view('admin.posts.edit', compact('post'));
     }
 
-    public function update(Request $request, Post $post)
+    public function update(Request $request, Post $post, CloudinaryService $cloudinary)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -68,20 +74,27 @@ class PostController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            if ($post->image) {
-                $oldPath = public_path('uploads/' . $post->image);
-                if (file_exists($oldPath)) {
-                    unlink($oldPath);
-                    $dir = dirname($oldPath);
-                    if (is_dir($dir) && count(scandir($dir)) <= 2) {
-                        rmdir($dir);
+            if ($cloudinary->isConfigured()) {
+                if ($post->image && str_contains($post->image, 'cloudinary.com')) {
+                    preg_match('/\/upload\/(?:v\d+\/)?(.+?)\.\w+$/', $post->image, $m);
+                    if (!empty($m[1])) {
+                        $cloudinary->delete($m[1]);
                     }
                 }
+                $url = $cloudinary->upload($request->file('image'), 'tshoot/posts');
+                $validated['image'] = $url;
+            } else {
+                if ($post->image && !str_contains($post->image, 'cloudinary.com')) {
+                    $oldPath = public_path('uploads/' . $post->image);
+                    if (file_exists($oldPath)) {
+                        unlink($oldPath);
+                    }
+                }
+                $file = $request->file('image');
+                $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('uploads'), $filename);
+                $validated['image'] = $filename;
             }
-            $file = $request->file('image');
-            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads'), $filename);
-            $validated['image'] = $filename;
         }
 
         $validated['is_published'] = $request->boolean('is_published');
@@ -92,18 +105,20 @@ class PostController extends Controller
         return redirect()->route('admin.posts.index')->with('success', 'Publicação actualizada!');
     }
 
-    public function destroy(Post $post)
+    public function destroy(Post $post, CloudinaryService $cloudinary)
     {
-        if ($post->image) {
+        if ($post->image && str_contains($post->image, 'cloudinary.com')) {
+            preg_match('/\/upload\/(?:v\d+\/)?(.+?)\.\w+$/', $post->image, $m);
+            if (!empty($m[1])) {
+                $cloudinary->delete($m[1]);
+            }
+        } elseif ($post->image) {
             $path = public_path('uploads/' . $post->image);
             if (file_exists($path)) {
                 unlink($path);
-                $dir = dirname($path);
-                if (is_dir($dir) && count(scandir($dir)) <= 2) {
-                    rmdir($dir);
-                }
             }
         }
+
         $post->delete();
         return redirect()->route('admin.posts.index')->with('success', 'Publicação eliminada!');
     }

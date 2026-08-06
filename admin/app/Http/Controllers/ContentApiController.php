@@ -37,17 +37,51 @@ class ContentApiController extends Controller
         ];
         $settings = array_intersect_key($allSettings, array_flip($publicKeys));
 
+        $adminUrl = config('app.url', 'https://tshoot-admin-6t0l.onrender.com');
+
         return response()->json([
-            'banners' => $banners,
+            'banners' => $banners->map(function ($banner) use ($adminUrl) {
+                $banner->image_url = $this->resolveUrl($banner->image, $adminUrl);
+                return $banner;
+            }),
             'services' => $services,
             'contents' => $contents,
-            'settings' => $settings,
-            'images' => $images,
-            'imagesByKey' => $imagesByKey,
-            'team' => $team,
-            'posts' => $posts,
+            'settings' => collect($settings)->mapWithKeys(function ($value, $key) use ($adminUrl) {
+                $resolved = in_array($key, ['about_image', 'contact_bg', 'logo'])
+                    ? $this->resolveUrl($value, $adminUrl)
+                    : $value;
+                return [$key => $resolved];
+            })->toArray(),
+            'images' => $images->map(function ($image) use ($adminUrl) {
+                $image->url = $this->resolveUrl($image->path, $adminUrl);
+                return $image;
+            }),
+            'imagesByKey' => collect($imagesByKey)->mapWithKeys(function ($path, $key) use ($adminUrl) {
+                return [$key => $this->resolveUrl($path, $adminUrl)];
+            })->toArray(),
+            'team' => $team->map(function ($member) use ($adminUrl) {
+                $member->photo_url = $this->resolveUrl($member->photo, $adminUrl);
+                return $member;
+            }),
+            'posts' => $posts->map(function ($post) use ($adminUrl) {
+                $post->image_url = $this->resolveUrl($post->image, $adminUrl);
+                return $post;
+            }),
         ])->header('Access-Control-Allow-Origin', '*')
           ->header('Access-Control-Allow-Methods', 'GET, OPTIONS')
           ->header('Access-Control-Allow-Headers', 'Content-Type');
+    }
+
+    private function resolveUrl(?string $path, string $adminUrl): ?string
+    {
+        if (empty($path)) {
+            return null;
+        }
+
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
+        }
+
+        return rtrim($adminUrl, '/') . '/' . ltrim($path, '/');
     }
 }
