@@ -182,6 +182,16 @@
                     <input type="file" name="contact_bg" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-gold file:text-white hover:file:bg-yellow-600">
                     <p class="text-xs text-gray-400 mt-1">Imagem de fundo da secção Contacto</p>
                 </div>
+                <div class="sm:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Imagem - Fundo da Tela de Login</label>
+                    @if(!empty($settings['general']['login_bg']))
+                        <div class="mb-2">
+                            <img src="{{ str_starts_with($settings['general']['login_bg'], 'http') ? $settings['general']['login_bg'] : asset($settings['general']['login_bg']) }}" alt="Login" class="h-32 rounded-lg object-cover border">
+                        </div>
+                    @endif
+                    <input type="file" name="login_bg" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-gold file:text-white hover:file:bg-yellow-600">
+                    <p class="text-xs text-gray-400 mt-1">Imagem de fundo da página de login (recomendado: 1920x1080)</p>
+                </div>
             </div>
         </div>
 

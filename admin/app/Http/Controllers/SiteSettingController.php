@@ -11,7 +11,7 @@ class SiteSettingController extends Controller
     private array $allowedSettings = [
         'general' => [
             'company_name', 'company_slogan', 'email', 'phone', 'address', 'website', 'logo',
-            'about_image', 'contact_bg', 'whatsapp', 'slogan',
+            'about_image', 'contact_bg', 'login_bg', 'whatsapp', 'slogan',
             'hours_weekday', 'hours_saturday', 'hours_sunday',
             'facebook', 'instagram', 'linkedin', 'youtube',
             'contact_title', 'contact_subtitle',
@@ -54,7 +54,7 @@ class SiteSettingController extends Controller
             }
         }
 
-        $imageFields = ['about_image', 'contact_bg'];
+        $imageFields = ['about_image', 'contact_bg', 'login_bg'];
         foreach ($imageFields as $field) {
             if ($request->hasFile($field)) {
                 if ($supabase->isConfigured()) {
