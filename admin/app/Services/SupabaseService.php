@@ -28,7 +28,16 @@ class SupabaseService
 
         $filePath = is_string($file) ? $file : $file->getRealPath();
         $mimeType = mime_content_type($filePath);
-        $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+        $extension = is_string($file) ? pathinfo($filePath, PATHINFO_EXTENSION) : $file->getClientOriginalExtension();
+        if (empty($extension)) {
+            $extension = match($mimeType) {
+                'image/jpeg' => 'jpg',
+                'image/png' => 'png',
+                'image/webp' => 'webp',
+                'image/gif' => 'gif',
+                default => 'jpg',
+            };
+        }
         $filename = bin2hex(random_bytes(16)) . '.' . $extension;
         $path = $folder ? "{$folder}/{$filename}" : $filename;
 
