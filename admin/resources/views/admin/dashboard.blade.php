@@ -145,8 +145,8 @@
         </div>
         <div id="contacts-list" class="divide-y divide-gray-50">
             @forelse($recentContacts as $contact)
-                <a href="{{ route('admin.contacts.show', $contact) }}" class="table-row flex items-center gap-4 px-5 py-3.5">
-                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center flex-shrink-0">
+                <a href="{{ route('admin.contacts.show', $contact) }}" class="table-row flex items-center gap-5 px-6 py-5">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center flex-shrink-0">
                         <span class="text-xs font-bold text-gray-600">{{ strtoupper(substr($contact->name, 0, 1)) }}</span>
                     </div>
                     <div class="flex-1 min-w-0">
@@ -209,8 +209,8 @@
         </div>
         <div id="visitors-list" class="divide-y divide-gray-50">
             @forelse($recentVisitors as $visitor)
-                <a href="{{ route('admin.visitors.show', $visitor) }}" class="table-row flex items-center gap-4 px-5 py-3.5">
-                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center flex-shrink-0">
+                <a href="{{ route('admin.visitors.show', $visitor) }}" class="table-row flex items-center gap-5 px-6 py-5">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center flex-shrink-0">
                         <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z"/>
                         </svg>
@@ -513,8 +513,8 @@ function loadContactsPage(page) {
             list.innerHTML = '';
             data.contacts.forEach(c => {
                 list.insertAdjacentHTML('beforeend', `
-                    <a href="${c.show_url}" class="table-row flex items-center gap-4 px-5 py-3.5">
-                        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center flex-shrink-0">
+                    <a href="${c.show_url}" class="table-row flex items-center gap-5 px-6 py-5">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center flex-shrink-0">
                             <span class="text-xs font-bold text-gray-600">${c.name.charAt(0).toUpperCase()}</span>
                         </div>
                         <div class="flex-1 min-w-0">
@@ -570,8 +570,8 @@ function loadVisitorsPage(page) {
             list.innerHTML = '';
             data.visitors.forEach(v => {
                 list.insertAdjacentHTML('beforeend', `
-                    <a href="${v.show_url}" class="table-row flex items-center gap-4 px-5 py-3.5">
-                        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center flex-shrink-0">
+                    <a href="${v.show_url}" class="table-row flex items-center gap-5 px-6 py-5">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center flex-shrink-0">
                             <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z"/>
                             </svg>
