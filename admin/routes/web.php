@@ -14,6 +14,7 @@ use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\SocialLinkController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -76,4 +77,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
     Route::resource('partners', PartnerController::class)->except(['show']);
     Route::post('partners/{partner}/toggle', [PartnerController::class, 'toggle'])->name('partners.toggle');
+
+    Route::resource('social-links', SocialLinkController::class)->except(['show'])->parameters(['social-links' => 'socialLink']);
+    Route::post('social-links/{socialLink}/toggle', [SocialLinkController::class, 'toggle'])->name('social-links.toggle');
 });

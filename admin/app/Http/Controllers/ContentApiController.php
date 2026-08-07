@@ -11,6 +11,7 @@ use App\Models\TeamMember;
 use App\Models\Post;
 use App\Models\Partner;
 use App\Models\GalleryItem;
+use App\Models\SocialLink;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 
@@ -31,6 +32,7 @@ class ContentApiController extends Controller
         $posts = Post::where('is_published', true)->latest()->limit(6)->get();
         $partners = Partner::where('is_active', true)->orderBy('sort_order')->get();
         $gallery = GalleryItem::orderBy('sort_order')->get();
+        $socialLinks = SocialLink::where('is_active', true)->orderBy('sort_order')->get();
 
         $allSettings = SiteSetting::all()->pluck('value', 'key')->toArray();
         $publicKeys = [
@@ -84,6 +86,7 @@ class ContentApiController extends Controller
                 $item->image_url = $this->resolveUrl($item->image, $adminUrl);
                 return $item;
             }),
+            'socialLinks' => $socialLinks,
         ])->header('Access-Control-Allow-Origin', '*')
           ->header('Access-Control-Allow-Methods', 'GET, OPTIONS')
           ->header('Access-Control-Allow-Headers', 'Content-Type');

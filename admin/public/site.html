@@ -925,11 +925,16 @@
                         <p>{{ settings.company_slogan || 'Soluções tecnológicas completas para empresas e particulares. Infraestrutura, software, segurança e suporte técnico em Angola.' }}</p>
                         <h4 style="color: var(--white); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 1.5rem; margin-bottom: 0.5rem;">Siga-nos</h4>
                         <div class="footer-social">
-                            <a v-if="settings.facebook" :href="settings.facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                            <a v-if="settings.instagram" :href="settings.instagram" target="_blank"><i class="fab fa-instagram"></i></a>
-                            <a v-if="settings.whatsapp" :href="'https://wa.me/' + settings.whatsapp.replace(/[^0-9]/g, '')" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                            <a v-if="settings.linkedin" :href="settings.linkedin" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                            <a v-if="settings.youtube" :href="settings.youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+                            <template v-for="link in socialLinks" :key="link.id">
+                                <a :href="link.platform === 'whatsapp' ? 'https://wa.me/' + link.url.replace(/[^0-9]/g, '') : link.url" target="_blank"><i :class="link.icon"></i></a>
+                            </template>
+                            <template v-if="socialLinks.length === 0">
+                                <a v-if="settings.facebook" :href="settings.facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                                <a v-if="settings.instagram" :href="settings.instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                                <a v-if="settings.whatsapp" :href="'https://wa.me/' + settings.whatsapp.replace(/[^0-9]/g, '')" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                                <a v-if="settings.linkedin" :href="settings.linkedin" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                                <a v-if="settings.youtube" :href="settings.youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+                            </template>
                         </div>
                     </div>
 
@@ -1099,6 +1104,8 @@
 
                 const galleryItems = ref([]);
 
+                const socialLinks = ref([]);
+
                 const carouselIndex = ref(0);
                 const carouselAutoplay = ref(null);
                 const carouselSlides = ref([
@@ -1205,6 +1212,9 @@
                             if (data.gallery && data.gallery.length > 0) {
                                 galleryItems.value = data.gallery;
                             }
+                            if (data.socialLinks) {
+                                socialLinks.value = data.socialLinks;
+                            }
                             startHeroAutoplay();
                         })
                         .catch(() => {
@@ -1219,7 +1229,7 @@
                     visibleSections, scrollTo, carouselIndex, carouselSlides, nextSlide, prevSlide,
                     form, formSubmitting, formSent, sendForm,
                     heroSlide, nextHeroSlide, prevHeroSlide, banners, blogPosts, defaultPosts,
-                    siteImages, settings, contents
+                    siteImages, settings, contents, socialLinks
                 };
             }
         }).mount('#app');
