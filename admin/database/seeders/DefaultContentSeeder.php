@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Banner;
+use App\Models\Post;
 use App\Models\Service;
 use App\Models\TeamMember;
 use App\Models\SiteImage;
@@ -36,6 +37,53 @@ class DefaultContentSeeder extends Seeder
         if (TeamMember::count() === 0) {
             TeamMember::insert([
                 ['name' => 'Masukul Miguel', 'role' => 'CEO & Fundador', 'bio' => 'Especialista em infraestrutura de redes e soluções tecnológicas com mais de 10 anos de experiência no mercado angolano.', 'photo' => null, 'sort_order' => 1, 'is_active' => true, 'created_at' => now(), 'updated_at' => now()],
+            ]);
+        }
+
+        if (Post::count() === 0) {
+            Post::insert([
+                [
+                    'title' => 'Novas Soluções Cloud para Empresas',
+                    'slug' => 'novas-solucoes-cloud-para-empresas',
+                    'excerpt' => 'A Troubleshoot apresenta novas soluções de cloud computing para optimizar a infraestrutura da sua empresa com segurança e eficiência.',
+                    'content' => 'A cloud computing tornou-se essencial para empresas que querem escalar os seus negócios de forma eficiente. Com as nossas novas soluções cloud, oferecemos infraestrutura segura, escalável e com custos optimizados.',
+                    'image' => null,
+                    'category' => 'Tecnologia',
+                    'author' => 'Masukul Miguel',
+                    'is_published' => true,
+                    'is_featured' => true,
+                    'published_at' => now()->subDays(5),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'title' => 'Segurança Informática: Dicas Essenciais',
+                    'slug' => 'seguranca-informatica-dicas-essenciais',
+                    'excerpt' => 'Conheça as melhores práticas para proteger os seus dados e sistemas contra ameaças cibernéticas crescentes.',
+                    'content' => 'A segurança informática é uma prioridade para qualquer empresa. Neste artigo, partilhamos dicas essenciais para proteger os seus dados contra malware, phishing e outras ameaças.',
+                    'image' => null,
+                    'category' => 'Segurança',
+                    'author' => 'Equipa Técnica',
+                    'is_published' => true,
+                    'is_featured' => false,
+                    'published_at' => now()->subDays(12),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'title' => 'Infraestrutura de Redes: Guia Completo',
+                    'slug' => 'infraestrutura-de-redes-guia-completo',
+                    'excerpt' => 'Tudo o que precisa de saber sobre projecto e implementação de redes de dados profissionais para a sua empresa.',
+                    'content' => 'Uma boa infraestrutura de rede é a base de qualquer empresa moderna. Desde cabeamento estruturado até switches e roteadores, cada componente conta para garantir performance e confiabilidade.',
+                    'image' => null,
+                    'category' => 'Redes',
+                    'author' => 'Masukul Miguel',
+                    'is_published' => true,
+                    'is_featured' => false,
+                    'published_at' => now()->subDays(19),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
             ]);
         }
     }

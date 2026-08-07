@@ -561,19 +561,26 @@
                             <img :src="siteImages.about_main || settings.about_image || 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&q=80'" alt="Sobre a Troubleshoot" />
                         </div>
                         <div class="about-image-accent">
-                            <span class="number">10+</span>
-                            <span class="label">Anos de Experiência</span>
+                            <span class="number">{{ contents.about?.experience_years || '10+' }}</span>
+                            <span class="label">{{ contents.about?.experience_label || 'Anos de Experiência' }}</span>
                         </div>
                     </div>
                     <div class="about-content" data-aos="fade-left">
-                        <h2>A Troubleshoot tem o que você precisa!</h2>
-                        <p>A Troubleshoot - Soluções Tecnológicas é uma empresa de direito Angolano com actuação na área da tecnologia de informação, fornecendo soluções completas e oferecendo aos seus clientes sistemas integrados que proporcionam vantagens e benefícios significativos.</p>
-                        <p>A estratégia da diferenciação, a qualidade dos serviços prestados, constitui a nossa aposta para estabelecer relações de confiança com nossos clientes.</p>
+                        <h2>{{ contents.about?.title || 'A Troubleshoot tem o que você precisa!' }}</h2>
+                        <p>{{ contents.about?.description || 'A Troubleshoot - Soluções Tecnológicas é uma empresa de direito Angolano com actuação na área da tecnologia de informação, fornecendo soluções completas e oferecendo aos seus clientes sistemas integrados que proporcionam vantagens e benefícios significativos.' }}</p>
+                        <p v-if="contents.about?.description_2">{{ contents.about.description_2 }}</p>
+                        <p v-else>A estratégia da diferenciação, a qualidade dos serviços prestados, constitui a nossa aposta para estabelecer relações de confiança com nossos clientes.</p>
                         <div class="about-features">
-                            <div class="about-feature"><i class="fas fa-check"></i><span>Suporte 24/7</span></div>
-                            <div class="about-feature"><i class="fas fa-check"></i><span>Equipas Especializadas</span></div>
-                            <div class="about-feature"><i class="fas fa-check"></i><span>Preços Competitivos</span></div>
-                            <div class="about-feature"><i class="fas fa-check"></i><span>Garantia de Serviço</span></div>
+                            <div class="about-feature" v-if="contents.about?.feature_1"><i class="fas fa-check"></i><span>{{ contents.about.feature_1 }}</span></div>
+                            <div class="about-feature" v-if="contents.about?.feature_2"><i class="fas fa-check"></i><span>{{ contents.about.feature_2 }}</span></div>
+                            <div class="about-feature" v-if="contents.about?.feature_3"><i class="fas fa-check"></i><span>{{ contents.about.feature_3 }}</span></div>
+                            <div class="about-feature" v-if="contents.about?.feature_4"><i class="fas fa-check"></i><span>{{ contents.about.feature_4 }}</span></div>
+                            <template v-if="!contents.about">
+                                <div class="about-feature"><i class="fas fa-check"></i><span>Suporte 24/7</span></div>
+                                <div class="about-feature"><i class="fas fa-check"></i><span>Equipas Especializadas</span></div>
+                                <div class="about-feature"><i class="fas fa-check"></i><span>Preços Competitivos</span></div>
+                                <div class="about-feature"><i class="fas fa-check"></i><span>Garantia de Serviço</span></div>
+                            </template>
                         </div>
                         <a href="#contact" class="btn btn-gold" style="margin-top:2rem;" @click.prevent="scrollTo('contact')">
                             <i class="fas fa-envelope"></i> Entre em Contacto
@@ -928,25 +935,21 @@
                         <div class="footer-brand-logo">
                             <img src="assets/img/simbole.png" alt="Troubleshoot" />
                         </div>
-                        <p>Soluções tecnológicas completas para empresas e particulares. Infraestrutura, software, segurança e suporte técnico em Angola.</p>
+                        <p>{{ settings.company_slogan || 'Soluções tecnológicas completas para empresas e particulares. Infraestrutura, software, segurança e suporte técnico em Angola.' }}</p>
                         <h4 style="color: var(--white); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 1.5rem; margin-bottom: 0.5rem;">Siga-nos</h4>
                         <div class="footer-social">
-                            <a href="https://www.facebook.com/Tshoot-Soluções-Tecnológicas-107151237849422/" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#"><i class="fab fa-instagram"></i></a>
-                            <a href="https://wa.me/244993314247" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#"><i class="fab fa-youtube"></i></a>
+                            <a v-if="settings.facebook" :href="settings.facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                            <a v-if="settings.instagram" :href="settings.instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                            <a v-if="settings.whatsapp" :href="'https://wa.me/' + settings.whatsapp.replace(/[^0-9]/g, '')" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                            <a v-if="settings.linkedin" :href="settings.linkedin" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                            <a v-if="settings.youtube" :href="settings.youtube" target="_blank"><i class="fab fa-youtube"></i></a>
                         </div>
                     </div>
 
                     <div class="footer-col">
                         <h4>Serviços</h4>
                         <ul>
-                            <li><a href="#"><i class="fas fa-chevron-right"></i> Desenvolvimento Web</a></li>
-                            <li><a href="#"><i class="fas fa-chevron-right"></i> Infraestrutura de Redes</a></li>
-                            <li><a href="#"><i class="fas fa-chevron-right"></i> Segurança Informática</a></li>
-                            <li><a href="#"><i class="fas fa-chevron-right"></i> Suporte Técnico</a></li>
-                            <li><a href="#"><i class="fas fa-chevron-right"></i> Consultoria IT</a></li>
+                            <li v-for="s in services.slice(0, 5)" :key="s.id"><a href="#servicos"><i class="fas fa-chevron-right"></i> {{ s.title }}</a></li>
                         </ul>
                     </div>
 
@@ -965,25 +968,25 @@
                         <h4>Contacto</h4>
                         <div class="footer-contact-item">
                             <i class="fas fa-map-marker-alt"></i>
-                            <span>Luanda, Angola</span>
+                            <span>{{ settings.address || 'Luanda, Angola' }}</span>
                         </div>
                         <div class="footer-contact-item">
                             <i class="fas fa-phone"></i>
-                            <a href="tel:+244933189868">(+244)-933-189-868</a>
+                            <a :href="'tel:' + (settings.phone || '').replace(/[^0-9+]/g, '')">{{ settings.phone || '(+244)-933-189-868' }}</a>
                         </div>
-                        <div class="footer-contact-item">
+                        <div v-if="settings.whatsapp" class="footer-contact-item">
                             <i class="fab fa-whatsapp"></i>
-                            <a href="https://wa.me/244993314247" target="_blank">(+244)-993-314-247</a>
+                            <a :href="'https://wa.me/' + settings.whatsapp.replace(/[^0-9]/g, '')" target="_blank">{{ settings.whatsapp }}</a>
                         </div>
                         <div class="footer-contact-item">
                             <i class="fas fa-envelope"></i>
-                            <a href="mailto:comercial@tshoot-angola.com">comercial@tshoot-angola.com</a>
+                            <a :href="'mailto:' + (settings.email || 'comercial@tshoot-angola.com')">{{ settings.email || 'comercial@tshoot-angola.com' }}</a>
                         </div>
                     </div>
                 </div>
 
                 <div class="footer-bottom">
-                    <span>&copy; 2026 Troubleshoot Soluções Tecnológicas. Todos os direitos reservados.</span>
+                    <span>&copy; {{ new Date().getFullYear() }} {{ settings.company_name || 'Troubleshoot Soluções Tecnológicas' }}. Todos os direitos reservados.</span>
                     <span>Desenvolvido por <a href="https://wa.me/244993314247" target="_blank">CodingLife Dev</a></span>
                 </div>
             </div>
@@ -1058,6 +1061,7 @@
                 ];
                 const siteImages = ref({});
                 const settings = ref({});
+                const contents = ref({});
                 const blogPosts = ref([]);
                 const defaultPosts = [
                     { title: 'Novas Soluções Cloud para Empresas', excerpt: 'A Troubleshoot apresenta novas soluções de cloud computing para optimizar a infraestrutura da sua empresa com segurança e eficiência.', category: 'Tecnologia', author: 'Masukul Miguel', date: '01/08/2026', image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80' },
@@ -1209,6 +1213,7 @@
                             }
                             if (data.posts) blogPosts.value = data.posts;
                             if (data.settings) settings.value = data.settings;
+                            if (data.contents) contents.value = data.contents;
                             if (data.imagesByKey) {
                                 siteImages.value = data.imagesByKey;
                                 if (data.imagesByKey.card_request) infoCards.value[0].image = data.imagesByKey.card_request;
@@ -1233,7 +1238,7 @@
                     visibleSections, scrollTo, carouselIndex, carouselSlides, nextSlide, prevSlide,
                     form, formSubmitting, formSent, sendForm,
                     heroSlide, nextHeroSlide, prevHeroSlide, banners, blogPosts, defaultPosts,
-                    siteImages, settings
+                    siteImages, settings, contents
                 };
             }
         }).mount('#app');
