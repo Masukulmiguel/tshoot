@@ -176,12 +176,19 @@
                 </div>
             @endforelse
         </div>
-        <div id="contacts-load-more" class="px-5 py-3 border-t border-gray-100 bg-gray-50/50" style="{{ $recentContacts->count() < 5 ? 'display:none' : '' }}">
-            <button onclick="loadMoreContacts()" class="flex items-center justify-center gap-1.5 w-full py-2 rounded-lg border border-amber-200 text-amber-600 text-xs font-semibold hover:bg-amber-50 transition-all">
+        @if($contactsTotalPages > 1)
+        <div class="px-5 py-3 border-t border-gray-100 bg-gray-50/50 flex items-center justify-between">
+            <button onclick="contactsPrev()" id="contacts-prev-btn" class="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-gray-200 text-gray-400 text-xs font-semibold cursor-not-allowed" disabled>
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+                Anterior
+            </button>
+            <span id="contacts-page-info" class="text-[11px] font-medium text-gray-400">1 / {{ $contactsTotalPages }}</span>
+            <button onclick="contactsNext()" id="contacts-next-btn" class="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-amber-200 text-amber-600 text-xs font-semibold hover:bg-amber-50 transition-all">
                 Próximo
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
             </button>
         </div>
+        @endif
     </div>
 
     {{-- Recent Visitors --}}
@@ -239,12 +246,19 @@
                 </div>
             @endforelse
         </div>
-        <div id="visitors-load-more" class="px-5 py-3 border-t border-gray-100 bg-gray-50/50" style="{{ $recentVisitors->count() < 5 ? 'display:none' : '' }}">
-            <button onclick="loadMoreVisitors()" class="flex items-center justify-center gap-1.5 w-full py-2 rounded-lg border border-blue-200 text-blue-600 text-xs font-semibold hover:bg-blue-50 transition-all">
+        @if($visitorsTotalPages > 1)
+        <div class="px-5 py-3 border-t border-gray-100 bg-gray-50/50 flex items-center justify-between">
+            <button onclick="visitorsPrev()" id="visitors-prev-btn" class="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-gray-200 text-gray-400 text-xs font-semibold cursor-not-allowed" disabled>
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+                Anterior
+            </button>
+            <span id="visitors-page-info" class="text-[11px] font-medium text-gray-400">1 / {{ $visitorsTotalPages }}</span>
+            <button onclick="visitorsNext()" id="visitors-next-btn" class="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-blue-200 text-blue-600 text-xs font-semibold hover:bg-blue-50 transition-all">
                 Próximo
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
             </button>
         </div>
+        @endif
     </div>
 </div>
 
@@ -435,9 +449,11 @@ new Chart(document.getElementById('contactsChart'), {
     options: chartDefaults
 });
 
-// Dashboard pagination
+// Dashboard carousel pagination
 let contactsPage = 1;
 let visitorsPage = 1;
+const contactsTotalPages = {{ $contactsTotalPages }};
+const visitorsTotalPages = {{ $visitorsTotalPages }};
 
 function getStatusBadge(status) {
     const badges = {
@@ -460,15 +476,41 @@ function getLocation(visitor) {
     return 'Localização desconhecida';
 }
 
-function loadMoreContacts() {
-    contactsPage++;
-    const btn = event.target.closest('button');
-    btn.innerHTML = '<svg class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg> A carregar...';
+function updateContactsNav(page) {
+    contactsPage = page;
+    const prevBtn = document.getElementById('contacts-prev-btn');
+    const nextBtn = document.getElementById('contacts-next-btn');
+    const pageInfo = document.getElementById('contacts-page-info');
+    pageInfo.textContent = page + ' / ' + contactsTotalPages;
+    prevBtn.disabled = (page <= 1);
+    nextBtn.disabled = (page >= contactsTotalPages);
+    prevBtn.className = page <= 1
+        ? 'flex items-center gap-1 px-3 py-1.5 rounded-lg border border-gray-200 text-gray-400 text-xs font-semibold cursor-not-allowed'
+        : 'flex items-center gap-1 px-3 py-1.5 rounded-lg border border-amber-200 text-amber-600 text-xs font-semibold hover:bg-amber-50 transition-all cursor-pointer';
+    nextBtn.className = page >= contactsTotalPages
+        ? 'flex items-center gap-1 px-3 py-1.5 rounded-lg border border-gray-200 text-gray-400 text-xs font-semibold cursor-not-allowed'
+        : 'flex items-center gap-1 px-3 py-1.5 rounded-lg border border-amber-200 text-amber-600 text-xs font-semibold hover:bg-amber-50 transition-all cursor-pointer';
+}
 
-    fetch('{{ route("admin.dashboard.moreContacts") }}?page=' + contactsPage)
+function contactsNext() {
+    if (contactsPage >= contactsTotalPages) return;
+    loadContactsPage(contactsPage + 1);
+}
+
+function contactsPrev() {
+    if (contactsPage <= 1) return;
+    loadContactsPage(contactsPage - 1);
+}
+
+function loadContactsPage(page) {
+    const list = document.getElementById('contacts-list');
+    list.style.opacity = '0.4';
+    list.style.transition = 'opacity 0.2s';
+
+    fetch('{{ route("admin.dashboard.moreContacts") }}?page=' + page)
         .then(r => r.json())
         .then(data => {
-            const list = document.getElementById('contacts-list');
+            list.innerHTML = '';
             data.contacts.forEach(c => {
                 list.insertAdjacentHTML('beforeend', `
                     <a href="${c.show_url}" class="table-row flex items-center gap-4 px-5 py-3.5">
@@ -483,22 +525,49 @@ function loadMoreContacts() {
                     </a>
                 `);
             });
-            if (!data.hasMore) {
-                document.getElementById('contacts-load-more').style.display = 'none';
+            if (data.contacts.length === 0) {
+                list.innerHTML = '<div class="px-5 py-10 text-center"><p class="text-sm text-gray-400">Sem mais contactos</p></div>';
             }
-            btn.innerHTML = 'Próximo <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>';
+            list.style.opacity = '1';
+            updateContactsNav(data.page);
         });
 }
 
-function loadMoreVisitors() {
-    visitorsPage++;
-    const btn = event.target.closest('button');
-    btn.innerHTML = '<svg class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg> A carregar...';
+function updateVisitorsNav(page) {
+    visitorsPage = page;
+    const prevBtn = document.getElementById('visitors-prev-btn');
+    const nextBtn = document.getElementById('visitors-next-btn');
+    const pageInfo = document.getElementById('visitors-page-info');
+    pageInfo.textContent = page + ' / ' + visitorsTotalPages;
+    prevBtn.disabled = (page <= 1);
+    nextBtn.disabled = (page >= visitorsTotalPages);
+    prevBtn.className = page <= 1
+        ? 'flex items-center gap-1 px-3 py-1.5 rounded-lg border border-gray-200 text-gray-400 text-xs font-semibold cursor-not-allowed'
+        : 'flex items-center gap-1 px-3 py-1.5 rounded-lg border border-blue-200 text-blue-600 text-xs font-semibold hover:bg-blue-50 transition-all cursor-pointer';
+    nextBtn.className = page >= visitorsTotalPages
+        ? 'flex items-center gap-1 px-3 py-1.5 rounded-lg border border-gray-200 text-gray-400 text-xs font-semibold cursor-not-allowed'
+        : 'flex items-center gap-1 px-3 py-1.5 rounded-lg border border-blue-200 text-blue-600 text-xs font-semibold hover:bg-blue-50 transition-all cursor-pointer';
+}
 
-    fetch('{{ route("admin.dashboard.moreVisitors") }}?page=' + visitorsPage)
+function visitorsNext() {
+    if (visitorsPage >= visitorsTotalPages) return;
+    loadVisitorsPage(visitorsPage + 1);
+}
+
+function visitorsPrev() {
+    if (visitorsPage <= 1) return;
+    loadVisitorsPage(visitorsPage - 1);
+}
+
+function loadVisitorsPage(page) {
+    const list = document.getElementById('visitors-list');
+    list.style.opacity = '0.4';
+    list.style.transition = 'opacity 0.2s';
+
+    fetch('{{ route("admin.dashboard.moreVisitors") }}?page=' + page)
         .then(r => r.json())
         .then(data => {
-            const list = document.getElementById('visitors-list');
+            list.innerHTML = '';
             data.visitors.forEach(v => {
                 list.insertAdjacentHTML('beforeend', `
                     <a href="${v.show_url}" class="table-row flex items-center gap-4 px-5 py-3.5">
@@ -518,10 +587,11 @@ function loadMoreVisitors() {
                     </a>
                 `);
             });
-            if (!data.hasMore) {
-                document.getElementById('visitors-load-more').style.display = 'none';
+            if (data.visitors.length === 0) {
+                list.innerHTML = '<div class="px-5 py-10 text-center"><p class="text-sm text-gray-400">Sem mais visitantes</p></div>';
             }
-            btn.innerHTML = 'Próximo <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>';
+            list.style.opacity = '1';
+            updateVisitorsNav(data.page);
         });
 }
 </script>

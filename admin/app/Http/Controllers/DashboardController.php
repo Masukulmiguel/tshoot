@@ -21,8 +21,11 @@ class DashboardController extends Controller
         $visitorsToday = Visitor::whereDate('last_visit', today())->count();
         $contactsThisWeek = Contact::where('created_at', '>=', now()->subWeek())->count();
 
-        $recentContacts = Contact::latest()->take(5)->get();
-        $recentVisitors = Visitor::latest()->take(5)->get();
+        $perPage = 5;
+        $recentContacts = Contact::latest()->take($perPage)->get();
+        $recentVisitors = Visitor::latest()->take($perPage)->get();
+        $contactsTotalPages = max(1, (int) ceil($totalContacts / $perPage));
+        $visitorsTotalPages = max(1, (int) ceil($totalVisitors / $perPage));
 
         // Visitantes por dia (últimos 14 dias)
         $visitorsByDay = Visitor::where('last_visit', '>=', now()->subDays(14))
@@ -75,7 +78,8 @@ class DashboardController extends Controller
             'totalContacts', 'newContacts', 'totalVisitors', 'totalImages',
             'visitorsToday', 'contactsThisWeek', 'recentContacts', 'recentVisitors',
             'visitorsByDay', 'visitorsByBrowser', 'visitorsByCountry',
-            'visitorsByDevice', 'visitorsByOS', 'topPages', 'contactsByDay'
+            'visitorsByDevice', 'visitorsByOS', 'topPages', 'contactsByDay',
+            'contactsTotalPages', 'visitorsTotalPages'
         ));
     }
 
@@ -104,6 +108,9 @@ class DashboardController extends Controller
                 ];
             }),
             'hasMore' => $hasMore,
+            'total' => $total,
+            'page' => (int) $page,
+            'totalPages' => max(1, (int) ceil($total / $perPage)),
         ]);
     }
 
@@ -135,6 +142,9 @@ class DashboardController extends Controller
                 ];
             }),
             'hasMore' => $hasMore,
+            'total' => $total,
+            'page' => (int) $page,
+            'totalPages' => max(1, (int) ceil($total / $perPage)),
         ]);
     }
 }
