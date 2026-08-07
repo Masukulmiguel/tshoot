@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\SocialLink;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class SocialLinkController extends Controller
 {
     public function index()
     {
+        if (!Schema::hasTable('social_links')) {
+            \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        }
         $links = SocialLink::orderBy('sort_order')->get();
         return view('admin.social-links.index', compact('links'));
     }

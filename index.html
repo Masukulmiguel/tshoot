@@ -521,7 +521,7 @@
             <div class="hero-carousel">
                 <div class="hero-carousel-track" :style="{ transform: `translateX(-${heroSlide * 100}%)` }">
                     <div v-for="(banner, index) in banners" :key="banner.id" class="hero-carousel-slide">
-                        <img :src="banner.image_url || 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=1920&q=80'" :alt="banner.title" />
+                        <img v-if="banner.image_url" :src="banner.image_url" :alt="banner.title" />
                         <div class="hero-carousel-overlay"></div>
                     </div>
                 </div>
@@ -558,7 +558,7 @@
                 <div class="about-grid">
                     <div class="about-image" data-aos="fade-right">
                         <div class="about-image-main">
-                            <img :src="siteImages.about_main || settings.about_image || 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&q=80'" alt="Sobre a Troubleshoot" />
+                                <img v-if="siteImages.about_main || settings.about_image" :src="siteImages.about_main || settings.about_image" alt="Sobre a Troubleshoot" />
                         </div>
                         <div class="about-image-accent">
                             <span class="number">{{ contents.about?.experience_years || '10+' }}</span>
@@ -777,7 +777,7 @@
                     <template v-if="blogPosts.length > 0">
                         <div v-for="post in blogPosts" :key="post.id" class="blog-card" data-aos="fade-up">
                             <div class="blog-card-image">
-                                <img :src="post.image_url || 'https://images.unsplash.com/photo-1504711434969-e33886168d5c?w=600&q=80'" :alt="post.title" />
+                                <img v-if="post.image_url" :src="post.image_url" :alt="post.title" />
                                 <span v-if="post.category" class="blog-card-category">{{ post.category }}</span>
                             </div>
                             <div class="blog-card-content">
@@ -815,7 +815,7 @@
         <!-- CONTACT -->
         <section class="contact-section" id="contact" data-aos="fade-up">
             <div class="contact-bg">
-                <img :src="siteImages.contact_bg ? 'https://tshoot-admin-6t0l.onrender.com/' + siteImages.contact_bg : (settings.contact_bg ? 'https://tshoot-admin-6t0l.onrender.com/' + settings.contact_bg : 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80')" alt="Escritório" />
+                <img v-if="siteImages.contact_bg || settings.contact_bg" :src="siteImages.contact_bg || settings.contact_bg" alt="Escritório" />
                 <div class="contact-bg-overlay"></div>
             </div>
             <div class="container">
@@ -1056,9 +1056,9 @@
                 const contents = ref({});
                 const blogPosts = ref([]);
                 const defaultPosts = [
-                    { title: 'Novas Soluções Cloud para Empresas', excerpt: 'A Troubleshoot apresenta novas soluções de cloud computing para optimizar a infraestrutura da sua empresa com segurança e eficiência.', category: 'Tecnologia', author: 'Masukul Miguel', date: '01/08/2026', image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80' },
-                    { title: 'Segurança Informática: Dicas Essenciais', excerpt: 'Conheça as melhores práticas para proteger os seus dados e sistemas contra ameaças cibernéticas crescentes.', category: 'Segurança', author: 'Equipa Técnica', date: '25/07/2026', image: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=600&q=80' },
-                    { title: 'Infraestrutura de Redes: Guia Completo', excerpt: 'Tudo o que precisa de saber sobre projecto e implementação de redes de dados profissionais para a sua empresa.', category: 'Redes', author: 'Masukul Miguel', date: '18/07/2026', image: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=600&q=80' }
+                    { title: 'Novas Soluções Cloud para Empresas', excerpt: 'A Troubleshoot apresenta novas soluções de cloud computing para optimizar a infraestrutura da sua empresa com segurança e eficiência.', category: 'Tecnologia', author: 'Masukul Miguel', date: '01/08/2026' },
+                    { title: 'Segurança Informática: Dicas Essenciais', excerpt: 'Conheça as melhores práticas para proteger os seus dados e sistemas contra ameaças cibernéticas crescentes.', category: 'Segurança', author: 'Equipa Técnica', date: '25/07/2026' },
+                    { title: 'Infraestrutura de Redes: Guia Completo', excerpt: 'Tudo o que precisa de saber sobre projecto e implementação de redes de dados profissionais para a sua empresa.', category: 'Redes', author: 'Masukul Miguel', date: '18/07/2026' }
                 ];
 
                 const nextHeroSlide = () => { heroSlide.value = (heroSlide.value + 1) % banners.value.length; };
@@ -1086,9 +1086,9 @@
                 ]);
 
                 const infoCards = ref([
-                    { title: 'Solicitar um Serviço', description: 'Os nossos serviços são à medida do seu bolso. Solicite já o seu orçamento sem compromisso.', image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&q=80', icon: 'fas fa-concierge-bell', cta: 'Saiba Mais', link: 'mailto:comercial@tshoot-angola.com' },
-                    { title: 'Nossos Preços', description: 'Economize ao escolher a Troubleshoot. Preços competitivos e qualidade garantida.', image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&q=80', icon: 'fas fa-tags', cta: 'Pedir Orçamento', link: 'mailto:comercial@tshoot-angola.com' },
-                    { title: 'Tempo de Entrega', description: 'Não hesite, eficiência é o nosso lema. Entregas rápidas com qualidade profissional.', image: 'https://images.unsplash.com/photo-1501084817091-a4f3d1d19e07?w=600&q=80', icon: 'fas fa-clock', cta: 'Contactar', link: 'https://wa.me/244993314247' }
+                    { title: 'Solicitar um Serviço', description: 'Os nossos serviços são à medida do seu bolso. Solicite já o seu orçamento sem compromisso.', icon: 'fas fa-concierge-bell', cta: 'Saiba Mais', link: 'mailto:comercial@tshoot-angola.com' },
+                    { title: 'Nossos Preços', description: 'Economize ao escolher a Troubleshoot. Preços competitivos e qualidade garantida.', icon: 'fas fa-tags', cta: 'Pedir Orçamento', link: 'mailto:comercial@tshoot-angola.com' },
+                    { title: 'Tempo de Entrega', description: 'Não hesite, eficiência é o nosso lema. Entregas rápidas com qualidade profissional.', icon: 'fas fa-clock', cta: 'Contactar', link: 'https://wa.me/244993314247' }
                 ]);
 
                 const infraItems = [
