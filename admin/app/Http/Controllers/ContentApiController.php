@@ -14,6 +14,7 @@ use App\Models\GalleryItem;
 use App\Models\SocialLink;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schema;
 
 class ContentApiController extends Controller
 {
@@ -32,7 +33,9 @@ class ContentApiController extends Controller
         $posts = Post::where('is_published', true)->latest()->limit(6)->get();
         $partners = Partner::where('is_active', true)->orderBy('sort_order')->get();
         $gallery = GalleryItem::orderBy('sort_order')->get();
-        $socialLinks = SocialLink::where('is_active', true)->orderBy('sort_order')->get();
+        $socialLinks = Schema::hasTable('social_links')
+            ? SocialLink::where('is_active', true)->orderBy('sort_order')->get()
+            : collect();
 
         $allSettings = SiteSetting::all()->pluck('value', 'key')->toArray();
         $publicKeys = [
