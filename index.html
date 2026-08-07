@@ -770,57 +770,6 @@
             </div>
         </section>
 
-        <!-- TEAM -->
-        <section class="section" id="team" data-aos="fade-up">
-            <div class="container">
-                <div class="section-header slide-up" :class="{ visible: visibleSections.team }">
-                    <h2 class="section-title">Nossa <span>Equipa</span></h2>
-                    <p class="section-subtitle">Profissionais dedicados e qualificados ao seu serviço</p>
-                </div>
-                <div class="carousel-wrap">
-                    <button class="carousel-nav-btn carousel-nav-prev" onclick="scrollCarousel('teamGrid', -1)"><i class="fas fa-chevron-left"></i></button>
-                    <div class="team-grid" id="teamGrid">
-                    <template v-if="teamMembers.length > 0">
-                        <div v-for="member in teamMembers" :key="member.id" class="team-card" data-aos="fade-up">
-                            <div class="team-card-image">
-                                <img :src="member.photo_url || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(member.name) + '&background=1B2A41&color=fff&size=200'" :alt="member.name" />
-                            </div>
-                            <div class="team-card-info">
-                                <h3 class="team-card-name">{{ member.name }}</h3>
-                                <p class="team-card-role">{{ member.role }}</p>
-                                <p v-if="member.bio" class="team-card-bio">{{ member.bio }}</p>
-                                <div class="team-card-social">
-                                    <a v-if="member.linkedin" :href="member.linkedin" target="_blank" class="team-social-link"><i class="fab fa-linkedin-in"></i></a>
-                                    <a v-if="member.facebook" :href="member.facebook" target="_blank" class="team-social-link"><i class="fab fa-facebook-f"></i></a>
-                                    <a v-if="member.twitter" :href="member.twitter" target="_blank" class="team-social-link"><i class="fab fa-twitter"></i></a>
-                                    <a v-if="member.email" :href="'mailto:' + member.email" class="team-social-link"><i class="fas fa-envelope"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </template>
-                    <template v-else>
-                        <div v-for="(member, index) in defaultTeam" :key="'dt-'+index" class="team-card" data-aos="fade-up" :data-aos-delay="index * 100">
-                            <div class="team-card-image">
-                                <img :src="member.photo" :alt="member.name" />
-                            </div>
-                            <div class="team-card-info">
-                                <h3 class="team-card-name">{{ member.name }}</h3>
-                                <p class="team-card-role">{{ member.role }}</p>
-                                <p class="team-card-bio">{{ member.bio }}</p>
-                                <div class="team-card-social">
-                                    <a href="#" class="team-social-link"><i class="fab fa-linkedin-in"></i></a>
-                                    <a href="#" class="team-social-link"><i class="fab fa-facebook-f"></i></a>
-                                    <a href="mailto:info@tshoot-angola.com" class="team-social-link"><i class="fas fa-envelope"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </template>
-                </div>
-                    <button class="carousel-nav-btn carousel-nav-next" onclick="scrollCarousel('teamGrid', 1)"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </div>
-        </section>
-
         <!-- BLOG -->
         <section class="section" id="blog" data-aos="fade-up" style="background: #f8fafc;">
             <div class="container">
@@ -1115,14 +1064,7 @@
                 ];
                 const siteImages = ref({});
                 const settings = ref({});
-                const teamMembers = ref([]);
                 const blogPosts = ref([]);
-                const defaultTeam = [
-                    { name: 'Masukul Miguel', role: 'CEO & Fundador', bio: 'Especialista em infraestrutura de redes e soluções tecnológicas com mais de 10 anos de experiência no mercado angolano.', photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80' },
-                    { name: 'Técnico de Redes', role: 'Especialista em Infraestrutura', bio: 'Projecto, instalação e manutenção de redes de dados, servidores e soluções cloud para empresas.', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80' },
-                    { name: 'Desenvolvedor Full Stack', role: 'Engenheiro de Software', bio: 'Desenvolvimento de aplicações web, mobile e desktop utilizando as mais modernas tecnologias.', photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80' },
-                    { name: 'Especialista de Suporte', role: 'Suporte Técnico', bio: 'Assistência técnica profissional, diagnóstico e reparação de equipamentos informáticos.', photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80' }
-                ];
                 const defaultPosts = [
                     { title: 'Novas Soluções Cloud para Empresas', excerpt: 'A Troubleshoot apresenta novas soluções de cloud computing para optimizar a infraestrutura da sua empresa com segurança e eficiência.', category: 'Tecnologia', author: 'Masukul Miguel', date: '01/08/2026', image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80' },
                     { title: 'Segurança Informática: Dicas Essenciais', excerpt: 'Conheça as melhores práticas para proteger os seus dados e sistemas contra ameaças cibernéticas crescentes.', category: 'Segurança', author: 'Equipa Técnica', date: '25/07/2026', image: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=600&q=80' },
@@ -1138,7 +1080,6 @@
                     { id: 'top', label: 'Home' },
                     { id: 'about', label: 'Sobre Nós' },
                     { id: 'services', label: 'Serviços' },
-                    { id: 'team', label: 'Equipa' },
                     { id: 'blog', label: 'Blog' },
                     { id: 'portfolio', label: 'Parceiros' }
                 ];
@@ -1231,13 +1172,13 @@
                 const visibleSections = reactive({
                     about: false, services: false, galleryHardware: false, info: false,
                     gallerySoftware: false, galleryNetwork: false, partners: false, contact: false,
-                    team: false, blog: false
+                    blog: false
                 });
 
                 const sectionMap = {
                     about: 'about', services: 'services', 'gallery-hardware': 'galleryHardware',
                     info: 'info', 'gallery-software': 'gallerySoftware', 'gallery-network': 'galleryNetwork',
-                    portfolio: 'partners', contact: 'contact', team: 'team', blog: 'blog'
+                    portfolio: 'partners', contact: 'contact', blog: 'blog'
                 };
 
                 const handleScroll = () => {
@@ -1272,7 +1213,6 @@
                             if (data.services && data.services.length > 0) {
                                 services.value = data.services;
                             }
-                            if (data.team) teamMembers.value = data.team;
                             if (data.posts) blogPosts.value = data.posts;
                             if (data.settings) settings.value = data.settings;
                             if (data.imagesByKey) {
@@ -1299,7 +1239,7 @@
                     scrolled, menuOpen, navLinks, services, infoCards, infraItems, partners,
                     visibleSections, scrollTo, carouselIndex, carouselSlides, nextSlide, prevSlide,
                     form, formSubmitting, formSent, sendForm,
-                    heroSlide, nextHeroSlide, prevHeroSlide, banners, teamMembers, blogPosts, defaultTeam, defaultPosts,
+                    heroSlide, nextHeroSlide, prevHeroSlide, banners, blogPosts, defaultPosts,
                     siteImages, settings
                 };
             }
