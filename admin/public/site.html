@@ -648,25 +648,11 @@
                     <p class="section-subtitle">Trabalhamos com os melhores equipamentos e tecnologias do mercado</p>
                 </div>
                 <div class="gallery-grid">
-                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="0">
-                        <img :src="siteImages.gallery_repair || 'https://images.unsplash.com/photo-1597852074816-d933c7d2b988?w=600&q=80'" alt="Reparação" />
+                    <div v-for="(item, idx) in galleryItems" :key="idx" class="gallery-item" data-aos="zoom-in" :data-aos-delay="idx * 100">
+                        <img :src="item.image_url" :alt="item.title" />
                         <div class="gallery-overlay">
-                            <h4>Reparação de Computadores</h4>
-                            <p>Diagnóstico e reparação profissional</p>
-                        </div>
-                    </div>
-                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
-                        <img :src="siteImages.gallery_printers || 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&q=80'" alt="Impressoras" />
-                        <div class="gallery-overlay">
-                            <h4>Impressoras</h4>
-                            <p>Manutenção e reparação</p>
-                        </div>
-                    </div>
-                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
-                        <img :src="siteImages.gallery_components || 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&q=80'" alt="Componentes" />
-                        <div class="gallery-overlay">
-                            <h4>Componentes</h4>
-                            <p>Substituição e actualizações</p>
+                            <h4>{{ item.title }}</h4>
+                            <p>{{ item.description }}</p>
                         </div>
                     </div>
                 </div>
@@ -751,7 +737,8 @@
                 <div class="partners-marquee slide-up" :class="{ visible: visibleSections.partners }" style="transition-delay:0.15s">
                     <div class="marquee-track">
                         <div v-for="(partner, index) in [...partners, ...partners]" :key="'m'+index" class="marquee-item">
-                            <div class="marquee-icon"><i :class="partner.icon"></i></div>
+                            <img v-if="partner.logo_url" :src="partner.logo_url" :alt="partner.name" style="height:28px;width:auto;object-fit:contain;border-radius:4px;">
+                            <div v-else class="marquee-icon"><i :class="partner.icon || 'fas fa-building'"></i></div>
                             <span>{{ partner.name }}</span>
                         </div>
                     </div>
@@ -760,7 +747,7 @@
                 <!-- Stats -->
                 <div class="partners-stats" data-aos="fade-up" data-aos-delay="250">
                     <div class="partner-stat">
-                        <span class="partner-stat-number">13+</span>
+                        <span class="partner-stat-number">{{ partners.length }}+</span>
                         <span class="partner-stat-label">Parceiros Activos</span>
                     </div>
                     <div class="partner-stat-divider"></div>
@@ -1108,21 +1095,27 @@
                     { icon: 'fas fa-wifi', title: 'Redes Sem Fio', description: 'Redes WiFi profissionais com cobertura total e gestão de utilizadores.', features: ['WiFi 6', 'Captive Portal', 'Mesh', 'Roaming'] }
                 ];
 
-                const partners = [
-                    { name: 'O.David - Software', icon: 'fas fa-building' },
-                    { name: 'Porto Cargo', icon: 'fas fa-ship' },
-                    { name: 'Marvanuel', icon: 'fas fa-store' },
-                    { name: 'SHIFT', icon: 'fas fa-exchange-alt' },
-                    { name: 'Grupo André Sebastião SU', icon: 'fas fa-users' },
-                    { name: 'D. Siamusseque Arquitetura', icon: 'fas fa-drafting-compass' },
-                    { name: 'Honga Yetu', icon: 'fas fa-hands-helping' },
-                    { name: 'Luwuawamo', icon: 'fas fa-shopping-bag' },
-                    { name: 'HR-CID', icon: 'fas fa-database' },
-                    { name: 'Banca Jorge Dala', icon: 'fas fa-file-invoice' },
-                    { name: 'Banca PedroMassanga', icon: 'fas fa-file-invoice' },
-                    { name: 'AxianDesign', icon: 'fas fa-palette' },
-                    { name: 'Banca JMP', icon: 'fas fa-file-invoice' }
-                ];
+                const partners = ref([
+                    { name: 'O.David - Software', icon: 'fas fa-building', logo_url: null },
+                    { name: 'Porto Cargo', icon: 'fas fa-ship', logo_url: null },
+                    { name: 'Marvanuel', icon: 'fas fa-store', logo_url: null },
+                    { name: 'SHIFT', icon: 'fas fa-exchange-alt', logo_url: null },
+                    { name: 'Grupo André Sebastião SU', icon: 'fas fa-users', logo_url: null },
+                    { name: 'D. Siamusseque Arquitetura', icon: 'fas fa-drafting-compass', logo_url: null },
+                    { name: 'Honga Yetu', icon: 'fas fa-hands-helping', logo_url: null },
+                    { name: 'Luwuawamo', icon: 'fas fa-shopping-bag', logo_url: null },
+                    { name: 'HR-CID', icon: 'fas fa-database', logo_url: null },
+                    { name: 'Banca Jorge Dala', icon: 'fas fa-file-invoice', logo_url: null },
+                    { name: 'Banca PedroMassanga', icon: 'fas fa-file-invoice', logo_url: null },
+                    { name: 'AxianDesign', icon: 'fas fa-palette', logo_url: null },
+                    { name: 'Banca JMP', icon: 'fas fa-file-invoice', logo_url: null }
+                ]);
+
+                const galleryItems = ref([
+                    { title: 'Reparação de Computadores', description: 'Diagnóstico e reparação profissional', image_url: 'https://images.unsplash.com/photo-1597852074816-d933c7d2b988?w=600&q=80' },
+                    { title: 'Impressoras', description: 'Manutenção e reparação', image_url: 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&q=80' },
+                    { title: 'Componentes', description: 'Substituição e actualizações', image_url: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&q=80' },
+                ]);
 
                 const carouselIndex = ref(0);
                 const carouselAutoplay = ref(null);
@@ -1224,6 +1217,12 @@
                                 if (data.imagesByKey.carousel_3) carouselSlides.value[2].image = data.imagesByKey.carousel_3;
                                 if (data.imagesByKey.carousel_4) carouselSlides.value[3].image = data.imagesByKey.carousel_4;
                             }
+                            if (data.partners && data.partners.length > 0) {
+                                partners.value = data.partners;
+                            }
+                            if (data.gallery && data.gallery.length > 0) {
+                                galleryItems.value = data.gallery;
+                            }
                             startHeroAutoplay();
                         })
                         .catch(() => {
@@ -1234,7 +1233,7 @@
                 onUnmounted(() => { window.removeEventListener('scroll', handleScroll); stopAutoplay(); stopHeroAutoplay(); });
 
                 return {
-                    scrolled, menuOpen, navLinks, services, infoCards, infraItems, partners,
+                    scrolled, menuOpen, navLinks, services, infoCards, infraItems, partners, galleryItems,
                     visibleSections, scrollTo, carouselIndex, carouselSlides, nextSlide, prevSlide,
                     form, formSubmitting, formSent, sendForm,
                     heroSlide, nextHeroSlide, prevHeroSlide, banners, blogPosts, defaultPosts,

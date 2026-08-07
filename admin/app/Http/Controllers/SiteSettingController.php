@@ -15,6 +15,7 @@ class SiteSettingController extends Controller
             'hours_weekday', 'hours_saturday', 'hours_sunday',
             'facebook', 'instagram', 'linkedin', 'youtube',
             'contact_title', 'contact_subtitle',
+            'gallery_title', 'gallery_subtitle',
         ],
         'seo' => ['meta_title', 'meta_description', 'meta_keywords', 'og_title', 'og_description', 'og_image', 'google_analytics'],
     ];

@@ -9,6 +9,8 @@ use App\Models\SiteImage;
 use App\Models\SiteSetting;
 use App\Models\TeamMember;
 use App\Models\Post;
+use App\Models\Partner;
+use App\Models\GalleryItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 
@@ -27,6 +29,8 @@ class ContentApiController extends Controller
         $imagesByKey = $images->pluck('path', 'key')->toArray();
         $team = TeamMember::where('is_active', true)->orderBy('sort_order')->get();
         $posts = Post::where('is_published', true)->latest()->limit(6)->get();
+        $partners = Partner::where('is_active', true)->orderBy('sort_order')->get();
+        $gallery = GalleryItem::orderBy('sort_order')->get();
 
         $allSettings = SiteSetting::all()->pluck('value', 'key')->toArray();
         $publicKeys = [
@@ -38,6 +42,7 @@ class ContentApiController extends Controller
             'hours_weekday', 'hours_saturday', 'hours_sunday',
             'facebook', 'instagram', 'linkedin', 'youtube',
             'contact_title', 'contact_subtitle',
+            'gallery_title', 'gallery_subtitle',
         ];
         $settings = array_intersect_key($allSettings, array_flip($publicKeys));
 
@@ -70,6 +75,14 @@ class ContentApiController extends Controller
             'posts' => $posts->map(function ($post) use ($adminUrl) {
                 $post->image_url = $this->resolveUrl($post->image, $adminUrl);
                 return $post;
+            }),
+            'partners' => $partners->map(function ($partner) use ($adminUrl) {
+                $partner->logo_url = $this->resolveUrl($partner->logo, $adminUrl);
+                return $partner;
+            }),
+            'gallery' => $gallery->map(function ($item) use ($adminUrl) {
+                $item->image_url = $this->resolveUrl($item->image, $adminUrl);
+                return $item;
             }),
         ])->header('Access-Control-Allow-Origin', '*')
           ->header('Access-Control-Allow-Methods', 'GET, OPTIONS')

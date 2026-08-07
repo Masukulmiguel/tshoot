@@ -222,6 +222,17 @@
                 <span class="text-sm font-medium text-white/80">Serviços</span>
             </a>
 
+            <a href="{{ route('admin.gallery.index') }}"
+               class="nav-item flex items-center gap-3 {{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
+                <div class="nav-icon w-5 h-5 flex items-center justify-center {{ request()->routeIs('admin.gallery.*') ? 'text-gold' : 'text-white/50' }}">
+                    <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z"/>
+                    </svg>
+                </div>
+                <span class="text-sm font-medium text-white/80">Galeria</span>
+            </a>
+
             <a href="{{ route('admin.posts.index') }}"
                class="nav-item flex items-center gap-3 {{ request()->routeIs('admin.posts.*') ? 'active' : '' }}">
                 <div class="nav-icon w-5 h-5 flex items-center justify-center {{ request()->routeIs('admin.posts.*') ? 'text-gold' : 'text-white/50' }}">
@@ -240,6 +251,16 @@
                     </svg>
                 </div>
                 <span class="text-sm font-medium text-white/80">Imagens</span>
+            </a>
+
+            <a href="{{ route('admin.partners.index') }}"
+               class="nav-item flex items-center gap-3 {{ request()->routeIs('admin.partners.*') ? 'active' : '' }}">
+                <div class="nav-icon w-5 h-5 flex items-center justify-center {{ request()->routeIs('admin.partners.*') ? 'text-gold' : 'text-white/50' }}">
+                    <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z"/>
+                    </svg>
+                </div>
+                <span class="text-sm font-medium text-white/80">Parceiros</span>
             </a>
 
             <div class="px-5 mt-5 mb-2">
