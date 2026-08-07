@@ -143,7 +143,7 @@
             </div>
             <a href="{{ route('admin.contacts.index') }}" class="text-xs font-medium text-gold hover:text-gold-dark transition-colors">Ver todos →</a>
         </div>
-        <div class="divide-y divide-gray-50">
+        <div id="contacts-list" class="divide-y divide-gray-50">
             @forelse($recentContacts as $contact)
                 <a href="{{ route('admin.contacts.show', $contact) }}" class="table-row flex items-center gap-4 px-5 py-3.5">
                     <div class="w-9 h-9 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center flex-shrink-0">
@@ -176,6 +176,12 @@
                 </div>
             @endforelse
         </div>
+        <div id="contacts-load-more" class="px-5 py-3 border-t border-gray-100 bg-gray-50/50" style="{{ $recentContacts->count() < 5 ? 'display:none' : '' }}">
+            <button onclick="loadMoreContacts()" class="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-white text-xs font-semibold hover:from-amber-600 hover:to-amber-700 transition-all shadow-sm">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                Carregar mais contactos
+            </button>
+        </div>
     </div>
 
     {{-- Recent Visitors --}}
@@ -194,7 +200,7 @@
             </div>
             <a href="{{ route('admin.visitors.index') }}" class="text-xs font-medium text-gold hover:text-gold-dark transition-colors">Ver todos →</a>
         </div>
-        <div class="divide-y divide-gray-50">
+        <div id="visitors-list" class="divide-y divide-gray-50">
             @forelse($recentVisitors as $visitor)
                 <a href="{{ route('admin.visitors.show', $visitor) }}" class="table-row flex items-center gap-4 px-5 py-3.5">
                     <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center flex-shrink-0">
@@ -232,6 +238,12 @@
                     <p class="text-sm text-gray-400">Sem visitantes ainda</p>
                 </div>
             @endforelse
+        </div>
+        <div id="visitors-load-more" class="px-5 py-3 border-t border-gray-100 bg-gray-50/50" style="{{ $recentVisitors->count() < 5 ? 'display:none' : '' }}">
+            <button onclick="loadMoreVisitors()" class="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-semibold hover:from-blue-600 hover:to-blue-700 transition-all shadow-sm">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                Carregar mais visitantes
+            </button>
         </div>
     </div>
 </div>
@@ -422,5 +434,95 @@ new Chart(document.getElementById('contactsChart'), {
     },
     options: chartDefaults
 });
+
+// Dashboard pagination
+let contactsPage = 1;
+let visitorsPage = 1;
+
+function getStatusBadge(status) {
+    const badges = {
+        'new': '<span class="px-2.5 py-1 text-[10px] font-semibold rounded-full bg-blue-50 text-blue-600">Novo</span>',
+        'read': '<span class="px-2.5 py-1 text-[10px] font-semibold rounded-full bg-amber-50 text-amber-600">Lido</span>',
+        'replied': '<span class="px-2.5 py-1 text-[10px] font-semibold rounded-full bg-emerald-50 text-emerald-600">Respondido</span>',
+    };
+    return badges[status] || '<span class="px-2.5 py-1 text-[10px] font-semibold rounded-full bg-gray-50 text-gray-500">Arquivado</span>';
+}
+
+function getDeviceClass(device) {
+    if (device === 'Mobile') return 'bg-blue-50 text-blue-600';
+    if (device === 'Tablet') return 'bg-purple-50 text-purple-600';
+    return 'bg-gray-50 text-gray-600';
+}
+
+function getLocation(visitor) {
+    if (visitor.city && visitor.country) return visitor.city + ', ' + visitor.country;
+    if (visitor.country) return visitor.country;
+    return 'Localização desconhecida';
+}
+
+function loadMoreContacts() {
+    contactsPage++;
+    const btn = event.target.closest('button');
+    btn.innerHTML = '<svg class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg> A carregar...';
+
+    fetch('{{ route("admin.dashboard.moreContacts") }}?page=' + contactsPage)
+        .then(r => r.json())
+        .then(data => {
+            const list = document.getElementById('contacts-list');
+            data.contacts.forEach(c => {
+                list.insertAdjacentHTML('beforeend', `
+                    <a href="${c.show_url}" class="table-row flex items-center gap-4 px-5 py-3.5">
+                        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center flex-shrink-0">
+                            <span class="text-xs font-bold text-gray-600">${c.name.charAt(0).toUpperCase()}</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-semibold text-gray-900 truncate">${c.name}</p>
+                            <p class="text-xs text-gray-500 truncate">${c.subject}</p>
+                        </div>
+                        <div class="flex-shrink-0">${getStatusBadge(c.status)}</div>
+                    </a>
+                `);
+            });
+            if (!data.hasMore) {
+                document.getElementById('contacts-load-more').style.display = 'none';
+            }
+            btn.innerHTML = '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg> Carregar mais contactos';
+        });
+}
+
+function loadMoreVisitors() {
+    visitorsPage++;
+    const btn = event.target.closest('button');
+    btn.innerHTML = '<svg class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg> A carregar...';
+
+    fetch('{{ route("admin.dashboard.moreVisitors") }}?page=' + visitorsPage)
+        .then(r => r.json())
+        .then(data => {
+            const list = document.getElementById('visitors-list');
+            data.visitors.forEach(v => {
+                list.insertAdjacentHTML('beforeend', `
+                    <a href="${v.show_url}" class="table-row flex items-center gap-4 px-5 py-3.5">
+                        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-semibold text-gray-900 truncate">${v.ip_address}</p>
+                            <p class="text-xs text-gray-500 truncate">${getLocation(v)} · ${v.browser}</p>
+                        </div>
+                        <div class="flex items-center gap-2 flex-shrink-0">
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-full ${getDeviceClass(v.device)}">${v.device}</span>
+                            <span class="text-[11px] text-gray-400 font-medium">${v.pages_visited}p</span>
+                        </div>
+                    </a>
+                `);
+            });
+            if (!data.hasMore) {
+                document.getElementById('visitors-load-more').style.display = 'none';
+            }
+            btn.innerHTML = '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg> Carregar mais visitantes';
+        });
+}
 </script>
 @endsection

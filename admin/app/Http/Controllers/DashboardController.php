@@ -7,6 +7,7 @@ use App\Models\Visitor;
 use App\Models\VisitorLog;
 use App\Models\SiteImage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -21,7 +22,7 @@ class DashboardController extends Controller
         $contactsThisWeek = Contact::where('created_at', '>=', now()->subWeek())->count();
 
         $recentContacts = Contact::latest()->take(5)->get();
-        $recentVisitors = Visitor::latest()->take(10)->get();
+        $recentVisitors = Visitor::latest()->take(5)->get();
 
         // Visitantes por dia (últimos 14 dias)
         $visitorsByDay = Visitor::where('last_visit', '>=', now()->subDays(14))
@@ -76,5 +77,64 @@ class DashboardController extends Controller
             'visitorsByDay', 'visitorsByBrowser', 'visitorsByCountry',
             'visitorsByDevice', 'visitorsByOS', 'topPages', 'contactsByDay'
         ));
+    }
+
+    public function moreContacts(Request $request)
+    {
+        $page = $request->get('page', 1);
+        $perPage = 5;
+        $offset = ($page - 1) * $perPage;
+
+        $contacts = Contact::latest()
+            ->skip($offset)
+            ->take($perPage)
+            ->get();
+
+        $total = Contact::count();
+        $hasMore = ($offset + $perPage) < $total;
+
+        return response()->json([
+            'contacts' => $contacts->map(function ($contact) {
+                return [
+                    'id' => $contact->id,
+                    'name' => $contact->name,
+                    'subject' => $contact->subject ?? 'Sem assunto',
+                    'status' => $contact->status,
+                    'show_url' => route('admin.contacts.show', $contact),
+                ];
+            }),
+            'hasMore' => $hasMore,
+        ]);
+    }
+
+    public function moreVisitors(Request $request)
+    {
+        $page = $request->get('page', 1);
+        $perPage = 5;
+        $offset = ($page - 1) * $perPage;
+
+        $visitors = Visitor::latest()
+            ->skip($offset)
+            ->take($perPage)
+            ->get();
+
+        $total = Visitor::count();
+        $hasMore = ($offset + $perPage) < $total;
+
+        return response()->json([
+            'visitors' => $visitors->map(function ($visitor) {
+                return [
+                    'id' => $visitor->id,
+                    'ip_address' => $visitor->ip_address ?? 'IP desconhecido',
+                    'city' => $visitor->city,
+                    'country' => $visitor->country,
+                    'browser' => $visitor->browser ?? '-',
+                    'device' => $visitor->device ?? '-',
+                    'pages_visited' => $visitor->pages_visited,
+                    'show_url' => route('admin.visitors.show', $visitor),
+                ];
+            }),
+            'hasMore' => $hasMore,
+        ]);
     }
 }
