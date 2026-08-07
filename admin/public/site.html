@@ -1249,7 +1249,8 @@
             var data = {
                 page: window.location.pathname + window.location.hash,
                 screen: screen.width + 'x' + screen.height,
-                lang: navigator.language || 'pt'
+                lang: navigator.language || 'pt',
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || ''
             };
             try {
                 fetch(API_URL, {

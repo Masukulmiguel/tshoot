@@ -43,13 +43,7 @@ class ApiController extends Controller
             ->where('last_visit', '>=', now()->subMinutes(30))
             ->first();
 
-        $geoData = [];
-        try {
-            $response = Http::timeout(3)->get("http://ip-api.com/json/{$ip}?fields=status,country,city,lat,lon,timezone,isp");
-            if ($response->successful() && ($response->json('status') ?? '') === 'success') {
-                $geoData = $response->json();
-            }
-        } catch (\Exception $e) {}
+        $geoData = $this->getGeoData($ip, $request->input('timezone'));
 
         $lat = $request->input('lat') ?? $geoData['lat'] ?? null;
         $lon = $request->input('lon') ?? $geoData['lon'] ?? null;
@@ -60,6 +54,7 @@ class ApiController extends Controller
         $device = $this->parseDevice($agent);
         $screen = $request->input('screen') ?? null;
         $language = $request->input('lang') ?? $request->header('Accept-Language', 'pt');
+        $timezone = $request->input('timezone') ?? $geoData['timezone'] ?? null;
 
         if ($visitor) {
             $update = [
@@ -70,6 +65,12 @@ class ApiController extends Controller
                 $update['latitude'] = $lat;
                 $update['longitude'] = $lon;
             }
+            if (!empty($geoData['country']) && empty($visitor->country)) {
+                $update['country'] = $geoData['country'];
+            }
+            if (!empty($geoData['city']) && empty($visitor->city)) {
+                $update['city'] = $geoData['city'];
+            }
             $visitor->update($update);
         } else {
             $visitor = Visitor::create([
@@ -78,7 +79,7 @@ class ApiController extends Controller
                 'city' => $geoData['city'] ?? null,
                 'latitude' => $lat,
                 'longitude' => $lon,
-                'timezone' => $geoData['timezone'] ?? null,
+                'timezone' => $timezone,
                 'isp' => $geoData['isp'] ?? null,
                 'browser' => $browser,
                 'os' => $os,
@@ -100,6 +101,73 @@ class ApiController extends Controller
         ]);
 
         return response()->json(['success' => true]);
+    }
+
+    private function getGeoData($ip, $clientTimezone = null)
+    {
+        if ($this->isPrivateIp($ip)) {
+            return [
+                'country' => 'Angola',
+                'city' => 'Luanda',
+                'timezone' => $clientTimezone ?: 'Africa/Luanda',
+                'isp' => 'Rede Local',
+                'lat' => null,
+                'lon' => null,
+            ];
+        }
+
+        $geoData = [];
+
+        try {
+            $response = Http::timeout(5)->get("http://ip-api.com/json/{$ip}?fields=status,country,city,lat,lon,timezone,isp");
+            if ($response->successful() && ($response->json('status') ?? '') === 'success') {
+                $geoData = $response->json();
+            }
+        } catch (\Exception $e) {}
+
+        if (empty($geoData['country']) || empty($geoData['city'])) {
+            try {
+                $response = Http::timeout(5)->get("https://ipinfo.io/{$ip}/json");
+                if ($response->successful() && !isset($response->json()['error'])) {
+                    $data = $response->json();
+                    $geoData['country'] = $geoData['country'] ?? $data['country'] ?? null;
+                    $geoData['city'] = $geoData['city'] ?? $data['city'] ?? null;
+                    $geoData['timezone'] = $geoData['timezone'] ?? $data['timezone'] ?? null;
+                    $geoData['isp'] = $geoData['isp'] ?? $data['org'] ?? null;
+                    if (empty($geoData['lat']) && !empty($data['loc'])) {
+                        $parts = explode(',', $data['loc']);
+                        $geoData['lat'] = $parts[0] ?? null;
+                        $geoData['lon'] = $parts[1] ?? null;
+                    }
+                }
+            } catch (\Exception $e) {}
+        }
+
+        if (empty($geoData['country']) && !empty($clientTimezone)) {
+            $tzMap = [
+                'Africa/Luanda' => ['Angola', 'Luanda'],
+                'Africa/Maputo' => ['Mozambique', 'Maputo'],
+                'Africa/Johannesburg' => ['South Africa', 'Johannesburg'],
+                'Africa/Nairobi' => ['Kenya', 'Nairobi'],
+                'Africa/Lagos' => ['Nigeria', 'Lagos'],
+                'America/Sao_Paulo' => ['Brazil', 'São Paulo'],
+                'America/New_York' => ['United States', 'New York'],
+                'Europe/London' => ['United Kingdom', 'London'],
+                'Europe/Paris' => ['France', 'Paris'],
+                'Asia/Dubai' => ['UAE', 'Dubai'],
+            ];
+            if (isset($tzMap[$clientTimezone])) {
+                $geoData['country'] = $tzMap[$clientTimezone][0];
+                $geoData['city'] = $tzMap[$clientTimezone][1];
+            }
+        }
+
+        return $geoData;
+    }
+
+    private function isPrivateIp($ip)
+    {
+        return !filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE);
     }
 
     private function parseBrowser($agent)
