@@ -34,6 +34,10 @@ class ContentApiController extends Controller
             'meta_title', 'meta_description', 'meta_keywords',
             'og_title', 'og_description', 'og_image',
             'about_image', 'contact_bg',
+            'phone', 'whatsapp', 'email', 'address',
+            'hours_weekday', 'hours_saturday', 'hours_sunday',
+            'facebook', 'instagram', 'linkedin', 'youtube',
+            'contact_title', 'contact_subtitle',
         ];
         $settings = array_intersect_key($allSettings, array_flip($publicKeys));
 

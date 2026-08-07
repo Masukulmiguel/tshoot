@@ -827,21 +827,21 @@
             <div class="container">
                 <div class="contact-wrapper">
                     <div class="contact-info" data-aos="fade-right">
-                        <h2 class="contact-title">Ligue para Nós<br/><span>Estamos aqui para ajudar</span></h2>
+                        <h2 class="contact-title">{{ settings.contact_title || 'Ligue para Nós' }}<br/><span>{{ settings.contact_subtitle || 'Estamos aqui para ajudar' }}</span></h2>
                         <p class="contact-desc">Estamos prontos para ajudar a transformar as suas ideias em soluções tecnológicas.</p>
                         <div class="contact-details">
                             <div class="contact-detail-item">
                                 <div class="contact-detail-icon"><i class="fas fa-map-marker-alt"></i></div>
                                 <div>
                                     <span class="contact-detail-label">Morada</span>
-                                    <p class="contact-detail-value">Major Kanhangulo, Prédio da Suave, 3º Andar, Luanda</p>
+                                    <p class="contact-detail-value">{{ settings.address || 'Major Kanhangulo, Prédio da Suave, 3º Andar, Luanda' }}</p>
                                 </div>
                             </div>
                             <div class="contact-detail-item">
                                 <div class="contact-detail-icon"><i class="fas fa-phone-alt"></i></div>
                                 <div>
                                     <span class="contact-detail-label">Telefone</span>
-                                    <p class="contact-detail-value">(+244)-933-189-868</p>
+                                    <p class="contact-detail-value">{{ settings.phone || '(+244)-933-189-868' }}</p>
                                 </div>
                             </div>
 
@@ -849,7 +849,7 @@
                                 <div class="contact-detail-icon"><i class="fas fa-envelope"></i></div>
                                 <div>
                                     <span class="contact-detail-label">Email</span>
-                                    <p class="contact-detail-value">comercial@tshoot-angola.com</p>
+                                    <p class="contact-detail-value">{{ settings.email || 'comercial@tshoot-angola.com' }}</p>
                                 </div>
                             </div>
                         </div>
@@ -888,13 +888,7 @@
                                 <div class="input-wrapper">
                                     <select v-model="form.service">
                                         <option value="">Selecione um serviço</option>
-                                        <option>Assistência Técnica</option>
-                                        <option>Desenvolvimento de Software</option>
-                                        <option>Infraestrutura de Rede</option>
-                                        <option>Reparação de Equipamentos</option>
-                                        <option>Formação</option>
-                                        <option>Segurança Informática</option>
-                                        <option>Suporte Remoto</option>
+                                        <option v-for="s in services" :key="s.id || s.title" :value="s.title">{{ s.title }}</option>
                                     </select>
                                     <i class="fas fa-concierge-bell"></i>
                                 </div>
@@ -917,9 +911,9 @@
                     </div>
                 </div>
                 <div class="hours-bar slide-up" :class="{ visible: visibleSections.contact }" style="transition-delay:0.25s">
-                    <div class="hours-item"><i class="fas fa-clock"></i><span>Seg - Sex: 8h00 - 16h30</span></div>
+                    <div class="hours-item"><i class="fas fa-clock"></i><span>Seg - Sex: {{ settings.hours_weekday || '8h00 - 16h30' }}</span></div>
                     <div class="hours-divider"></div>
-                    <div class="hours-item"><i class="fas fa-clock"></i><span>Sábado: 8h30 - 11h30</span></div>
+                    <div class="hours-item"><i class="fas fa-clock"></i><span>Sábado: {{ settings.hours_saturday || '8h30 - 11h30' }}</span></div>
                     <div class="hours-divider"></div>
                     <div class="hours-item highlight"><i class="fas fa-headset"></i><span>Suporte 24/7</span></div>
                 </div>

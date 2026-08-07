@@ -61,5 +61,7 @@ class SiteContentSeeder extends Seeder
         SiteSetting::set('instagram', '', 'general');
         SiteSetting::set('linkedin', '', 'general');
         SiteSetting::set('youtube', '', 'general');
+        SiteSetting::set('contact_title', 'Ligue para Nós', 'general');
+        SiteSetting::set('contact_subtitle', 'Estamos aqui para ajudar', 'general');
     }
 }

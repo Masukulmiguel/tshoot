@@ -9,7 +9,13 @@ use Illuminate\Http\Request;
 class SiteSettingController extends Controller
 {
     private array $allowedSettings = [
-        'general' => ['company_name', 'company_slogan', 'email', 'phone', 'address', 'website', 'logo', 'about_image', 'contact_bg'],
+        'general' => [
+            'company_name', 'company_slogan', 'email', 'phone', 'address', 'website', 'logo',
+            'about_image', 'contact_bg', 'whatsapp', 'slogan',
+            'hours_weekday', 'hours_saturday', 'hours_sunday',
+            'facebook', 'instagram', 'linkedin', 'youtube',
+            'contact_title', 'contact_subtitle',
+        ],
         'seo' => ['meta_title', 'meta_description', 'meta_keywords', 'og_title', 'og_description', 'og_image', 'google_analytics'],
     ];
 

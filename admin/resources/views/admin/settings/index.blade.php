@@ -30,22 +30,34 @@
             <h3 class="text-sm font-semibold text-gray-800 mb-4 flex items-center gap-2">
                 <i class="fas fa-phone text-gold"></i> Contactos
             </h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Telefone</label>
-                    <input type="text" name="phone" value="{{ $settings['general']['phone'] ?? '(+244) 933 189 868' }}" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none">
+            <div class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Título da Secção Contacto</label>
+                        <input type="text" name="contact_title" value="{{ $settings['general']['contact_title'] ?? 'Ligue para Nós' }}" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none" placeholder="Ligue para Nós">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Subtítulo da Secção Contacto</label>
+                        <input type="text" name="contact_subtitle" value="{{ $settings['general']['contact_subtitle'] ?? 'Estamos aqui para ajudar' }}" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none" placeholder="Estamos aqui para ajudar">
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">WhatsApp</label>
-                    <input type="text" name="whatsapp" value="{{ $settings['general']['whatsapp'] ?? '+244 935 603 163' }}" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <input type="email" name="email" value="{{ $settings['general']['email'] ?? 'comercial@tshoot-angola.com' }}" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Morada</label>
-                    <input type="text" name="address" value="{{ $settings['general']['address'] ?? 'Major Kanhangulo, Luanda' }}" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Telefone</label>
+                        <input type="text" name="phone" value="{{ $settings['general']['phone'] ?? '(+244) 933 189 868' }}" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">WhatsApp</label>
+                        <input type="text" name="whatsapp" value="{{ $settings['general']['whatsapp'] ?? '+244 935 603 163' }}" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" name="email" value="{{ $settings['general']['email'] ?? 'comercial@tshoot-angola.com' }}" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Morada</label>
+                        <input type="text" name="address" value="{{ $settings['general']['address'] ?? 'Major Kanhangulo, Luanda' }}" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none">
+                    </div>
                 </div>
             </div>
         </div>
