@@ -22,7 +22,10 @@ class SiteSettingController extends Controller
 
     public function index()
     {
-        $settings = SiteSetting::all()->groupBy('group');
+        $settings = collect([
+            'general' => SiteSetting::getGroup('general'),
+            'seo' => SiteSetting::getGroup('seo'),
+        ]);
         return view('admin.settings.index', compact('settings'));
     }
 
