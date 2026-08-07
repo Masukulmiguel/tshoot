@@ -177,9 +177,9 @@
             @endforelse
         </div>
         <div id="contacts-load-more" class="px-5 py-3 border-t border-gray-100 bg-gray-50/50" style="{{ $recentContacts->count() < 5 ? 'display:none' : '' }}">
-            <button onclick="loadMoreContacts()" class="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-white text-xs font-semibold hover:from-amber-600 hover:to-amber-700 transition-all shadow-sm">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-                Carregar mais contactos
+            <button onclick="loadMoreContacts()" class="flex items-center justify-center gap-1.5 w-full py-2 rounded-lg border border-amber-200 text-amber-600 text-xs font-semibold hover:bg-amber-50 transition-all">
+                Próximo
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
             </button>
         </div>
     </div>
@@ -240,9 +240,9 @@
             @endforelse
         </div>
         <div id="visitors-load-more" class="px-5 py-3 border-t border-gray-100 bg-gray-50/50" style="{{ $recentVisitors->count() < 5 ? 'display:none' : '' }}">
-            <button onclick="loadMoreVisitors()" class="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-semibold hover:from-blue-600 hover:to-blue-700 transition-all shadow-sm">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-                Carregar mais visitantes
+            <button onclick="loadMoreVisitors()" class="flex items-center justify-center gap-1.5 w-full py-2 rounded-lg border border-blue-200 text-blue-600 text-xs font-semibold hover:bg-blue-50 transition-all">
+                Próximo
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
             </button>
         </div>
     </div>
@@ -486,7 +486,7 @@ function loadMoreContacts() {
             if (!data.hasMore) {
                 document.getElementById('contacts-load-more').style.display = 'none';
             }
-            btn.innerHTML = '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg> Carregar mais contactos';
+            btn.innerHTML = 'Próximo <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>';
         });
 }
 
@@ -521,7 +521,7 @@ function loadMoreVisitors() {
             if (!data.hasMore) {
                 document.getElementById('visitors-load-more').style.display = 'none';
             }
-            btn.innerHTML = '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg> Carregar mais visitantes';
+            btn.innerHTML = 'Próximo <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>';
         });
 }
 </script>
