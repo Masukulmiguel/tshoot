@@ -618,12 +618,17 @@
                 </div>
                 <div class="cards-grid">
                     <div v-for="(card, index) in infoCards" :key="index" class="info-card" data-aos="fade-up" :data-aos-delay="index * 150">
-                        <div class="info-card-img">
+                        <div v-if="card.image" class="info-card-img">
                             <img :src="card.image" :alt="card.title" />
                             <div class="info-card-img-overlay">
                                 <div class="info-card-icon">
                                     <i :class="card.icon"></i>
                                 </div>
+                            </div>
+                        </div>
+                        <div v-else class="info-card-body" style="padding-top: 2rem; text-align: center;">
+                            <div class="info-card-icon" style="margin: 0 auto 1rem;">
+                                <i :class="card.icon"></i>
                             </div>
                         </div>
                         <div class="info-card-body">
@@ -705,7 +710,7 @@
                 </div>
 
                 <!-- Carousel -->
-                <div class="carousel-wrapper" data-aos="fade-up">
+                <div v-if="carouselSlides.length > 0" class="carousel-wrapper" data-aos="fade-up">
                     <div class="carousel-track" :style="{ transform: `translateX(-${carouselIndex * 100}%)` }">
                         <div v-for="(slide, i) in carouselSlides" :key="i" class="carousel-slide">
                             <div class="carousel-slide-inner" :style="{ backgroundImage: `url(${slide.image})` }">
@@ -1108,12 +1113,7 @@
 
                 const carouselIndex = ref(0);
                 const carouselAutoplay = ref(null);
-                const carouselSlides = ref([
-                    { image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&q=80', icon: 'fas fa-handshake', title: 'Parcerias Estratégicas', description: 'Trabalhamos lado a lado com as melhores empresas de Angola.' },
-                    { image: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200&q=80', icon: 'fas fa-chart-line', title: 'Crescimento Conjunto', description: 'Os nossos parceiros crescem connosco.' },
-                    { image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&q=80', icon: 'fas fa-users', title: 'Confiança e Qualidade', description: 'Mais de 13 empresas confiam nos nossos serviços.' },
-                    { image: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=1200&q=80', icon: 'fas fa-globe-africa', title: 'Alcance Nacional', description: 'De Luanda para todo o Angola.' }
-                ]);
+                const carouselSlides = ref([]);
 
                 const nextSlide = () => { carouselIndex.value = (carouselIndex.value + 1) % carouselSlides.value.length; };
                 const prevSlide = () => { carouselIndex.value = carouselIndex.value === 0 ? carouselSlides.value.length - 1 : carouselIndex.value - 1; };
@@ -1199,9 +1199,6 @@
                             if (data.imagesByKey) {
                                 siteImages.value = data.imagesByKey;
                                 const imgBase = 'https://tshoot-admin-6t0l.onrender.com/';
-                                if (data.imagesByKey.card_request) infoCards.value[0].image = imgBase + data.imagesByKey.card_request;
-                                if (data.imagesByKey.card_pricing) infoCards.value[1].image = imgBase + data.imagesByKey.card_pricing;
-                                if (data.imagesByKey.card_delivery) infoCards.value[2].image = imgBase + data.imagesByKey.card_delivery;
                                 if (data.imagesByKey.carousel_1) carouselSlides.value[0].image = imgBase + data.imagesByKey.carousel_1;
                                 if (data.imagesByKey.carousel_2) carouselSlides.value[1].image = imgBase + data.imagesByKey.carousel_2;
                                 if (data.imagesByKey.carousel_3) carouselSlides.value[2].image = imgBase + data.imagesByKey.carousel_3;

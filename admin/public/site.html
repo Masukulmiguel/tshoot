@@ -521,7 +521,7 @@
             <div class="hero-carousel">
                 <div class="hero-carousel-track" :style="{ transform: `translateX(-${heroSlide * 100}%)` }">
                     <div v-for="(banner, index) in banners" :key="banner.id" class="hero-carousel-slide">
-                        <img :src="banner.image_url || 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=1920&q=80'" :alt="banner.title" />
+                        <img v-if="banner.image_url" :src="banner.image_url" :alt="banner.title" />
                         <div class="hero-carousel-overlay"></div>
                     </div>
                 </div>
@@ -558,7 +558,7 @@
                 <div class="about-grid">
                     <div class="about-image" data-aos="fade-right">
                         <div class="about-image-main">
-                            <img :src="siteImages.about_main || settings.about_image || 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&q=80'" alt="Sobre a Troubleshoot" />
+                                <img v-if="siteImages.about_main || settings.about_image" :src="siteImages.about_main || settings.about_image" alt="Sobre a Troubleshoot" />
                         </div>
                         <div class="about-image-accent">
                             <span class="number">{{ contents.about?.experience_years || '10+' }}</span>
@@ -618,12 +618,17 @@
                 </div>
                 <div class="cards-grid">
                     <div v-for="(card, index) in infoCards" :key="index" class="info-card" data-aos="fade-up" :data-aos-delay="index * 150">
-                        <div class="info-card-img">
+                        <div v-if="card.image" class="info-card-img">
                             <img :src="card.image" :alt="card.title" />
                             <div class="info-card-img-overlay">
                                 <div class="info-card-icon">
                                     <i :class="card.icon"></i>
                                 </div>
+                            </div>
+                        </div>
+                        <div v-else class="info-card-body" style="padding-top: 2rem; text-align: center;">
+                            <div class="info-card-icon" style="margin: 0 auto 1rem;">
+                                <i :class="card.icon"></i>
                             </div>
                         </div>
                         <div class="info-card-body">
@@ -705,7 +710,7 @@
                 </div>
 
                 <!-- Carousel -->
-                <div class="carousel-wrapper" data-aos="fade-up">
+                <div v-if="carouselSlides.length > 0" class="carousel-wrapper" data-aos="fade-up">
                     <div class="carousel-track" :style="{ transform: `translateX(-${carouselIndex * 100}%)` }">
                         <div v-for="(slide, i) in carouselSlides" :key="i" class="carousel-slide">
                             <div class="carousel-slide-inner" :style="{ backgroundImage: `url(${slide.image})` }">
@@ -777,7 +782,7 @@
                     <template v-if="blogPosts.length > 0">
                         <div v-for="post in blogPosts" :key="post.id" class="blog-card" data-aos="fade-up">
                             <div class="blog-card-image">
-                                <img :src="post.image_url || 'https://images.unsplash.com/photo-1504711434969-e33886168d5c?w=600&q=80'" :alt="post.title" />
+                                <img v-if="post.image_url" :src="post.image_url" :alt="post.title" />
                                 <span v-if="post.category" class="blog-card-category">{{ post.category }}</span>
                             </div>
                             <div class="blog-card-content">
@@ -815,7 +820,7 @@
         <!-- CONTACT -->
         <section class="contact-section" id="contact" data-aos="fade-up">
             <div class="contact-bg">
-                <img :src="siteImages.contact_bg || settings.contact_bg || 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80'" alt="Escritório" />
+                <img v-if="siteImages.contact_bg || settings.contact_bg" :src="siteImages.contact_bg || settings.contact_bg" alt="Escritório" />
                 <div class="contact-bg-overlay"></div>
             </div>
             <div class="container">
@@ -1056,9 +1061,9 @@
                 const contents = ref({});
                 const blogPosts = ref([]);
                 const defaultPosts = [
-                    { title: 'Novas Soluções Cloud para Empresas', excerpt: 'A Troubleshoot apresenta novas soluções de cloud computing para optimizar a infraestrutura da sua empresa com segurança e eficiência.', category: 'Tecnologia', author: 'Masukul Miguel', date: '01/08/2026', image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80' },
-                    { title: 'Segurança Informática: Dicas Essenciais', excerpt: 'Conheça as melhores práticas para proteger os seus dados e sistemas contra ameaças cibernéticas crescentes.', category: 'Segurança', author: 'Equipa Técnica', date: '25/07/2026', image: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=600&q=80' },
-                    { title: 'Infraestrutura de Redes: Guia Completo', excerpt: 'Tudo o que precisa de saber sobre projecto e implementação de redes de dados profissionais para a sua empresa.', category: 'Redes', author: 'Masukul Miguel', date: '18/07/2026', image: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=600&q=80' }
+                    { title: 'Novas Soluções Cloud para Empresas', excerpt: 'A Troubleshoot apresenta novas soluções de cloud computing para optimizar a infraestrutura da sua empresa com segurança e eficiência.', category: 'Tecnologia', author: 'Masukul Miguel', date: '01/08/2026' },
+                    { title: 'Segurança Informática: Dicas Essenciais', excerpt: 'Conheça as melhores práticas para proteger os seus dados e sistemas contra ameaças cibernéticas crescentes.', category: 'Segurança', author: 'Equipa Técnica', date: '25/07/2026' },
+                    { title: 'Infraestrutura de Redes: Guia Completo', excerpt: 'Tudo o que precisa de saber sobre projecto e implementação de redes de dados profissionais para a sua empresa.', category: 'Redes', author: 'Masukul Miguel', date: '18/07/2026' }
                 ];
 
                 const nextHeroSlide = () => { heroSlide.value = (heroSlide.value + 1) % banners.value.length; };
@@ -1086,9 +1091,9 @@
                 ]);
 
                 const infoCards = ref([
-                    { title: 'Solicitar um Serviço', description: 'Os nossos serviços são à medida do seu bolso. Solicite já o seu orçamento sem compromisso.', image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&q=80', icon: 'fas fa-concierge-bell', cta: 'Saiba Mais', link: 'mailto:comercial@tshoot-angola.com' },
-                    { title: 'Nossos Preços', description: 'Economize ao escolher a Troubleshoot. Preços competitivos e qualidade garantida.', image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&q=80', icon: 'fas fa-tags', cta: 'Pedir Orçamento', link: 'mailto:comercial@tshoot-angola.com' },
-                    { title: 'Tempo de Entrega', description: 'Não hesite, eficiência é o nosso lema. Entregas rápidas com qualidade profissional.', image: 'https://images.unsplash.com/photo-1501084817091-a4f3d1d19e07?w=600&q=80', icon: 'fas fa-clock', cta: 'Contactar', link: 'https://wa.me/244993314247' }
+                    { title: 'Solicitar um Serviço', description: 'Os nossos serviços são à medida do seu bolso. Solicite já o seu orçamento sem compromisso.', icon: 'fas fa-concierge-bell', cta: 'Saiba Mais', link: 'mailto:comercial@tshoot-angola.com' },
+                    { title: 'Nossos Preços', description: 'Economize ao escolher a Troubleshoot. Preços competitivos e qualidade garantida.', icon: 'fas fa-tags', cta: 'Pedir Orçamento', link: 'mailto:comercial@tshoot-angola.com' },
+                    { title: 'Tempo de Entrega', description: 'Não hesite, eficiência é o nosso lema. Entregas rápidas com qualidade profissional.', icon: 'fas fa-clock', cta: 'Contactar', link: 'https://wa.me/244993314247' }
                 ]);
 
                 const infraItems = [
@@ -1108,12 +1113,7 @@
 
                 const carouselIndex = ref(0);
                 const carouselAutoplay = ref(null);
-                const carouselSlides = ref([
-                    { image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&q=80', icon: 'fas fa-handshake', title: 'Parcerias Estratégicas', description: 'Trabalhamos lado a lado com as melhores empresas de Angola.' },
-                    { image: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200&q=80', icon: 'fas fa-chart-line', title: 'Crescimento Conjunto', description: 'Os nossos parceiros crescem connosco.' },
-                    { image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&q=80', icon: 'fas fa-users', title: 'Confiança e Qualidade', description: 'Mais de 13 empresas confiam nos nossos serviços.' },
-                    { image: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=1200&q=80', icon: 'fas fa-globe-africa', title: 'Alcance Nacional', description: 'De Luanda para todo o Angola.' }
-                ]);
+                const carouselSlides = ref([]);
 
                 const nextSlide = () => { carouselIndex.value = (carouselIndex.value + 1) % carouselSlides.value.length; };
                 const prevSlide = () => { carouselIndex.value = carouselIndex.value === 0 ? carouselSlides.value.length - 1 : carouselIndex.value - 1; };
@@ -1198,9 +1198,6 @@
                             if (data.contents) contents.value = data.contents;
                             if (data.imagesByKey) {
                                 siteImages.value = data.imagesByKey;
-                                if (data.imagesByKey.card_request) infoCards.value[0].image = data.imagesByKey.card_request;
-                                if (data.imagesByKey.card_pricing) infoCards.value[1].image = data.imagesByKey.card_pricing;
-                                if (data.imagesByKey.card_delivery) infoCards.value[2].image = data.imagesByKey.card_delivery;
                                 if (data.imagesByKey.carousel_1) carouselSlides.value[0].image = data.imagesByKey.carousel_1;
                                 if (data.imagesByKey.carousel_2) carouselSlides.value[1].image = data.imagesByKey.carousel_2;
                                 if (data.imagesByKey.carousel_3) carouselSlides.value[2].image = data.imagesByKey.carousel_3;

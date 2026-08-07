@@ -26,7 +26,7 @@
         * { font-family: 'Inter', sans-serif; }
         body {
             min-height: 100vh;
-            background: url('{{ \App\Models\SiteSetting::get("login_bg") ?: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1920&q=80" }}') no-repeat center center fixed;
+            background: url('{{ \App\Models\SiteSetting::get("login_bg") }}') no-repeat center center fixed;
             background-size: cover;
             position: relative;
             overflow: hidden;
