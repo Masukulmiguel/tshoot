@@ -227,10 +227,10 @@
         .partners-marquee { overflow: hidden; mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90, transparent); margin-top: 2rem; }
         .marquee-track { display: flex; gap: 1rem; animation: marquee 35s linear infinite; width: max-content; }
         .marquee-track:hover { animation-play-state: paused; }
-        .marquee-item { display: flex; align-items: center; gap: 10px; padding: 12px 20px; background: var(--white); border: 1px solid var(--gray-200); border-radius: 50px; white-space: nowrap; transition: var(--transition); cursor: default; }
+        .marquee-item { display: flex; align-items: center; justify-content: center; padding: 12px 20px; background: var(--white); border: 1px solid var(--gray-200); border-radius: 5px; white-space: nowrap; transition: var(--transition); cursor: default; min-width: 120px; height: 60px; }
         .marquee-item:hover { border-color: var(--gold); box-shadow: var(--shadow-md); }
         .marquee-icon { width: 36px; height: 36px; min-width: 36px; background: rgba(212,161,29,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 0.85rem; }
-        .marquee-item span { font-size: 0.85rem; font-weight: 500; color: var(--navy); }
+        .marquee-item img { height: 40px; width: auto; max-width: 100px; object-fit: contain; border-radius: 5px; }
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
         .partners-stats { display: flex; align-items: center; justify-content: center; gap: 3rem; margin-top: 3rem; padding: 2rem; background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
@@ -741,10 +741,9 @@
                 </h3>
                 <div v-if="partners.length > 0" class="partners-marquee slide-up" :class="{ visible: visibleSections.partners }" style="transition-delay:0.15s">
                     <div class="marquee-track">
-                        <div v-for="(partner, index) in [...partners, ...partners]" :key="'m'+index" class="marquee-item">
-                            <img v-if="partner.logo_url" :src="partner.logo_url" :alt="partner.name" style="height:28px;width:auto;object-fit:contain;border-radius:4px;">
+                        <div v-for="(partner, index) in [...partners.filter(p => p.is_active), ...partners.filter(p => p.is_active)]" :key="'m'+index" class="marquee-item">
+                            <img v-if="partner.logo_url" :src="partner.logo_url" :alt="partner.name">
                             <div v-else class="marquee-icon"><i :class="partner.icon || 'fas fa-building'"></i></div>
-                            <span>{{ partner.name }}</span>
                         </div>
                     </div>
                 </div>
