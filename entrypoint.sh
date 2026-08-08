@@ -3,6 +3,8 @@ set -e
 
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true
 chmod -R 777 /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true
+mkdir -p /var/www/html/public/uploads
+chown -R www-data:www-data /var/www/html/public/uploads 2>/dev/null || true
 
 cat > .env <<EOF
 APP_NAME=TShoot

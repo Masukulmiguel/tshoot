@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Service;
+use App\Services\SupabaseService;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
@@ -18,7 +19,7 @@ class ServiceController extends Controller
         return view('admin.services.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request, SupabaseService $supabase)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -32,10 +33,16 @@ class ServiceController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads'), $filename);
-            $validated['image'] = $filename;
+            if ($supabase->isConfigured()) {
+                $url = $supabase->upload($request->file('image'), 'uploads', 'services');
+                $validated['image'] = $url;
+            } else {
+                @mkdir(public_path('uploads'), 0777, true);
+                $file = $request->file('image');
+                $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('uploads'), $filename);
+                $validated['image'] = $filename;
+            }
         }
 
         $validated['is_active'] = $request->boolean('is_active');
@@ -51,7 +58,7 @@ class ServiceController extends Controller
         return view('admin.services.edit', compact('service'));
     }
 
-    public function update(Request $request, Service $service)
+    public function update(Request $request, Service $service, SupabaseService $supabase)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -65,20 +72,25 @@ class ServiceController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            if ($service->image) {
-                $oldPath = public_path('uploads/' . $service->image);
-                if (file_exists($oldPath)) {
-                    unlink($oldPath);
-                    $dir = dirname($oldPath);
-                    if (is_dir($dir) && count(scandir($dir)) <= 2) {
-                        rmdir($dir);
+            if ($supabase->isConfigured()) {
+                if (str_contains($service->image ?? '', 'supabase')) {
+                    $supabase->delete($service->image);
+                }
+                $url = $supabase->upload($request->file('image'), 'uploads', 'services');
+                $validated['image'] = $url;
+            } else {
+                if ($service->image && !str_contains($service->image, 'supabase')) {
+                    $oldPath = public_path('uploads/' . $service->image);
+                    if (file_exists($oldPath)) {
+                        unlink($oldPath);
                     }
                 }
+                @mkdir(public_path('uploads'), 0777, true);
+                $file = $request->file('image');
+                $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('uploads'), $filename);
+                $validated['image'] = $filename;
             }
-            $file = $request->file('image');
-            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads'), $filename);
-            $validated['image'] = $filename;
         }
 
         $validated['is_active'] = $request->boolean('is_active');
@@ -88,18 +100,17 @@ class ServiceController extends Controller
         return redirect()->route('admin.services.index')->with('success', 'Serviço actualizado!');
     }
 
-    public function destroy(Service $service)
+    public function destroy(Service $service, SupabaseService $supabase)
     {
-        if ($service->image) {
+        if (str_contains($service->image ?? '', 'supabase')) {
+            $supabase->delete($service->image);
+        } elseif ($service->image) {
             $path = public_path('uploads/' . $service->image);
             if (file_exists($path)) {
                 unlink($path);
-                $dir = dirname($path);
-                if (is_dir($dir) && count(scandir($dir)) <= 2) {
-                    rmdir($dir);
-                }
             }
         }
+
         $service->delete();
         return redirect()->route('admin.services.index')->with('success', 'Serviço eliminado!');
     }
