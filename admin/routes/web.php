@@ -12,7 +12,6 @@ use App\Http\Controllers\SiteSettingController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\ApiController;
-use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\SocialLinkController;
 use Illuminate\Support\Facades\Route;
@@ -70,10 +69,6 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
     Route::resource('images', ImageController::class)->except(['show']);
     Route::post('images/reorder', [ImageController::class, 'reorder'])->name('images.reorder');
-
-    Route::resource('gallery', GalleryController::class)->except(['show']);
-    Route::post('gallery/reorder', [GalleryController::class, 'reorder'])->name('gallery.reorder');
-    Route::put('gallery-section', [GalleryController::class, 'updateSection'])->name('gallery.updateSection');
 
     Route::resource('partners', PartnerController::class)->except(['show']);
     Route::post('partners/{partner}/toggle', [PartnerController::class, 'toggle'])->name('partners.toggle');

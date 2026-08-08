@@ -10,7 +10,6 @@ use App\Models\SiteSetting;
 use App\Models\TeamMember;
 use App\Models\Post;
 use App\Models\Partner;
-use App\Models\GalleryItem;
 use App\Models\SocialLink;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -32,7 +31,7 @@ class ContentApiController extends Controller
         $team = TeamMember::where('is_active', true)->orderBy('sort_order')->get();
         $posts = Post::where('is_published', true)->latest()->limit(6)->get();
         $partners = Partner::where('is_active', true)->orderBy('sort_order')->get();
-        $gallery = GalleryItem::orderBy('sort_order')->get();
+        $gallery = SiteImage::where('category', 'gallery')->where('is_active', true)->orderBy('sort_order')->get();
         $socialLinks = Schema::hasTable('social_links')
             ? SocialLink::where('is_active', true)->orderBy('sort_order')->get()
             : collect();
@@ -85,9 +84,9 @@ class ContentApiController extends Controller
                 $partner->logo_url = $this->resolveUrl($partner->logo, $adminUrl);
                 return $partner;
             }),
-            'gallery' => $gallery->map(function ($item) use ($adminUrl) {
-                $item->image_url = $this->resolveUrl($item->image, $adminUrl);
-                return $item;
+            'gallery' => $gallery->map(function ($image) use ($adminUrl) {
+                $image->image_url = $this->resolveUrl($image->path, $adminUrl);
+                return $image;
             }),
             'socialLinks' => $socialLinks,
         ])->header('Access-Control-Allow-Origin', '*')
