@@ -1198,10 +1198,19 @@
                             if (data.contents) contents.value = data.contents;
                             if (data.imagesByKey) {
                                 siteImages.value = data.imagesByKey;
-                                if (data.imagesByKey.carousel_1) carouselSlides.value[0].image = data.imagesByKey.carousel_1;
-                                if (data.imagesByKey.carousel_2) carouselSlides.value[1].image = data.imagesByKey.carousel_2;
-                                if (data.imagesByKey.carousel_3) carouselSlides.value[2].image = data.imagesByKey.carousel_3;
-                                if (data.imagesByKey.carousel_4) carouselSlides.value[3].image = data.imagesByKey.carousel_4;
+                                const slides = [];
+                                const icons = ['fas fa-handshake', 'fas fa-chart-line', 'fas fa-users', 'fas fa-globe-africa'];
+                                const titles = ['Parcerias Estratégicas', 'Crescimento Conjunto', 'Confiança e Qualidade', 'Alcance Nacional'];
+                                const descs = ['Trabalhamos lado a lado com as melhores empresas de Angola.', 'Os nossos parceiros crescem connosco.', 'Mais de 13 empresas confiam nos nossos serviços.', 'De Luanda para todo o Angola.'];
+                                for (let i = 1; i <= 4; i++) {
+                                    const key = 'carousel_' + i;
+                                    if (data.imagesByKey[key]) {
+                                        const url = data.imagesByKey[key];
+                                        slides.push({ image: url.startsWith('http') ? url : url, icon: icons[i-1], title: titles[i-1], description: descs[i-1] });
+                                    }
+                                }
+                                if (slides.length > 0) carouselSlides.value = slides;
+                            }
                             }
                             if (data.partners && data.partners.length > 0) {
                                 partners.value = data.partners;
