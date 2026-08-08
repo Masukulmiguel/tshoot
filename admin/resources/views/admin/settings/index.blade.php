@@ -139,8 +139,13 @@
                     <textarea name="og_description" rows="2" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none resize-y" placeholder="Descrição ao partilhar nas redes sociais">{{ $settings['seo']['og_description'] ?? '' }}</textarea>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">OG Imagem URL</label>
-                    <input type="url" name="og_image" value="{{ $settings['seo']['og_image'] ?? '' }}" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none" placeholder="https://tshoot-angola.com/assets/img/logo.png">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">OG Imagem</label>
+                    @if(!empty($settings['seo']['og_image']))
+                        <div class="mb-2">
+                            <img src="{{ str_starts_with($settings['seo']['og_image'], 'http') ? $settings['seo']['og_image'] : asset($settings['seo']['og_image']) }}" alt="OG Image" class="h-20 rounded-lg border border-gray-200">
+                        </div>
+                    @endif
+                    <input type="file" name="og_image" accept="image/*" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-gold/10 file:text-gold file:text-sm file:font-medium hover:file:bg-gold/20">
                     <p class="text-xs text-gray-400 mt-1">Imagem recomendada: 1200x630 pixels</p>
                 </div>
             </div>

@@ -49,7 +49,6 @@ class SiteSettingController extends Controller
                 'meta_title', 'og_title' => mb_substr($value, 0, 255),
                 'meta_description', 'og_description' => mb_substr($value, 0, 500),
                 'meta_keywords' => mb_substr($value, 0, 500),
-                'og_image' => filter_var($value, FILTER_VALIDATE_URL) ? $value : null,
                 default => $value,
             };
 
@@ -58,21 +57,22 @@ class SiteSettingController extends Controller
             }
         }
 
-        $imageFields = ['about_image', 'contact_bg', 'login_bg'];
+        $imageFields = ['about_image', 'contact_bg', 'login_bg', 'og_image'];
         foreach ($imageFields as $field) {
             if ($request->hasFile($field)) {
+                $group = in_array($field, ['og_image']) ? 'seo' : 'general';
                 if ($supabase->isConfigured()) {
                     $oldValue = SiteSetting::get($field);
                     if ($oldValue && str_contains($oldValue, 'supabase')) {
                         $supabase->delete($oldValue);
                     }
                     $url = $supabase->upload($request->file($field), 'uploads', 'settings');
-                    SiteSetting::set($field, $url, 'general');
+                    SiteSetting::set($field, $url, $group);
                 } else {
                     $file = $request->file($field);
                     $filename = uniqid() . '.' . $file->getClientOriginalExtension();
                     $file->move(public_path('uploads'), $filename);
-                    SiteSetting::set($field, 'uploads/' . $filename, 'general');
+                    SiteSetting::set($field, 'uploads/' . $filename, $group);
                 }
             }
         }
