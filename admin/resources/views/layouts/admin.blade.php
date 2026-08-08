@@ -499,7 +499,7 @@
                     &copy; {{ date('Y') }} <span class="font-semibold text-navy">TSHOOT Soluções Tecnológicas</span>
                 </p>
                 <p class="text-xs text-gray-400">
-                    Desenvolvido por <a href="https://wa.me/244931585686" target="_blank" class="font-semibold text-gold hover:underline">CodingLife Dev</a>
+                    Desenvolvido por <a href="https://www.facebook.com/profile.php?id=61591632695266" target="_blank" class="font-semibold text-gold hover:underline">CodingLife Dev</a>
                 </p>
             </div>
         </footer>
