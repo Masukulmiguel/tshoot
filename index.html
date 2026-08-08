@@ -195,9 +195,9 @@
         .infra-card-features { display: flex; flex-wrap: wrap; gap: 6px; }
         .infra-feat-tag { padding: 5px 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; font-size: 0.75rem; color: var(--gray-400); font-weight: 500; transition: all 0.3s; }
         .infra-card:hover .infra-feat-tag { border-color: rgba(212,161,29,0.2); color: var(--gold); }
-        .infra-tech-bar { padding: 1.5rem 2rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius-md); }
-        .infra-tech-list { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-        .infra-tech-item { padding: 8px 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; font-size: 0.82rem; font-weight: 500; color: var(--gray-400); transition: all 0.3s; cursor: default; }
+        .infra-tech-bar { padding: 1.5rem 2rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius-md); overflow: hidden; }
+        .infra-tech-list { display: flex; gap: 10px; justify-content: center; }
+        .infra-tech-item { padding: 8px 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; font-size: 0.82rem; font-weight: 500; color: var(--gray-400); transition: all 0.3s; cursor: default; white-space: nowrap; flex-shrink: 0; }
         .infra-tech-item:hover { background: var(--gold); color: var(--white); border-color: var(--gold); }
         @media (max-width: 1024px) { .infra-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 768px) { .infra-section { padding: 5rem 0; } .infra-grid { grid-template-columns: 1fr; } }
@@ -488,6 +488,11 @@
             .footer-contact-item { font-size: 0.9rem; padding: 0.7rem 1rem; background: rgba(255,255,255,0.05); border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 0.5rem; }
             .footer-contact-item i { font-size: 0.85rem; }
             .footer-contact-item a { font-weight: 500; }
+            .infra-tech-bar { padding: 1rem 0; }
+            .infra-tech-list { gap: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; justify-content: flex-start; padding: 0 1.5rem; scrollbar-width: none; -ms-overflow-style: none; }
+            .infra-tech-list::-webkit-scrollbar { display: none; }
+            .infra-tech-item { font-size: 0.85rem; padding: 8px 14px; animation: techScroll 20s linear infinite; }
+            @keyframes techScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
             .back-top { bottom: 90px; right: 20px; width: 36px; height: 36px; }
             .whatsapp-float { bottom: 20px; right: 20px; width: 48px; height: 48px; font-size: 1.5rem; }
         }
@@ -707,6 +712,14 @@
                         <span class="infra-tech-item">Windows Server</span>
                         <span class="infra-tech-item">Linux</span>
                         <span class="infra-tech-item">AWS</span>
+                        <span class="infra-tech-item" aria-hidden="true">Cisco</span>
+                        <span class="infra-tech-item" aria-hidden="true">MikroTik</span>
+                        <span class="infra-tech-item" aria-hidden="true">Ubiquiti</span>
+                        <span class="infra-tech-item" aria-hidden="true">TP-Link</span>
+                        <span class="infra-tech-item" aria-hidden="true">VMware</span>
+                        <span class="infra-tech-item" aria-hidden="true">Windows Server</span>
+                        <span class="infra-tech-item" aria-hidden="true">Linux</span>
+                        <span class="infra-tech-item" aria-hidden="true">AWS</span>
                     </div>
                 </div>
             </div>
