@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodingLife Dev - Catálogo Comercial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #e2e8f0; color: #1e293b; line-height: 1.5; font-size: 12px; }
+
+        .page {
+            width: 210mm; min-height: 297mm; margin: 20px auto;
+            background: #fff; position: relative; overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+        }
+
+        /* BARRA SUPERIOR */
+        .top-bar { height: 4px; background: linear-gradient(90deg, #1B2A41, #D4A11D, #4F6BF6); }
+
+        /* CAPA */
+        .cover {
+            height: calc(297mm - 4px); background: #fff;
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; text-align: center; padding: 60px 50px;
+        }
+        .cover-logo { width: 240px; margin-bottom: 36px; }
+        .cover-tagline { color: #D4A11D; font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 20px; }
+        .cover-title { color: #1B2A41; font-size: 28px; font-weight: 800; line-height: 1.25; margin-bottom: 14px; }
+        .cover-subtitle { color: #64748b; font-size: 13px; max-width: 420px; margin: 0 auto 36px; line-height: 1.7; }
+        .cover-divider { width: 50px; height: 2px; background: #D4A11D; margin: 0 auto 36px; }
+        .cover-contact { color: #64748b; font-size: 12px; line-height: 2.2; }
+        .cover-contact strong { color: #1B2A41; font-weight: 600; }
+        .cover-bottom { position: absolute; bottom: 24px; left: 0; right: 0; text-align: center; }
+        .cover-bottom p { color: #94a3b8; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+
+        /* PÁGINAS INTERNAS */
+        .inner-page { padding: 36px 48px; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; }
+        .page-header-left { display: flex; align-items: center; gap: 10px; }
+        .page-header-logo { height: 18px; }
+        .page-header-text { font-size: 9px; color: #94a3b8; letter-spacing: 1px; text-transform: uppercase; }
+
+        .section-label { font-size: 9px; font-weight: 700; color: #D4A11D; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+        .section-title { font-size: 18px; font-weight: 700; color: #1B2A41; margin-bottom: 6px; }
+        .section-desc { font-size: 11.5px; color: #64748b; margin-bottom: 20px; line-height: 1.6; }
+
+        /* SOBRE */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .about-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; }
+        .about-card .ico { width: 28px; height: 28px; background: #1B2A41; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; }
+        .about-card .ico svg { width: 14px; height: 14px; fill: none; stroke: #D4A11D; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .about-card h3 { font-size: 12px; font-weight: 700; color: #1B2A41; margin-bottom: 4px; }
+        .about-card p { font-size: 10.5px; color: #64748b; line-height: 1.5; }
+
+        /* ÁREAS */
+        .areas-row { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+        .area-pill { padding: 4px 12px; border-radius: 14px; font-size: 10px; font-weight: 600; background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 5px; }
+        .area-pill svg { width: 11px; height: 11px; fill: none; stroke: #475569; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+        /* SERVIÇOS */
+        .svc { border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px; margin-bottom: 10px; }
+        .svc-top { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+        .svc-ico { width: 28px; height: 28px; background: #1B2A41; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .svc-ico svg { width: 13px; height: 13px; fill: none; stroke: #D4A11D; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .svc-name { font-size: 12px; font-weight: 700; color: #1B2A41; }
+        .svc-desc { font-size: 10.5px; color: #64748b; margin-bottom: 8px; padding-left: 38px; line-height: 1.5; }
+        .svc-tags { display: flex; flex-wrap: wrap; gap: 4px; padding-left: 38px; }
+        .tag { padding: 2px 8px; border-radius: 10px; font-size: 9px; font-weight: 500; background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+
+        /* PROCESSO */
+        .proc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 24px; }
+        .proc-step { text-align: center; padding: 16px 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; }
+        .proc-num { width: 30px; height: 30px; background: #1B2A41; color: #D4A11D; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin: 0 auto 8px; }
+        .proc-title { font-size: 11px; font-weight: 700; color: #1B2A41; margin-bottom: 3px; }
+        .proc-desc { font-size: 9.5px; color: #64748b; line-height: 1.4; }
+
+        /* VALORES */
+        .val-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .val-card { text-align: center; padding: 18px 12px; border-radius: 8px; border: 1px solid #e2e8f0; background: #f8fafc; }
+        .val-ico { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; background: #1B2A41; }
+        .val-ico svg { width: 16px; height: 16px; fill: none; stroke: #D4A11D; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .val-card h3 { font-size: 12px; font-weight: 700; color: #1B2A41; margin-bottom: 4px; }
+        .val-card p { font-size: 10px; color: #64748b; line-height: 1.5; }
+
+        /* FRASE */
+        .pitch { background: #1B2A41; border-radius: 8px; padding: 20px; margin-top: 20px; }
+        .pitch-label { font-size: 9px; font-weight: 700; color: #D4A11D; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        .pitch-label svg { width: 13px; height: 13px; fill: none; stroke: #D4A11D; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .pitch-text { font-size: 11.5px; color: #cbd5e1; line-height: 1.7; font-style: italic; }
+        .pitch-text strong { color: #D4A11D; font-style: normal; }
+
+        /* CONTACTO */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .c-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; text-align: center; }
+        .c-ico { width: 32px; height: 32px; background: #1B2A41; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; }
+        .c-ico svg { width: 16px; height: 16px; fill: none; stroke: #D4A11D; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .c-card .lbl { font-size: 8px; font-weight: 600; color: #94a3b8; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 3px; }
+        .c-card .val { font-size: 12px; font-weight: 700; color: #1B2A41; }
+        .c-card .val a { color: #1B2A41; text-decoration: none; }
+
+        /* RODAPÉ */
+        .pg-footer { position: absolute; bottom: 18px; left: 48px; right: 48px; display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid #e2e8f0; }
+        .pg-footer span { font-size: 8px; color: #94a3b8; }
+
+        .gold { color: #D4A11D; }
+        @media print { body { background: white; } .page { margin: 0; box-shadow: none; } .page-break { page-break-before: always; } }
+    </style>
+</head>
+<body>
+
+<!-- CAPA -->
+<div class="page">
+    <div class="top-bar"></div>
+    <div class="cover">
+        <img src="logo-codinglife.jpeg" alt="CodingLife Dev" class="cover-logo" onerror="this.src='logo-codinglife.png'; this.onerror=null;">
+        <div class="cover-tagline">Build · Collaborate · Innovate</div>
+        <h1 class="cover-title">Soluções Tecnológicas<br>para Empresas e Profissionais</h1>
+        <p class="cover-subtitle">Desenvolvemos tecnologia para transformar ideias em soluções reais.</p>
+        <div class="cover-divider"></div>
+        <div class="cover-contact">
+            <strong>Diretor Geral:</strong> Masukulu Miguel<br>
+            <strong>Telefone:</strong> 935 603 163<br>
+            <strong>Website:</strong> codinglifedev.co.ao<br>
+            <strong>Email:</strong> geral@codinglifedev.co.ao
+        </div>
+        <div class="cover-bottom"><p>Catálogo Comercial · 2026</p></div>
+    </div>
+</div>
+
+<!-- SOBRE NÓS -->
+<div class="page page-break">
+    <div class="top-bar"></div>
+    <div class="inner-page">
+        <div class="page-header">
+            <div class="page-header-left">
+                <img src="logo-codinglife.jpeg" alt="CodingLife Dev" class="page-header-logo" onerror="this.style.display='none'">
+                <span class="page-header-text">CodingLife Dev</span>
+            </div>
+            <span class="page-header-text">Sobre Nós</span>
+        </div>
+
+        <div class="section-label">Sobre Nós</div>
+        <h2 class="section-title">Quem Somos</h2>
+        <p class="section-desc">A <strong>CodingLife Dev</strong> é uma empresa de tecnologia focada no desenvolvimento de soluções digitais, infraestrutura informática e suporte técnico para empresas, organizações e profissionais. O nosso objetivo é ajudar os nossos clientes a utilizar a tecnologia de forma mais simples, segura e eficiente.</p>
+
+        <div class="about-grid">
+            <div class="about-card">
+                <div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg></div>
+                <h3>Missão</h3>
+                <p>Proporcionar soluções tecnológicas acessíveis, eficientes e personalizadas que impulsionem o crescimento dos nossos clientes.</p>
+            </div>
+            <div class="about-card">
+                <div class="ico"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+                <h3>Visão</h3>
+                <p>Ser referência em soluções tecnológicas em Angola, reconhecida pela qualidade, inovação e compromisso com o cliente.</p>
+            </div>
+            <div class="about-card">
+                <div class="ico"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                <h3>Qualidade</h3>
+                <p>Desenvolvemos soluções pensando na estabilidade, organização e experiência do utilizador final.</p>
+            </div>
+            <div class="about-card">
+                <div class="ico"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+                <h3>Personalização</h3>
+                <p>Cada empresa possui necessidades diferentes. Procuramos compreender primeiro o problema antes de apresentar uma solução.</p>
+            </div>
+        </div>
+
+        <div class="section-label">Áreas de Atuação</div>
+        <div class="areas-row">
+            <span class="area-pill"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg> Desenvolvimento Web</span>
+            <span class="area-pill"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> Sistemas</span>
+            <span class="area-pill"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> CRM</span>
+            <span class="area-pill"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg> Aplicações</span>
+            <span class="area-pill"><svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg> Redes</span>
+            <span class="area-pill"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg> Infraestrutura</span>
+            <span class="area-pill"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Segurança</span>
+        </div>
+
+        <div class="pg-footer"><span>CodingLife Dev · Catálogo Comercial</span><span>codinglifedev.co.ao</span></div>
+    </div>
+</div>
+
+<!-- SERVIÇOS 1-4 -->
+<div class="page page-break">
+    <div class="top-bar"></div>
+    <div class="inner-page">
+        <div class="page-header">
+            <div class="page-header-left">
+                <img src="logo-codinglife.jpeg" alt="CodingLife Dev" class="page-header-logo" onerror="this.style.display='none'">
+                <span class="page-header-text">CodingLife Dev</span>
+            </div>
+            <span class="page-header-text">Serviços</span>
+        </div>
+
+        <div class="section-label">Serviços</div>
+        <h2 class="section-title">Os Nossos Serviços</h2>
+        <p class="section-desc">Oferecemos uma gama completa de soluções tecnológicas para atender às necessidades do seu negócio.</p>
+
+        <div class="svc">
+            <div class="svc-top">
+                <div class="svc-ico"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+                <h3 class="svc-name">Desenvolvimento de Sites</h3>
+            </div>
+            <p class="svc-desc">Criamos sites modernos, responsivos e profissionais de acordo com a identidade e necessidades de cada cliente.</p>
+            <div class="svc-tags">
+                <span class="tag">Sites Institucionais</span><span class="tag">Landing Pages</span><span class="tag">Portfólios</span><span class="tag">Sites Empresariais</span><span class="tag">Sistemas Web</span>
+            </div>
+        </div>
+
+        <div class="svc">
+            <div class="svc-top">
+                <div class="svc-ico"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+                <h3 class="svc-name">Sistemas Web e Software</h3>
+            </div>
+            <p class="svc-desc">Transformamos processos manuais em sistemas digitais personalizados para a sua organização.</p>
+            <div class="svc-tags">
+                <span class="tag">Gestão de Empresas</span><span class="tag">Gestão de Clientes</span><span class="tag">Gestão de Vendas</span><span class="tag">Gestão de Documentos</span><span class="tag">Plataformas Online</span>
+            </div>
+        </div>
+
+        <div class="svc">
+            <div class="svc-top">
+                <div class="svc-ico"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                <h3 class="svc-name">CRM</h3>
+            </div>
+            <p class="svc-desc">Sistemas CRM para organizar clientes e processos comerciais, com dashboard, relatórios e controlo de atividades.</p>
+            <div class="svc-tags">
+                <span class="tag">Cadastro de Clientes</span><span class="tag">Gestão de Contactos</span><span class="tag">Acompanhamento de Vendas</span><span class="tag">Dashboard</span><span class="tag">Relatórios</span>
+            </div>
+        </div>
+
+        <div class="svc">
+            <div class="svc-top">
+                <div class="svc-ico"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+                <h3 class="svc-name">Desenvolvimento de Aplicações</h3>
+            </div>
+            <p class="svc-desc">Criamos aplicações adaptadas às necessidades do negócio: empresas, serviços, comércio, educação e projetos personalizados.</p>
+            <div class="svc-tags">
+                <span class="tag">Empresas</span><span class="tag">Serviços</span><span class="tag">Comércio</span><span class="tag">Educação</span><span class="tag">Atendimento ao Cliente</span>
+            </div>
+        </div>
+
+        <div class="pg-footer"><span>CodingLife Dev · Catálogo Comercial</span><span>Página 2</span></div>
+    </div>
+</div>
+
+<!-- SERVIÇOS 5-7 + FRASE -->
+<div class="page page-break">
+    <div class="top-bar"></div>
+    <div class="inner-page">
+        <div class="page-header">
+            <div class="page-header-left">
+                <img src="logo-codinglife.jpeg" alt="CodingLife Dev" class="page-header-logo" onerror="this.style.display='none'">
+                <span class="page-header-text">CodingLife Dev</span>
+            </div>
+            <span class="page-header-text">Serviços</span>
+        </div>
+
+        <div class="section-label">Serviços</div>
+        <h2 class="section-title">Continuação</h2>
+
+        <div class="svc">
+            <div class="svc-top">
+                <div class="svc-ico"><svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg></div>
+                <h3 class="svc-name">Redes e Infraestrutura</h3>
+            </div>
+            <p class="svc-desc">Implementamos e damos suporte a infraestruturas de rede completas para empresas.</p>
+            <div class="svc-tags">
+                <span class="tag">Instalação de Redes</span><span class="tag">Routers e Switches</span><span class="tag">Redes Wi-Fi</span><span class="tag">Cabeamento Estruturado</span><span class="tag">Configuração de Servidores</span>
+            </div>
+        </div>
+
+        <div class="svc">
+            <div class="svc-top">
+                <div class="svc-ico"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+                <h3 class="svc-name">Reparação e Manutenção Informática</h3>
+            </div>
+            <p class="svc-desc">Assistência técnica completa para computadores e equipamentos informáticos.</p>
+            <div class="svc-tags">
+                <span class="tag">Diagnóstico</span><span class="tag">Reparação de PCs</span><span class="tag">Formatação</span><span class="tag">Instalação de Software</span><span class="tag">Manutenção Preventiva</span>
+            </div>
+        </div>
+
+        <div class="svc">
+            <div class="svc-top">
+                <div class="svc-ico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                <h3 class="svc-name">Segurança Informática</h3>
+            </div>
+            <p class="svc-desc">Proteção de dados e sistemas com as melhores práticas de segurança informática.</p>
+            <div class="svc-tags">
+                <span class="tag">Redes Seguras</span><span class="tag">Firewall</span><span class="tag">Segurança Wi-Fi</span><span class="tag">Backups</span><span class="tag">Proteção de Contas</span>
+            </div>
+        </div>
+
+        <div class="pg-footer"><span>CodingLife Dev · Catálogo Comercial</span><span>Página 3</span></div>
+    </div>
+</div>
+
+<!-- PROCESSO + VALORES -->
+<div class="page page-break">
+    <div class="top-bar"></div>
+    <div class="inner-page">
+        <div class="page-header">
+            <div class="page-header-left">
+                <img src="logo-codinglife.jpeg" alt="CodingLife Dev" class="page-header-logo" onerror="this.style.display='none'">
+                <span class="page-header-text">CodingLife Dev</span>
+            </div>
+            <span class="page-header-text">Processo</span>
+        </div>
+
+        <div class="section-label">Processo</div>
+        <h2 class="section-title">Como Trabalhamos</h2>
+        <p class="section-desc">Um processo claro e organizado para garantir a satisfação do cliente em cada etapa.</p>
+
+        <div class="proc-grid">
+            <div class="proc-step"><div class="proc-num">1</div><h3 class="proc-title">Conhecemos</h3><p class="proc-desc">Conversamos com o cliente para compreender as suas necessidades.</p></div>
+            <div class="proc-step"><div class="proc-num">2</div><h3 class="proc-title">Analisamos</h3><p class="proc-desc">Identificamos a melhor abordagem técnica e apresentamos uma proposta.</p></div>
+            <div class="proc-step"><div class="proc-num">3</div><h3 class="proc-title">Desenvolvemos</h3><p class="proc-desc">A nossa equipa trabalha na implementação da solução acordada.</p></div>
+            <div class="proc-step"><div class="proc-num">4</div><h3 class="proc-title">Testamos</h3><p class="proc-desc">Verificamos o funcionamento completo e corrigimos problemas.</p></div>
+            <div class="proc-step"><div class="proc-num">5</div><h3 class="proc-title">Entregamos</h3><p class="proc-desc">Apresentamos a solução e orientamos sobre a sua utilização.</p></div>
+            <div class="proc-step"><div class="proc-num">6</div><h3 class="proc-title">Suporte</h3><p class="proc-desc">Continuamos disponíveis para manutenção e suporte técnico.</p></div>
+        </div>
+
+        <div class="section-label">Por que escolher-nos</div>
+        <h2 class="section-title">Os Nossos Valores</h2>
+        <div class="val-grid">
+            <div class="val-card">
+                <div class="val-ico"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                <h3>Qualidade</h3>
+                <p>Desenvolvemos soluções pensando na estabilidade, organização e experiência do utilizador.</p>
+            </div>
+            <div class="val-card">
+                <div class="val-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+                <h3>Personalização</h3>
+                <p>Cada empresa é única. Procuramos compreender o problema antes de apresentar uma solução.</p>
+            </div>
+            <div class="val-card">
+                <div class="val-ico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                <h3>Suporte</h3>
+                <p>O nosso trabalho não termina na entrega. Acompanhamos e prestamos suporte quando necessário.</p>
+            </div>
+        </div>
+
+        <div class="pg-footer"><span>CodingLife Dev · Catálogo Comercial</span><span>Página 4</span></div>
+    </div>
+</div>
+
+<!-- CONTACTO -->
+<div class="page page-break">
+    <div class="top-bar"></div>
+    <div class="inner-page" style="display: flex; flex-direction: column; min-height: calc(297mm - 4px); justify-content: center;">
+        <div class="page-header" style="position: absolute; top: 36px; left: 48px; right: 48px;">
+            <div class="page-header-left">
+                <img src="logo-codinglife.jpeg" alt="CodingLife Dev" class="page-header-logo" onerror="this.style.display='none'">
+                <span class="page-header-text">CodingLife Dev</span>
+            </div>
+            <span class="page-header-text">Contacto</span>
+        </div>
+
+        <div class="section-label" style="text-align: center;">Contacto</div>
+        <h2 class="section-title" style="text-align: center;">Fale Connosco</h2>
+        <p class="section-desc" style="text-align: center; max-width: 380px; margin: 0 auto 20px;">Estamos disponíveis para apresentar uma proposta personalizada para a sua empresa.</p>
+
+        <div class="contact-grid">
+            <div class="c-card">
+                <div class="c-ico"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                <div class="lbl">Diretor Geral</div>
+                <div class="val">Masukulu Miguel</div>
+            </div>
+            <div class="c-card">
+                <div class="c-ico"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+                <div class="lbl">Telefone</div>
+                <div class="val"><a href="tel:+244935603163">935 603 163</a></div>
+            </div>
+            <div class="c-card">
+                <div class="c-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+                <div class="lbl">Website</div>
+                <div class="val"><a href="https://codinglifedev.co.ao" target="_blank">codinglifedev.co.ao</a></div>
+            </div>
+            <div class="c-card">
+                <div class="c-ico"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                <div class="lbl">Email</div>
+                <div class="val"><a href="mailto:geral@codinglifedev.co.ao">geral@codinglifedev.co.ao</a></div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 24px;">
+            <div class="areas-row">
+                <span class="area-pill"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg> Desenvolvimento Web</span>
+                <span class="area-pill"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> Sistemas</span>
+                <span class="area-pill"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> CRM</span>
+                <span class="area-pill"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg> Aplicações</span>
+                <span class="area-pill"><svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg> Redes</span>
+                <span class="area-pill"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/></svg> Infraestrutura</span>
+                <span class="area-pill"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Segurança</span>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 28px; padding-top: 16px; border-top: 1px solid #e2e8f0;">
+            <p style="font-size: 14px; font-weight: 800; color: #1B2A41; letter-spacing: 1px;">BUILD <span class="gold">·</span> COLLABORATE <span class="gold">·</span> INNOVATE</p>
+            <p style="font-size: 9px; color: #94a3b8; margin-top: 6px;">CodingLife Dev · Soluções Tecnológicas · 2026</p>
+        </div>
+
+        <div class="pg-footer"><span>CodingLife Dev · Catálogo Comercial</span><span>codinglifedev.co.ao</span></div>
+    </div>
+</div>
+
+</body>
+</html>
