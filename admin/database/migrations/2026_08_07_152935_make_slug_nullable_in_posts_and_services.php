@@ -10,26 +10,44 @@ return new class extends Migration
 {
     public function up(): void
     {
-        $slugConstraints = DB::select("
-            SELECT c.conname, a2.relname AS table_name
+        // Drop ALL unique constraints on slug columns using raw SQL
+        $constraints = DB::select("
+            SELECT c.conname AS constraint_name,
+                   a2.relname AS table_name
             FROM pg_constraint c
-            JOIN pg_attribute a ON a.attnum = ANY(c.conkey) AND a.attrelid = c.conrelid
+            JOIN pg_attribute a
+              ON a.attnum = ANY(c.conkey)
+             AND a.attrelid = c.conrelid
+             AND a.attname = 'slug'
             JOIN pg_class a2 ON a2.oid = c.conrelid
             WHERE c.contype = 'u'
-            AND a.attname = 'slug'
-            AND a2.relname IN ('posts', 'services')
+              AND c.conrelid IN ('posts'::regclass, 'services'::regclass)
         ");
 
-        foreach ($slugConstraints as $row) {
-            Schema::table($row->table_name, fn (Blueprint $t) => $t->dropUnique($row->conname));
+        foreach ($constraints as $row) {
+            DB::statement("ALTER TABLE {$row->table_name} DROP CONSTRAINT IF EXISTS \"{$row->constraint_name}\"");
         }
 
+        // Fallback: drop by Laravel naming convention
+        DB::statement("ALTER TABLE posts DROP CONSTRAINT IF EXISTS posts_slug_unique");
+        DB::statement("ALTER TABLE services DROP CONSTRAINT IF EXISTS services_slug_unique");
+
+        // Make slug nullable (no unique) on both tables
         Schema::table('posts', function (Blueprint $table) {
-            $table->string('slug')->nullable()->unique()->change();
+            $table->string('slug')->nullable()->change();
         });
 
         Schema::table('services', function (Blueprint $table) {
-            $table->string('slug')->nullable()->unique()->change();
+            $table->string('slug')->nullable()->change();
+        });
+
+        // Add unique constraint back separately
+        Schema::table('posts', function (Blueprint $table) {
+            $table->unique('slug');
+        });
+
+        Schema::table('services', function (Blueprint $table) {
+            $table->unique('slug');
         });
 
         // Fix existing records with null slug
