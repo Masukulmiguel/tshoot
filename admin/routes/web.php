@@ -75,4 +75,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
     Route::resource('social-links', SocialLinkController::class)->except(['show'])->parameters(['social-links' => 'socialLink']);
     Route::post('social-links/{socialLink}/toggle', [SocialLinkController::class, 'toggle'])->name('social-links.toggle');
+
+    Route::get('/notifications/count', function () {
+        $newContacts = \App\Models\Contact::where('status', 'new')->count();
+        return response()->json(['newContacts' => $newContacts]);
+    })->name('notifications.count');
 });

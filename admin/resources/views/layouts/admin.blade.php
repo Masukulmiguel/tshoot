@@ -350,13 +350,11 @@
                 </button>
 
                 {{-- Notifications --}}
-                <button class="relative p-2.5 text-gray-400 hover:text-navy hover:bg-gray-100 rounded-xl transition-colors">
+                <button id="notif-btn" class="relative p-2.5 text-gray-400 hover:text-navy hover:bg-gray-100 rounded-xl transition-colors" onclick="window.location.href='{{ route('admin.contacts.index') }}'">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>
                     </svg>
-                    @if(isset($unreadNotifications) && $unreadNotifications > 0)
-                        <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span>
-                    @endif
+                    <span id="notif-badge" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white hidden"></span>
                 </button>
 
                 {{-- Divider --}}
@@ -544,6 +542,50 @@
                 document.body.classList.remove('overflow-hidden');
             }
         });
+
+        // Notification polling
+        let lastContactCount = {{ $newContacts ?? 0 }};
+
+        function playNotifSound() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, ctx.currentTime);
+                osc.frequency.setValueAtTime(1100, ctx.currentTime + 0.1);
+                osc.frequency.setValueAtTime(880, ctx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + 0.4);
+            } catch (e) {}
+        }
+
+        function checkNotifications() {
+            fetch('{{ route("admin.notifications.count") }}', {
+                headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
+            })
+            .then(r => r.json())
+            .then(data => {
+                const badge = document.getElementById('notif-badge');
+                const count = data.newContacts || 0;
+                if (count > 0) {
+                    badge.classList.remove('hidden');
+                    if (count > lastContactCount) {
+                        playNotifSound();
+                    }
+                } else {
+                    badge.classList.add('hidden');
+                }
+                lastContactCount = count;
+            })
+            .catch(() => {});
+        }
+
+        setInterval(checkNotifications, 30000);
     </script>
 
     @stack('scripts')
