@@ -10,11 +10,11 @@ class AdminSeeder extends Seeder
 {
     public function run(): void
     {
-        User::firstOrCreate(
+        User::updateOrCreate(
             ['email' => 'admin@tshoot-angola.com'],
             [
                 'name' => 'Admin TSHOOT',
-                'password' => Hash::make('tshoot2024'),
+                'password' => Hash::make('191925Tshoot@'),
             ]
         );
     }
