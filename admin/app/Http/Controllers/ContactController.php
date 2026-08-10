@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\ContactReplyMail;
 use App\Models\Contact;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Http;
 
 class ContactController extends Controller
 {
@@ -103,17 +102,74 @@ class ContactController extends Controller
             'replied_at' => now(),
         ]);
 
-        try {
-            if ($contact->email) {
-                Mail::to($contact->email)->send(new ContactReplyMail($contact, $request->admin_reply));
+        $apiKey = env('RESEND_API_KEY');
+        if ($apiKey && $contact->email) {
+            try {
+                $html = $this->buildReplyHtml($contact, $request->admin_reply);
+                Http::withHeaders([
+                    'Authorization' => 'Bearer ' . $apiKey,
+                    'Content-Type' => 'application/json',
+                ])->post('https://api.resend.com/emails', [
+                    'from' => 'TSHOOT <comercial@tshoot-angola.com>',
+                    'to' => [$contact->email],
+                    'subject' => 'Resposta da TSHOOT - ' . ($contact->subject ?? 'Contacto'),
+                    'html' => $html,
+                ]);
+            } catch (\Exception $e) {
+                return redirect()->route('admin.contacts.show', $contact)
+                    ->with('warning', 'Resposta guardada, mas o email não pôde ser enviado.');
             }
-        } catch (\Exception $e) {
-            return redirect()->route('admin.contacts.show', $contact)
-                ->with('warning', 'Resposta guardada, mas o email não pôde ser enviado. Verifique a configuração de email.');
         }
 
         return redirect()->route('admin.contacts.show', $contact)
             ->with('success', 'Resposta enviada com sucesso por email!');
+    }
+
+    private function buildReplyHtml(Contact $contact, string $reply): string
+    {
+        return '
+        <!DOCTYPE html>
+        <html>
+        <head><meta charset="UTF-8"><style>
+            body { font-family: "Segoe UI", Tahoma, sans-serif; background: #f4f6f9; margin: 0; padding: 40px 20px; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+            .header { background: linear-gradient(135deg, #1B2A41, #243652); padding: 30px; text-align: center; }
+            .header h1 { color: #D4A11D; font-size: 20px; margin: 0; }
+            .header p { color: #94A3B8; font-size: 12px; margin: 5px 0 0; }
+            .body { padding: 30px; }
+            .greeting { font-size: 16px; color: #1B2A41; margin-bottom: 20px; }
+            .message-box { background: #f8f9fa; border-left: 4px solid #D4A11D; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+            .message-box p { margin: 0; line-height: 1.7; color: #555; }
+            .footer { background: #f8f9fa; padding: 20px 30px; text-align: center; border-top: 1px solid #eee; }
+            .footer p { margin: 5px 0; font-size: 12px; color: #888; }
+            .divider { height: 1px; background: #eee; margin: 20px 0; }
+        </style></head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h1>TSHOOT</h1>
+                    <p>Soluções Tecnológicas</p>
+                </div>
+                <div class="body">
+                    <p class="greeting">Olá <strong>' . htmlspecialchars($contact->name) . '</strong>,</p>
+                    <p>Obrigado por entrar em contacto connosco. Eis a nossa resposta:</p>
+                    <div class="message-box">
+                        <p><strong>Assunto:</strong> ' . htmlspecialchars($contact->subject ?? 'Contacto') . '</p>
+                    </div>
+                    <div class="message-box">
+                        <p>' . nl2br(htmlspecialchars($reply)) . '</p>
+                    </div>
+                    <div class="divider"></div>
+                    <p style="color:#666; font-size:14px;">Se tiver mais alguma dúvida, não hesite em contactar-nos.</p>
+                </div>
+                <div class="footer">
+                    <p><strong>TSHOOT Soluções Tecnológicas</strong></p>
+                    <p>Major Kanhangulo, Prédio da Suave, 3º Andar, Luanda, Angola</p>
+                    <p>📞 (+244) 933 189 868 | ✉ comercial@tshoot-angola.com</p>
+                </div>
+            </div>
+        </body>
+        </html>';
     }
 
     public function updateStatus(Request $request, Contact $contact)
