@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CodingLife Dev - Catálogo Comercial</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
@@ -16,6 +16,7 @@
             --gold: #D4A11D;
             --gold-light: #e8b93a;
             --gold-dark: #b8891a;
+            --blue: #4F6BF6;
             --white: #ffffff;
             --gray-50: #f8fafc;
             --gray-100: #f1f5f9;
@@ -26,12 +27,11 @@
             --gray-600: #475569;
             --gray-700: #334155;
             --gray-800: #1e293b;
-            --gray-900: #0f172a;
         }
 
         body {
-            font-family: 'Inter', 'Plus Jakarta Sans', sans-serif;
-            background: var(--gray-50);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #e2e8f0;
             color: var(--gray-800);
             line-height: 1.6;
         }
@@ -39,17 +39,17 @@
         .page {
             width: 210mm;
             min-height: 297mm;
-            margin: 0 auto;
+            margin: 20px auto;
             background: var(--white);
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.12);
         }
 
-        @media screen {
-            .page {
-                margin: 20px auto;
-                box-shadow: 0 4px 30px rgba(0,0,0,0.1);
-            }
+        /* SVG Icons */
+        .svg-icon {
+            display: inline-block;
+            vertical-align: middle;
         }
 
         /* ==================== CAPA ==================== */
@@ -71,7 +71,7 @@
             top: 0; left: 0; right: 0; bottom: 0;
             background:
                 radial-gradient(circle at 20% 30%, rgba(212,161,29,0.06) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(212,161,29,0.04) 0%, transparent 50%);
+                radial-gradient(circle at 80% 70%, rgba(79,107,246,0.04) 0%, transparent 50%);
         }
 
         .cover::after {
@@ -79,7 +79,7 @@
             position: absolute;
             bottom: 0; left: 0; right: 0;
             height: 4px;
-            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            background: linear-gradient(90deg, transparent, var(--gold), var(--blue), transparent);
         }
 
         .cover-content {
@@ -88,9 +88,9 @@
         }
 
         .cover-logo {
-            width: 220px;
+            width: 300px;
             margin-bottom: 50px;
-            filter: brightness(1.1);
+            filter: brightness(1.05);
         }
 
         .cover-tagline {
@@ -104,7 +104,7 @@
 
         .cover-title {
             color: var(--white);
-            font-size: 42px;
+            font-size: 40px;
             font-weight: 900;
             line-height: 1.15;
             margin-bottom: 20px;
@@ -123,7 +123,7 @@
         .cover-divider {
             width: 80px;
             height: 3px;
-            background: var(--gold);
+            background: linear-gradient(90deg, var(--gold), var(--blue));
             margin: 0 auto 50px;
             border-radius: 2px;
         }
@@ -131,7 +131,7 @@
         .cover-contact {
             color: var(--gray-400);
             font-size: 13px;
-            line-height: 2;
+            line-height: 2.2;
         }
 
         .cover-contact strong {
@@ -167,7 +167,7 @@
             top: 0; left: 0;
             width: 4px;
             height: 100%;
-            background: linear-gradient(180deg, var(--gold) 0%, var(--navy) 100%);
+            background: linear-gradient(180deg, var(--gold) 0%, var(--blue) 100%);
         }
 
         .section-header {
@@ -203,7 +203,7 @@
         .about-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px;
+            gap: 20px;
             margin-top: 25px;
         }
 
@@ -211,16 +211,10 @@
             background: var(--gray-50);
             border: 1px solid var(--gray-200);
             border-radius: 12px;
-            padding: 28px;
-            transition: all 0.3s;
+            padding: 26px;
         }
 
-        .about-card:hover {
-            border-color: var(--gold);
-            box-shadow: 0 4px 20px rgba(212,161,29,0.08);
-        }
-
-        .about-card .icon {
+        .about-card .icon-box {
             width: 44px;
             height: 44px;
             background: linear-gradient(135deg, var(--navy), var(--navy-light));
@@ -228,8 +222,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
+        }
+
+        .about-card .icon-box svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: var(--gold);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         .about-card h3 {
@@ -250,8 +253,8 @@
             background: var(--white);
             border: 1px solid var(--gray-200);
             border-radius: 12px;
-            padding: 28px;
-            margin-bottom: 18px;
+            padding: 26px;
+            margin-bottom: 16px;
             position: relative;
             overflow: hidden;
             page-break-inside: avoid;
@@ -267,30 +270,32 @@
             border-radius: 2px 0 0 2px;
         }
 
-        .service-item:hover {
-            border-color: var(--gold-light);
-            box-shadow: 0 2px 15px rgba(212,161,29,0.06);
-        }
-
         .service-header {
             display: flex;
             align-items: center;
             gap: 14px;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
-        .service-num {
-            width: 36px;
-            height: 36px;
+        .service-icon-box {
+            width: 40px;
+            height: 40px;
             background: linear-gradient(135deg, var(--navy), var(--navy-light));
-            color: var(--gold);
-            border-radius: 8px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
-            font-weight: 800;
             flex-shrink: 0;
+        }
+
+        .service-icon-box svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: var(--gold);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         .service-name {
@@ -301,16 +306,17 @@
 
         .service-desc {
             font-size: 13.5px;
-            color: var(--gray-600);
-            margin-bottom: 14px;
-            padding-left: 50px;
+            color: var(--gray-60);
+            margin-bottom: 12px;
+            padding-left: 54px;
+            line-height: 1.6;
         }
 
         .service-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
-            padding-left: 50px;
+            padding-left: 54px;
         }
 
         .tag {
@@ -319,36 +325,25 @@
             border-radius: 20px;
             font-size: 11.5px;
             font-weight: 500;
-            background: var(--gray-50);
-            color: var(--gray-600);
-            border: 1px solid var(--gray-200);
-        }
-
-        .tag-gold {
             background: #fef3c7;
             color: var(--gold-dark);
-            border-color: #fde68a;
+            border: 1px solid #fde68a;
         }
 
         /* ==================== PROCESSO ==================== */
         .process-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
+            gap: 16px;
             margin-top: 25px;
         }
 
         .process-step {
             text-align: center;
-            padding: 28px 18px;
+            padding: 26px 16px;
             background: var(--gray-50);
             border: 1px solid var(--gray-200);
             border-radius: 12px;
-            position: relative;
-        }
-
-        .process-step:hover {
-            border-color: var(--gold);
         }
 
         .step-num {
@@ -378,40 +373,51 @@
             line-height: 1.5;
         }
 
-        /* ==================== POR QUE NÓS ==================== */
+        /* ==================== VALORES ==================== */
         .why-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 18px;
             margin-top: 25px;
         }
 
         .why-card {
             text-align: center;
-            padding: 30px 20px;
+            padding: 28px 18px;
             border-radius: 12px;
             border: 1px solid var(--gray-200);
         }
 
-        .why-card:nth-child(1) {
-            background: linear-gradient(135deg, #eff6ff, #dbeafe);
-            border-color: #bfdbfe;
+        .why-card:nth-child(1) { background: linear-gradient(135deg, #eff6ff, #dbeafe); border-color: #bfdbfe; }
+        .why-card:nth-child(2) { background: linear-gradient(135deg, #f5f3ff, #ede9fe); border-color: #ddd6fe; }
+        .why-card:nth-child(3) { background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-color: #a7f3d0; }
+
+        .why-icon-box {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
         }
 
-        .why-card:nth-child(2) {
-            background: linear-gradient(135deg, #f5f3ff, #ede9fe);
-            border-color: #ddd6fe;
+        .why-card:nth-child(1) .why-icon-box { background: rgba(37,99,235,0.1); }
+        .why-card:nth-child(2) .why-icon-box { background: rgba(147,51,234,0.1); }
+        .why-card:nth-child(3) .why-icon-box { background: rgba(22,163,74,0.1); }
+
+        .why-icon-box svg {
+            width: 26px;
+            height: 26px;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
-        .why-card:nth-child(3) {
-            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
-            border-color: #a7f3d0;
-        }
-
-        .why-icon {
-            font-size: 32px;
-            margin-bottom: 14px;
-        }
+        .why-card:nth-child(1) .why-icon-box svg { stroke: #2563eb; }
+        .why-card:nth-child(2) .why-icon-box svg { stroke: #9333ea; }
+        .why-card:nth-child(3) .why-icon-box svg { stroke: #16a34a; }
 
         .why-card h3 {
             font-size: 16px;
@@ -430,21 +436,22 @@
         .pitch-box {
             background: linear-gradient(135deg, var(--navy-dark), var(--navy), var(--navy-light));
             border-radius: 16px;
-            padding: 40px;
+            padding: 38px;
             margin-top: 30px;
             position: relative;
             overflow: hidden;
         }
 
         .pitch-box::before {
-            content: '\201C';
+            content: '';
             position: absolute;
-            top: -20px;
+            top: -30px;
             left: 20px;
-            font-size: 120px;
-            color: rgba(212,161,29,0.15);
-            font-family: Georgia, serif;
-            line-height: 1;
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(212,161,29,0.2);
+            border-radius: 8px;
+            transform: rotate(15deg);
         }
 
         .pitch-box .label {
@@ -453,9 +460,22 @@
             color: var(--gold);
             letter-spacing: 3px;
             text-transform: uppercase;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
             position: relative;
             z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pitch-box .label svg {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: var(--gold);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         .pitch-box .text {
@@ -476,7 +496,7 @@
         .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px;
+            gap: 20px;
             margin-top: 25px;
         }
 
@@ -484,13 +504,29 @@
             background: var(--gray-50);
             border: 1px solid var(--gray-200);
             border-radius: 12px;
-            padding: 30px;
+            padding: 28px;
             text-align: center;
         }
 
-        .contact-card .icon {
-            font-size: 28px;
-            margin-bottom: 12px;
+        .contact-icon-box {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--navy), var(--navy-light));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+        }
+
+        .contact-icon-box svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: var(--gold);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         .contact-card .label {
@@ -540,10 +576,6 @@
         /* ==================== UTILITÁRIOS ==================== */
         .gold-text { color: var(--gold); }
         .navy-text { color: var(--navy); }
-        .text-center { text-align: center; }
-        .mt-10 { margin-top: 10px; }
-        .mt-20 { margin-top: 20px; }
-        .mb-10 { margin-bottom: 10px; }
 
         .areas-bar {
             display: flex;
@@ -559,8 +591,21 @@
             font-size: 12px;
             font-weight: 600;
             background: rgba(212,161,29,0.1);
-            color: var(--gold);
+            color: var(--gold-dark);
             border: 1px solid rgba(212,161,29,0.2);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .area-badge svg {
+            width: 14px;
+            height: 14px;
+            fill: none;
+            stroke: var(--gold-dark);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         @media print {
@@ -576,8 +621,8 @@
 <div class="page">
     <div class="cover">
         <div class="cover-content">
-            <img src="https://i.imgur.com/logo-placeholder.png" alt="CodingLife Dev" class="cover-logo"
-                 onerror="this.outerHTML='<div style=&quot;width:100px;height:100px;background:rgba(212,161,29,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 40px;border:2px solid rgba(212,161,29,0.3)&quot;><span style=&quot;font-size:36px;color:#D4A11D;font-weight:900&quot;>&lt;/&gt;</span></div>'">
+            <img src="logo-codinglife.jpeg" alt="CodingLife Dev" class="cover-logo"
+                 onerror="this.src='logo-codinglife.png'; this.onerror=null;">
             <div class="cover-tagline">Build · Collaborate · Innovate</div>
             <h1 class="cover-title">Soluções Tecnológicas<br>para Empresas e Profissionais</h1>
             <p class="cover-subtitle">Desenvolvemos tecnologia para transformar ideias em soluções reais.</p>
@@ -611,22 +656,30 @@
 
         <div class="about-grid">
             <div class="about-card">
-                <div class="icon">🎯</div>
+                <div class="icon-box">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg>
+                </div>
                 <h3>Missão</h3>
                 <p>Proporcionar soluções tecnológicas acessíveis, eficientes e personalizadas que impulsionem o crescimento dos nossos clientes.</p>
             </div>
             <div class="about-card">
-                <div class="icon">👁️</div>
+                <div class="icon-box">
+                    <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </div>
                 <h3>Visão</h3>
                 <p>Ser referência em soluções tecnológicas em Angola, reconhecida pela qualidade, inovação e compromisso com o cliente.</p>
             </div>
             <div class="about-card">
-                <div class="icon">💎</div>
+                <div class="icon-box">
+                    <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
                 <h3>Qualidade</h3>
                 <p>Desenvolvemos soluções pensando na estabilidade, organização e experiência do utilizador final.</p>
             </div>
             <div class="about-card">
-                <div class="icon">🔧</div>
+                <div class="icon-box">
+                    <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                </div>
                 <h3>Personalização</h3>
                 <p>Cada empresa possui necessidades diferentes. Procuramos compreender primeiro o problema antes de apresentar uma solução.</p>
             </div>
@@ -635,14 +688,34 @@
         <div style="margin-top: 30px;">
             <div class="section-number">Áreas de Atuação</div>
             <div class="areas-bar">
-                <span class="area-badge">Desenvolvimento Web</span>
-                <span class="area-badge">Sistemas</span>
-                <span class="area-badge">CRM</span>
-                <span class="area-badge">Aplicações</span>
-                <span class="area-badge">Redes</span>
-                <span class="area-badge">Infraestrutura</span>
-                <span class="area-badge">Assistência Informática</span>
-                <span class="area-badge">Segurança Informática</span>
+                <span class="area-badge">
+                    <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    Desenvolvimento Web
+                </span>
+                <span class="area-badge">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    Sistemas
+                </span>
+                <span class="area-badge">
+                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    CRM
+                </span>
+                <span class="area-badge">
+                    <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                    Aplicações
+                </span>
+                <span class="area-badge">
+                    <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+                    Redes
+                </span>
+                <span class="area-badge">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+                    Infraestrutura
+                </span>
+                <span class="area-badge">
+                    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    Segurança
+                </span>
             </div>
         </div>
 
@@ -664,61 +737,69 @@
 
         <div class="service-item">
             <div class="service-header">
-                <div class="service-num">01</div>
+                <div class="service-icon-box">
+                    <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                </div>
                 <h3 class="service-name">Desenvolvimento de Sites</h3>
             </div>
             <p class="service-desc">Criamos sites modernos, responsivos e profissionais de acordo com a identidade e necessidades de cada cliente.</p>
             <div class="service-tags">
-                <span class="tag tag-gold">Sites Institucionais</span>
-                <span class="tag tag-gold">Landing Pages</span>
-                <span class="tag tag-gold">Portfólios</span>
-                <span class="tag tag-gold">Sites Empresariais</span>
-                <span class="tag tag-gold">Sistemas Web</span>
+                <span class="tag">Sites Institucionais</span>
+                <span class="tag">Landing Pages</span>
+                <span class="tag">Portfólios</span>
+                <span class="tag">Sites Empresariais</span>
+                <span class="tag">Sistemas Web</span>
             </div>
         </div>
 
         <div class="service-item">
             <div class="service-header">
-                <div class="service-num">02</div>
+                <div class="service-icon-box">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                </div>
                 <h3 class="service-name">Sistemas Web e Software</h3>
             </div>
             <p class="service-desc">Transformamos processos manuais em sistemas digitais personalizados para a sua organização.</p>
             <div class="service-tags">
-                <span class="tag tag-gold">Gestão de Empresas</span>
-                <span class="tag tag-gold">Gestão de Clientes</span>
-                <span class="tag tag-gold">Gestão de Vendas</span>
-                <span class="tag tag-gold">Gestão de Documentos</span>
-                <span class="tag tag-gold">Plataformas Online</span>
+                <span class="tag">Gestão de Empresas</span>
+                <span class="tag">Gestão de Clientes</span>
+                <span class="tag">Gestão de Vendas</span>
+                <span class="tag">Gestão de Documentos</span>
+                <span class="tag">Plataformas Online</span>
             </div>
         </div>
 
         <div class="service-item">
             <div class="service-header">
-                <div class="service-num">03</div>
+                <div class="service-icon-box">
+                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
                 <h3 class="service-name">CRM</h3>
             </div>
             <p class="service-desc">Sistemas CRM para organizar clientes e processos comerciais, com dashboard, relatórios e controlo de atividades.</p>
             <div class="service-tags">
-                <span class="tag tag-gold">Cadastro de Clientes</span>
-                <span class="tag tag-gold">Gestão de Contactos</span>
-                <span class="tag tag-gold">Acompanhamento de Vendas</span>
-                <span class="tag tag-gold">Dashboard</span>
-                <span class="tag tag-gold">Relatórios</span>
+                <span class="tag">Cadastro de Clientes</span>
+                <span class="tag">Gestão de Contactos</span>
+                <span class="tag">Acompanhamento de Vendas</span>
+                <span class="tag">Dashboard</span>
+                <span class="tag">Relatórios</span>
             </div>
         </div>
 
         <div class="service-item">
             <div class="service-header">
-                <div class="service-num">04</div>
+                <div class="service-icon-box">
+                    <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                </div>
                 <h3 class="service-name">Desenvolvimento de Aplicações</h3>
             </div>
             <p class="service-desc">Criamos aplicações adaptadas às necessidades do negócio: empresas, serviços, comércio, educação e projetos personalizados.</p>
             <div class="service-tags">
-                <span class="tag tag-gold">Empresas</span>
-                <span class="tag tag-gold">Serviços</span>
-                <span class="tag tag-gold">Comércio</span>
-                <span class="tag tag-gold">Educação</span>
-                <span class="tag tag-gold">Atendimento ao Cliente</span>
+                <span class="tag">Empresas</span>
+                <span class="tag">Serviços</span>
+                <span class="tag">Comércio</span>
+                <span class="tag">Educação</span>
+                <span class="tag">Atendimento ao Cliente</span>
             </div>
         </div>
 
@@ -739,52 +820,61 @@
 
         <div class="service-item">
             <div class="service-header">
-                <div class="service-num">05</div>
+                <div class="service-icon-box">
+                    <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+                </div>
                 <h3 class="service-name">Redes e Infraestrutura</h3>
             </div>
             <p class="service-desc">Implementamos e damos suporte a infraestruturas de rede completas para empresas.</p>
             <div class="service-tags">
-                <span class="tag tag-gold">Instalação de Redes</span>
-                <span class="tag tag-gold">Routers e Switches</span>
-                <span class="tag tag-gold">Redes Wi-Fi</span>
-                <span class="tag tag-gold">Cabeamento Estruturado</span>
-                <span class="tag tag-gold">Configuração de Servidores</span>
+                <span class="tag">Instalação de Redes</span>
+                <span class="tag">Routers e Switches</span>
+                <span class="tag">Redes Wi-Fi</span>
+                <span class="tag">Cabeamento Estruturado</span>
+                <span class="tag">Configuração de Servidores</span>
             </div>
         </div>
 
         <div class="service-item">
             <div class="service-header">
-                <div class="service-num">06</div>
+                <div class="service-icon-box">
+                    <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                </div>
                 <h3 class="service-name">Reparação e Manutenção Informática</h3>
             </div>
             <p class="service-desc">Assistência técnica completa para computadores e equipamentos informáticos.</p>
             <div class="service-tags">
-                <span class="tag tag-gold">Diagnóstico</span>
-                <span class="tag tag-gold">Reparação de PCs</span>
-                <span class="tag tag-gold">Formatação</span>
-                <span class="tag tag-gold">Instalação de Software</span>
-                <span class="tag tag-gold">Manutenção Preventiva</span>
+                <span class="tag">Diagnóstico</span>
+                <span class="tag">Reparação de PCs</span>
+                <span class="tag">Formatação</span>
+                <span class="tag">Instalação de Software</span>
+                <span class="tag">Manutenção Preventiva</span>
             </div>
         </div>
 
         <div class="service-item">
             <div class="service-header">
-                <div class="service-num">07</div>
+                <div class="service-icon-box">
+                    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
                 <h3 class="service-name">Segurança Informática</h3>
             </div>
             <p class="service-desc">Proteção de dados e sistemas com as melhores práticas de segurança informática.</p>
             <div class="service-tags">
-                <span class="tag tag-gold">Redes Seguras</span>
-                <span class="tag tag-gold">Firewall</span>
-                <span class="tag tag-gold">Segurança Wi-Fi</span>
-                <span class="tag tag-gold">Backups</span>
-                <span class="tag tag-gold">Proteção de Contas</span>
+                <span class="tag">Redes Seguras</span>
+                <span class="tag">Firewall</span>
+                <span class="tag">Segurança Wi-Fi</span>
+                <span class="tag">Backups</span>
+                <span class="tag">Proteção de Contas</span>
             </div>
         </div>
 
-        <div style="margin-top: 40px;">
+        <div style="margin-top: 35px;">
             <div class="pitch-box">
-                <div class="label">Frase para o Colaborador</div>
+                <div class="label">
+                    <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    Frase para o Colaborador
+                </div>
                 <p class="text">
                     «Bom dia. Somos da <strong>CodingLife Dev</strong>, uma empresa de tecnologia especializada em
                     <strong>desenvolvimento de sites, sistemas web, CRM, aplicações, redes e suporte informático</strong>.
@@ -852,17 +942,23 @@
 
             <div class="why-grid">
                 <div class="why-card">
-                    <div class="why-icon">⭐</div>
+                    <div class="why-icon-box">
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    </div>
                     <h3>Qualidade</h3>
                     <p>Desenvolvemos soluções pensando na estabilidade, organização e experiência do utilizador.</p>
                 </div>
                 <div class="why-card">
-                    <div class="why-icon">🎯</div>
+                    <div class="why-icon-box">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                    </div>
                     <h3>Personalização</h3>
                     <p>Cada empresa é única. Procuramos compreender primeiro o problema antes de apresentar uma solução.</p>
                 </div>
                 <div class="why-card">
-                    <div class="why-icon">🛡️</div>
+                    <div class="why-icon-box">
+                        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
                     <h3>Suporte</h3>
                     <p>O nosso trabalho não termina na entrega. Acompanhamos o cliente e prestamos suporte quando necessário.</p>
                 </div>
@@ -889,40 +985,66 @@
 
         <div class="contact-grid">
             <div class="contact-card">
-                <div class="icon">👤</div>
+                <div class="contact-icon-box">
+                    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
                 <div class="label">Diretor Geral</div>
                 <div class="value">Masukulu Miguel</div>
             </div>
             <div class="contact-card">
-                <div class="icon">📞</div>
+                <div class="contact-icon-box">
+                    <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                </div>
                 <div class="label">Telefone</div>
                 <div class="value"><a href="tel:+244935603163">935 603 163</a></div>
             </div>
             <div class="contact-card">
-                <div class="icon">🌐</div>
+                <div class="contact-icon-box">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                </div>
                 <div class="label">Website</div>
                 <div class="value"><a href="https://tshoot-angola.com" target="_blank">tshoot-angola.com</a></div>
             </div>
             <div class="contact-card">
-                <div class="icon">📧</div>
+                <div class="contact-icon-box">
+                    <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </div>
                 <div class="label">Email</div>
                 <div class="value"><a href="mailto:comercial@tshoot-angola.com">comercial@tshoot-angola.com</a></div>
             </div>
         </div>
 
         <div style="text-align: center; margin-top: 40px;">
-            <p style="font-size: 14px; color: var(--gray-500); margin-bottom: 15px;">
-                Áreas de atuação:
-            </p>
+            <p style="font-size: 14px; color: var(--gray-500); margin-bottom: 15px;">Áreas de atuação:</p>
             <div class="areas-bar">
-                <span class="area-badge">Desenvolvimento Web</span>
-                <span class="area-badge">Sistemas</span>
-                <span class="area-badge">CRM</span>
-                <span class="area-badge">Aplicações</span>
-                <span class="area-badge">Redes</span>
-                <span class="area-badge">Infraestrutura</span>
-                <span class="area-badge">Assistência Informática</span>
-                <span class="area-badge">Segurança Informática</span>
+                <span class="area-badge">
+                    <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    Desenvolvimento Web
+                </span>
+                <span class="area-badge">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    Sistemas
+                </span>
+                <span class="area-badge">
+                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    CRM
+                </span>
+                <span class="area-badge">
+                    <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                    Aplicações
+                </span>
+                <span class="area-badge">
+                    <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+                    Redes
+                </span>
+                <span class="area-badge">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+                    Infraestrutura
+                </span>
+                <span class="area-badge">
+                    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    Segurança
+                </span>
             </div>
         </div>
 
