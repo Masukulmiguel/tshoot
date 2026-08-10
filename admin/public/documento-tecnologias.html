@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TSHOOT - Documento de Tecnologias</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 40px;
+            background: linear-gradient(135deg, #1B2A41 0%, #243652 50%, #1a2332 100%);
+            border-radius: 16px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(212,161,29,0.08) 0%, transparent 50%);
+        }
+
+        .header img {
+            width: 280px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            color: #fff;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .subtitle {
+            color: #D4A11D;
+            font-size: 16px;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .date {
+            color: #94A3B8;
+            font-size: 13px;
+            margin-top: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 35px;
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        .section h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1B2A41;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #D4A11D;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h2 .icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #1B2A41, #243652);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #D4A11D;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .section p {
+            color: #475569;
+            margin-bottom: 15px;
+            font-size: 14.5px;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 16px;
+            margin-top: 15px;
+        }
+
+        .tech-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.2s;
+        }
+
+        .tech-card:hover {
+            border-color: #D4A11D;
+            box-shadow: 0 4px 12px rgba(212,161,29,0.1);
+        }
+
+        .tech-card .name {
+            font-weight: 700;
+            color: #1B2A41;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .tech-card .version {
+            font-size: 12px;
+            color: #D4A11D;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .tech-card .desc {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 6px;
+            margin-bottom: 6px;
+        }
+
+        .badge-blue { background: #dbeafe; color: #2563eb; }
+        .badge-green { background: #dcfce7; color: #16a34a; }
+        .badge-purple { background: #f3e8ff; color: #9333ea; }
+        .badge-amber { background: #fef3c7; color: #d97706; }
+        .badge-red { background: #fee2e2; color: #dc2626; }
+        .badge-gray { background: #f1f5f9; color: #475569; }
+
+        .architecture-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .architecture-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .architecture-list li:last-child {
+            border-bottom: none;
+        }
+
+        .architecture-list .num {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #1B2A41, #243652);
+            color: #D4A11D;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .architecture-list .text strong {
+            color: #1B2A41;
+        }
+
+        .architecture-list .text {
+            font-size: 14px;
+            color: #475569;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th {
+            background: #1B2A41;
+            color: #fff;
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        th:first-child { border-radius: 8px 0 0 0; }
+        th:last-child { border-radius: 0 8px 0 0; }
+
+        td {
+            padding: 11px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 13.5px;
+            color: #475569;
+        }
+
+        tr:hover td {
+            background: #f8fafc;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .footer strong {
+            color: #1B2A41;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #fef3c7, #fffbeb);
+            border: 1px solid #fbbf24;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .highlight-box .title {
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .highlight-box p {
+            color: #78350f;
+            font-size: 13.5px;
+            margin: 0;
+        }
+
+        @media print {
+            body { background: #fff; }
+            .container { padding: 0; }
+            .section { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
+            .header { break-after: avoid; }
+        }
+
+        @media (max-width: 640px) {
+            .tech-grid { grid-template-columns: 1fr; }
+            .header h1 { font-size: 24px; }
+            .header img { width: 200px; }
+            .section { padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <img src="https://i.imgur.com/your-logo.png" alt="CodingLife Dev" onerror="this.style.display='none'">
+        <h1>TSHOOT Soluções Tecnológicas</h1>
+        <div class="subtitle">Documento Técnico — Tecnologias Utilizadas</div>
+        <div class="date">www.tshoot-angola.com · Julho 2026</div>
+    </div>
+
+    <!-- 1. Visão Geral -->
+    <div class="section">
+        <h2><span class="icon">01</span> Visão Geral do Projeto</h2>
+        <p>
+            O <strong>TSHOOT Admin</strong> é um sistema de administração completo para gestão de conteúdo,
+            contactos, visitantes e configurações do site <strong>tshoot-angola.com</strong>.
+            O sistema foi desenvolvido pela <strong>CodingLife Dev</strong> utilizando tecnologias modernas
+            e seguras, seguindo as melhores práticas de desenvolvimento web.
+        </p>
+        <div class="highlight-box">
+            <div class="title">Arquitectura Geral</div>
+            <p>
+                O sistema segue o padrão <strong>MVC (Model-View-Controller)</strong> com uma API pública
+                para o site frontal e um painel administrativo protegido por autenticação.
+                A infraestrutura utiliza cloud hosting com base de dados PostgreSQL gerida.
+            </p>
+        </div>
+    </div>
+
+    <!-- 2. Stack Tecnológica -->
+    <div class="section">
+        <h2><span class="icon">02</span> Stack Tecnológica</h2>
+        <p>Todas as tecnologias seleccionadas para o desenvolvimento do sistema:</p>
+
+        <div class="tech-grid">
+            <div class="tech-card">
+                <div class="name">Laravel</div>
+                <div class="version">v12.x</div>
+                <div class="desc">Framework PHP robusto para o backend, com ORM Eloquent, autenticação, middleware e routing.</div>
+            </div>
+            <div class="tech-card">
+                <div class="name">PHP</div>
+                <div class="version">8.2+</div>
+                <div class="desc">Linguagem de programação do lado do servidor, optimizada para web.</div>
+            </div>
+            <div class="tech-card">
+                <div class="name">Blade</div>
+                <div class="version">Motor de Templates</div>
+                <div class="desc">Sistema de templating do Laravel para views dinâmicas com herança e componentes.</div>
+            </div>
+            <div class="tech-card">
+                <div class="name">Tailwind CSS</div>
+                <div class="version">CDN</div>
+                <div class="desc">Framework CSS utility-first para estilização rápida e responsiva do painel admin.</div>
+            </div>
+            <div class="tech-card">
+                <div class="name">Chart.js</div>
+                <div class="version">v4.x</div>
+                <div class="desc">Biblioteca de gráficos para dashboards de analytics (visitantes, browsers, países).</div>
+            </div>
+            <div class="tech-card">
+                <div class="name">PostgreSQL</div>
+                <div class="version">Supabase</div>
+                <div class="desc">Base de dados relacional robusta, gerida via Supabase com acesso directo.</div>
+            </div>
+            <div class="tech-card">
+                <div class="name">Supabase</div>
+                <div class="version">Storage + DB</div>
+                <div class="desc">Plataforma para base de dados e armazenamento de ficheiros (imagens, uploads).</div>
+            </div>
+            <div class="tech-card">
+                <div class="name">Resend</div>
+                <div class="version">API Email</div>
+                <div class="desc">Serviço de envio de emails transaccionais (respostas a contactos).</div>
+            </div>
+            <div class="tech-card">
+                <div class="name">Render</div>
+                <div class="version">Cloud Hosting</div>
+                <div class="desc">Plataforma de deploy contínuo com build automático a partir do GitHub.</div>
+            </div>
+            <div class="tech-card">
+                <div class="name">Git / GitHub</div>
+                <div class="version">Controlo de Versão</div>
+                <div class="desc">Gestão de código-fonte com deploy automático via GitHub Actions.</div>
+            </div>
+            <div class="tech-card">
+                <div class="name">Alpine.js</div>
+                <div class="version">Leve</div>
+                <div class="desc">Framework JavaScript minimalista para interactividade no frontend.</div>
+            </div>
+            <div class="tech-card">
+                <div class="name">Font Awesome</div>
+                <div class="version">CDN</div>
+                <div class="desc">Ícones vectoriais para a interface do utilizador.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Arquitectura do Sistema -->
+    <div class="section">
+        <h2><span class="icon">03</span> Arquitectura do Sistema</h2>
+
+        <ol class="architecture-list">
+            <li>
+                <span class="num">1</span>
+                <div class="text">
+                    <strong>Frontend Público (site.html)</strong> — Página estática HTML/CSS/JS com Vue.js que consome a API pública de conteúdo. Apresenta serviços, equipa, blog, galeria e formulário de contacto.
+                </div>
+            </li>
+            <li>
+                <span class="num">2</span>
+                <div class="text">
+                    <strong>API Pública (/api/content)</strong> — Endpoint JSON que retorna todo o conteúdo do site (banners, serviços, posts, equipa, configurações). Throttled para abuso.
+                </div>
+            </li>
+            <li>
+                <span class="num">3</span>
+                <div class="text">
+                    <strong>Painel Administrativo (/admin)</strong> — Interface protegida por autenticação com dashboard, gestão de contactos, visitantes, serviços, posts, banners, equipa, galeria, parceiros e configurações.
+                </div>
+            </li>
+            <li>
+                <span class="num">4</span>
+                <div class="text">
+                    <strong>API de Tracking (/api/track)</strong> — Endpoint para registo de visitantes com geolocalização, dispositivo e páginas visitadas.
+                </div>
+            </li>
+            <li>
+                <span class="num">5</span>
+                <div class="text">
+                    <strong>API de Contactos (/api/contact)</strong> — Formulário público para submissão de contactos com throttle de abuso.
+                </div>
+            </li>
+        </ol>
+    </div>
+
+    <!-- 4. Funcionalidades -->
+    <div class="section">
+        <h2><span class="icon">04</span> Funcionalidades Principais</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Módulo</th>
+                    <th>Funcionalidades</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Dashboard</strong></td>
+                    <td>Gráficos de visitantes, contactos recentes, métricas em tempo real, notificações</td>
+                </tr>
+                <tr>
+                    <td><strong>Contactos</strong></td>
+                    <td>CRUD completo, filtro por estado, pesquisa, resposta por email (Resend API), mudança de estado</td>
+                </tr>
+                <tr>
+                    <td><strong>Visitantes</strong></td>
+                    <td>Tracking de IP, geolocalização, dispositivo, browser, páginas visitadas, analytics completos</td>
+                </tr>
+                <tr>
+                    <td><strong>Serviços</strong></td>
+                    <td>Gestão de serviços com imagens, categorias, ordem de exibição, activação/desactivação</td>
+                </tr>
+                <tr>
+                    <td><strong>Blog/Posts</strong></td>
+                    <td>Criação de artigos com imagem, publicação, gestão de conteúdo</td>
+                </tr>
+                <tr>
+                    <td><strong>Banners</strong></td>
+                    <td>Gestão de banners hero com imagem, link, ordem e activação</td>
+                </tr>
+                <tr>
+                    <td><strong>Equipa</strong></td>
+                    <td>Gestão de membros da equipa com foto, cargo e ordem</td>
+                </tr>
+                <tr>
+                    <td><strong>Galeria</strong></td>
+                    <td>Upload e gestão de imagens da galeria com categorias</td>
+                </tr>
+                <tr>
+                    <td><strong>Parceiros</strong></td>
+                    <td>Gestão de logos de parceiros com toggle de visibilidade</td>
+                </tr>
+                <tr>
+                    <td><strong>Links Sociais</strong></td>
+                    <td>Gestão de redes sociais com ícones e toggle</td>
+                </tr>
+                <tr>
+                    <td><strong>Configurações</strong></td>
+                    <td>Dados da empresa, SEO, imagens, contacto, redes sociais</td>
+                </tr>
+                <tr>
+                    <td><strong>Conteúdo</strong></td>
+                    <td>Edição de secções: hero, sobre, serviços, equipa, contacto, footer, CTA</td>
+                </tr>
+                <tr>
+                    <td><strong>Segurança</strong></td>
+                    <td>Rate limiting, CSRF, XSS protection, HSTS, autenticação com sessão</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 5. Segurança -->
+    <div class="section">
+        <h2><span class="icon">05</span> Medidas de Segurança</h2>
+        <p>O sistema implementa múltiplas camadas de segurança:</p>
+
+        <div style="margin-top: 12px;">
+            <span class="badge badge-green">Autenticação</span>
+            <span class="badge badge-green">Rate Limiting</span>
+            <span class="badge badge-green">CSRF Protection</span>
+            <span class="badge badge-green">XSS Prevention</span>
+            <span class="badge badge-green">HSTS</span>
+            <span class="badge badge-green">Session Security</span>
+            <span class="badge badge-blue">Password Hashing (Bcrypt)</span>
+            <span class="badge badge-blue">Input Validation</span>
+            <span class="badge badge-purple">SQL Injection Prevention (Eloquent)</span>
+            <span class="badge badge-purple">Security Headers</span>
+            <span class="badge badge-amber">Brute Force Protection</span>
+            <span class="badge badge-gray">HTTPS Enforcement</span>
+        </div>
+
+        <table style="margin-top: 20px;">
+            <thead>
+                <tr>
+                    <th>Medida</th>
+                    <th>Implementação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Autenticação</td>
+                    <td>Login com email/senha, sessão regenerada após login, logout seguro</td>
+                </tr>
+                <tr>
+                    <td>Rate Limiting</td>
+                    <td>5 tentativas = 10 min bloqueio no login; throttle em APIs públicas</td>
+                </tr>
+                <tr>
+                    <td>Senhas</td>
+                    <td>Bcrypt hashing, mínimo 8 caracteres, confirmação obrigatória</td>
+                </tr>
+                <tr>
+                    <td>Headers</td>
+                    <td>HSTS, X-Frame-Options DENY, X-Content-Type-Options, Referrer-Policy</td>
+                </tr>
+                <tr>
+                    <td>CSRF</td>
+                    <td>Token em todos os formulários, excepção apenas em APIs públicas</td>
+                </tr>
+                <tr>
+                    <td>SQL Injection</td>
+                    <td>Eloquent ORM com binding paramétrico em todas as queries</td>
+                </tr>
+                <tr>
+                    <td>XSS</td>
+                    <td>Blade auto-escaping `{{ }}`, sanitização de input em JavaScript</td>
+                </tr>
+                <tr>
+                    <td>Ficheiros</td>
+                    <td>Validação MIME, max 5MB, apenas imagens (jpg, png, webp)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 6. Infraestrutura -->
+    <div class="section">
+        <h2><span class="icon">06</span> Infraestrutura & Deploy</h2>
+
+        <div class="tech-grid">
+            <div class="tech-card">
+                <div class="name">Render</div>
+                <div class="version">Cloud Platform</div>
+                <div class="desc">Hosting com deploy automático a cada push no GitHub. Build cache para builds rápidos.</div>
+            </div>
+            <div class="tech-card">
+                <div class="name">Supabase</div>
+                <div class="version">Database + Storage</div>
+                <div class="desc">PostgreSQL gerido com storage de ficheiros para uploads de imagens.</div>
+            </div>
+            <div class="tech-card">
+                <div class="name">GitHub Actions</div>
+                <div class="version">CI/CD</div>
+                <div class="desc">Deploy contínuo: push → build → migrate → live em ~2 minutos.</div>
+            </div>
+            <div class="tech-card">
+                <div class="name">Resend</div>
+                <div class="version">Email Service</div>
+                <div class="desc">Envio de emails transaccionais para respostas a contactos do site.</div>
+            </div>
+        </div>
+
+        <div class="highlight-box" style="margin-top: 20px;">
+            <div class="title">Pipeline de Deploy</div>
+            <p>
+                <strong>git push</strong> → Build no Render → <code>composer install</code> → <code>php artisan migrate --force</code> → <code>php artisan config:cache</code> → <code>php artisan route:cache</code> → <code>php artisan view:cache</code> → Live
+            </p>
+        </div>
+    </div>
+
+    <!-- 7. Estrutura de Pastas -->
+    <div class="section">
+        <h2><span class="icon">07</span> Estrutura de Projecto</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Pasta</th>
+                    <th>Descrição</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><code>app/Http/Controllers/</code></td><td>Controladores (lógica de negócio)</td></tr>
+                <tr><td><code>app/Models/</code></td><td>Modelos Eloquent (Contact, Visitor, Post, etc.)</td></tr>
+                <tr><td><code>app/Http/Middleware/</code></td><td>Middleware de segurança e autenticação</td></tr>
+                <tr><td><code>app/Services/</code></td><td>Serviços (SupabaseService para upload)</td></tr>
+                <tr><td><code>resources/views/</code></td><td>Templates Blade (admin, auth)</td></tr>
+                <tr><td><code>routes/</code></td><td>Definição de rotas (web.php)</td></tr>
+                <tr><td><code>database/seeders/</code></td><td>Seeders para dados iniciais</td></tr>
+                <tr><td><code>public/</code></td><td>Assetos públicos (CSS, JS, imagens)</td></tr>
+                <tr><td><code>public/site.html</code></td><td>Site público frontal</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 8. Créditos -->
+    <div class="section" style="text-align: center;">
+        <h2 style="justify-content: center;"><span class="icon">08</span> Créditos</h2>
+        <p style="font-size: 15px;">
+            Sistema desenvolvido pela <strong style="color: #1B2A41;">CodingLife Dev</strong>
+        </p>
+        <p style="font-size: 13px; color: #94a3b8; margin-top: 5px;">
+            BUILD · COLLABORATE · INNOVATE
+        </p>
+        <p style="font-size: 13px; color: #94a3b8; margin-top: 15px;">
+            www.tshoot-angola.com · 2026
+        </p>
+    </div>
+
+    <div class="footer">
+        <p><strong>TSHOOT Soluções Tecnológicas</strong> — Major Kanhangulo, Prédio da Suave, 3º Andar, Luanda, Angola</p>
+        <p style="margin-top: 5px;">Desenvolvido por <strong>CodingLife Dev</strong></p>
+    </div>
+
+</div>
+
+</body>
+</html>
