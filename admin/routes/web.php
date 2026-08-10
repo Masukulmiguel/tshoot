@@ -39,7 +39,7 @@ Route::get('/emergency-reset', function (\Illuminate\Http\Request $request) {
     }
     $user->password = \Hash::make('191925Tshoot@');
     $user->save();
-    return 'Senha do admin redefinida com sucesso! Agora podes fazer login com: admin@example.com / 191925Tshoot@';
+    return 'Senha do admin redefinida com sucesso! Agora podes fazer login com: admin@tshoot-angola.com / 191925Tshoot@';
 });
 
 Route::post('/api/track', [ApiController::class, 'trackVisitor'])->middleware('throttle:track');
