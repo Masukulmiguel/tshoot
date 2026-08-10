@@ -13,7 +13,7 @@ class ContactController extends Controller
         $query = Contact::query();
 
         if ($request->filled('search')) {
-            $search = $request->search;
+            $search = addcslashes($request->search, '%_\\');
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                   ->orWhere('email', 'like', "%{$search}%")
@@ -102,7 +102,7 @@ class ContactController extends Controller
             'replied_at' => now(),
         ]);
 
-        $apiKey = env('RESEND_API_KEY');
+        $apiKey = config('services.resend.key');
         if ($apiKey && $contact->email) {
             try {
                 $html = $this->buildReplyHtml($contact, $request->admin_reply);
@@ -112,7 +112,7 @@ class ContactController extends Controller
                 ])->post('https://api.resend.com/emails', [
                     'from' => 'TSHOOT <comercial@tshoot-angola.com>',
                     'to' => [$contact->email],
-                    'subject' => 'Resposta da TSHOOT - ' . ($contact->subject ?? 'Contacto'),
+                    'subject' => 'Resposta da TSHOOT - ' . str_replace(["\r", "\n"], '', $contact->subject ?? 'Contacto'),
                     'html' => $html,
                 ]);
             } catch (\Exception $e) {

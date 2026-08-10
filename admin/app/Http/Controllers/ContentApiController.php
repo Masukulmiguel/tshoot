@@ -12,17 +12,12 @@ use App\Models\Post;
 use App\Models\Partner;
 use App\Models\SocialLink;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
 
 class ContentApiController extends Controller
 {
     public function getAll()
     {
-        if (Banner::count() === 0) {
-            Artisan::call('db:seed', ['--class' => 'DefaultContentSeeder', '--force' => true]);
-        }
-
         $banners = Banner::where('active', true)->orderBy('order')->get();
         $services = Service::where('is_active', true)->orderBy('sort_order')->get();
         $contents = SiteContent::all()->groupBy('section');

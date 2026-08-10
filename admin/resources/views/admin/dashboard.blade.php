@@ -476,6 +476,13 @@ function getLocation(visitor) {
     return 'Localização desconhecida';
 }
 
+function esc(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
 function updateContactsNav(page) {
     contactsPage = page;
     const prevBtn = document.getElementById('contacts-prev-btn');
@@ -513,13 +520,13 @@ function loadContactsPage(page) {
             list.innerHTML = '';
             data.contacts.forEach(c => {
                 list.insertAdjacentHTML('beforeend', `
-                    <a href="${c.show_url}" class="table-row flex items-center gap-5 px-7 py-6">
+                    <a href="${esc(c.show_url)}" class="table-row flex items-center gap-5 pl-10 pr-7 py-6">
                         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center flex-shrink-0">
-                            <span class="text-xs font-bold text-gray-600">${c.name.charAt(0).toUpperCase()}</span>
+                            <span class="text-xs font-bold text-gray-600">${esc(c.name.charAt(0).toUpperCase())}</span>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="text-sm font-semibold text-gray-900 truncate">${c.name}</p>
-                            <p class="text-xs text-gray-500 truncate">${c.subject}</p>
+                            <p class="text-sm font-semibold text-gray-900 truncate">${esc(c.name)}</p>
+                            <p class="text-xs text-gray-500 truncate">${esc(c.subject)}</p>
                         </div>
                         <div class="flex-shrink-0">${getStatusBadge(c.status)}</div>
                     </a>
@@ -570,19 +577,19 @@ function loadVisitorsPage(page) {
             list.innerHTML = '';
             data.visitors.forEach(v => {
                 list.insertAdjacentHTML('beforeend', `
-                    <a href="${v.show_url}" class="table-row flex items-center gap-5 px-7 py-6">
+                    <a href="${esc(v.show_url)}" class="table-row flex items-center gap-5 pl-10 pr-7 py-6">
                         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center flex-shrink-0">
                             <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z"/>
                             </svg>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="text-sm font-semibold text-gray-900 truncate">${v.ip_address}</p>
-                            <p class="text-xs text-gray-500 truncate">${getLocation(v)} · ${v.browser}</p>
+                            <p class="text-sm font-semibold text-gray-900 truncate">${esc(v.ip_address)}</p>
+                            <p class="text-xs text-gray-500 truncate">${esc(getLocation(v))} · ${esc(v.browser)}</p>
                         </div>
                         <div class="flex items-center gap-2 flex-shrink-0">
-                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-full ${getDeviceClass(v.device)}">${v.device}</span>
-                            <span class="text-[11px] text-gray-400 font-medium">${v.pages_visited}p</span>
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-full ${getDeviceClass(v.device)}">${esc(v.device)}</span>
+                            <span class="text-[11px] text-gray-400 font-medium">${parseInt(v.pages_visited) || 0}p</span>
                         </div>
                     </a>
                 `);

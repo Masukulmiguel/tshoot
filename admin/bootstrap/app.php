@@ -18,7 +18,6 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             '/api/track',
             '/api/contact',
-            '/login',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

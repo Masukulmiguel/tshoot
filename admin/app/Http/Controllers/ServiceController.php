@@ -37,7 +37,7 @@ class ServiceController extends Controller
                 $url = $supabase->upload($request->file('image'), 'uploads', 'services');
                 $validated['image'] = $url;
             } else {
-                @mkdir(public_path('uploads'), 0777, true);
+                @mkdir(public_path('uploads'), 0755, true);
                 $file = $request->file('image');
                 $filename = uniqid() . '.' . $file->getClientOriginalExtension();
                 $file->move(public_path('uploads'), $filename);
@@ -85,7 +85,7 @@ class ServiceController extends Controller
                         unlink($oldPath);
                     }
                 }
-                @mkdir(public_path('uploads'), 0777, true);
+                @mkdir(public_path('uploads'), 0755, true);
                 $file = $request->file('image');
                 $filename = uniqid() . '.' . $file->getClientOriginalExtension();
                 $file->move(public_path('uploads'), $filename);

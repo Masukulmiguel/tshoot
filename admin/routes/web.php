@@ -28,36 +28,9 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/emergency-reset', function (\Illuminate\Http\Request $request) {
-    $secret = $request->query('token');
-    if ($secret !== 'tshoot2026reset') { abort(404); }
-    $user = \App\Models\User::where('email', 'admin@tshoot-angola.com')->first();
-    if (!$user) { return 'User nao encontrado.'; }
-    $user->password = \Hash::make('191925Tshoot@');
-    $user->save();
-    \Illuminate\Support\Facades\RateLimiter::clear('login:' . $request->ip());
-    return 'OK! Login: admin@tshoot-angola.com / 191925Tshoot@';
-});
-
 Route::post('/api/track', [ApiController::class, 'trackVisitor'])->middleware('throttle:track');
 Route::post('/api/contact', [ApiController::class, 'submitContact'])->middleware('throttle:contact');
 Route::get('/api/content', [ContentApiController::class, 'getAll'])->middleware('throttle:api');
-
-Route::get('/debug-env', function () {
-    if (app()->environment('production')) {
-        abort(404);
-    }
-    return response()->json([
-        'DB_CONNECTION' => env('DB_CONNECTION'),
-        'DB_HOST' => env('DB_HOST'),
-        'DB_PORT' => env('DB_PORT'),
-        'DB_DATABASE' => env('DB_DATABASE'),
-        'DB_USERNAME' => env('DB_USERNAME'),
-        'DB_PASSWORD' => env('DB_PASSWORD') ? '***SET***' : 'EMPTY',
-        'DB_PASSWORD_LEN' => strlen(env('DB_PASSWORD', '')),
-        'SUPABASE_URL' => env('SUPABASE_URL') ? '***SET***' : 'EMPTY',
-    ]);
-});
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');

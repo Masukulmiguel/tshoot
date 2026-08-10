@@ -13,7 +13,7 @@ class VisitorController extends Controller
         $query = Visitor::query();
 
         if ($request->filled('search')) {
-            $search = $request->search;
+            $search = addcslashes($request->search, '%_\\');
             $query->where(function ($q) use ($search) {
                 $q->where('ip_address', 'like', "%{$search}%")
                   ->orWhere('country', 'like', "%{$search}%")
