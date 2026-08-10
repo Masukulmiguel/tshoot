@@ -10,15 +10,18 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // Drop existing unique constraints first, then alter
-        $postsConstraint = DB::select("SELECT conname FROM pg_constraint WHERE conrelid = 'posts'::regclass AND contype = 'u' AND conkey::text LIKE '%slug%'");
-        foreach ($postsConstraint as $c) {
-            Schema::table('posts', fn (Blueprint $t) => $t->dropUnique($c->conname));
-        }
+        $slugConstraints = DB::select("
+            SELECT c.conname, a2.relname AS table_name
+            FROM pg_constraint c
+            JOIN pg_attribute a ON a.attnum = ANY(c.conkey) AND a.attrelid = c.conrelid
+            JOIN pg_class a2 ON a2.oid = c.conrelid
+            WHERE c.contype = 'u'
+            AND a.attname = 'slug'
+            AND a2.relname IN ('posts', 'services')
+        ");
 
-        $servicesConstraint = DB::select("SELECT conname FROM pg_constraint WHERE conrelid = 'services'::regclass AND contype = 'u' AND conkey::text LIKE '%slug%'");
-        foreach ($servicesConstraint as $c) {
-            Schema::table('services', fn (Blueprint $t) => $t->dropUnique($c->conname));
+        foreach ($slugConstraints as $row) {
+            Schema::table($row->table_name, fn (Blueprint $t) => $t->dropUnique($row->conname));
         }
 
         Schema::table('posts', function (Blueprint $table) {
