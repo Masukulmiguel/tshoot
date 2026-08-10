@@ -33,6 +33,9 @@ Route::post('/api/contact', [ApiController::class, 'submitContact'])->middleware
 Route::get('/api/content', [ContentApiController::class, 'getAll'])->middleware('throttle:api');
 
 Route::get('/debug-env', function () {
+    if (app()->environment('production')) {
+        abort(404);
+    }
     return response()->json([
         'DB_CONNECTION' => env('DB_CONNECTION'),
         'DB_HOST' => env('DB_HOST'),

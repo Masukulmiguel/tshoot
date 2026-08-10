@@ -89,9 +89,7 @@ class ContentApiController extends Controller
                 return $image;
             }),
             'socialLinks' => $socialLinks,
-        ])->header('Access-Control-Allow-Origin', '*')
-          ->header('Access-Control-Allow-Methods', 'GET, OPTIONS')
-          ->header('Access-Control-Allow-Headers', 'Content-Type');
+        ]);
     }
 
     private function resolveUrl(?string $path, string $adminUrl): ?string
@@ -100,10 +98,20 @@ class ContentApiController extends Controller
             return null;
         }
 
-        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
-            return $path;
+        $resolved = $path;
+        if (!str_starts_with($path, 'http://') && !str_starts_with($path, 'https://')) {
+            $resolved = rtrim($adminUrl, '/') . '/' . ltrim($path, '/');
         }
 
-        return rtrim($adminUrl, '/') . '/' . ltrim($path, '/');
+        if (!filter_var($resolved, FILTER_VALIDATE_URL) || preg_match('/^\s*(javascript|data|vbscript):/i', $resolved)) {
+            return null;
+        }
+
+        $parsed = parse_url($resolved);
+        if (!$parsed || !in_array($parsed['scheme'] ?? '', ['http', 'https'])) {
+            return null;
+        }
+
+        return $resolved;
     }
 }

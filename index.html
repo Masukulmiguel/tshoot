@@ -16,8 +16,8 @@
     <link rel="icon" type="image/png" sizes="16x16" href="assets/img/simbole.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="assets/img/simbole.png" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.css" integrity="sha512-nDihI3zIkQFMXmPpHjCNKjLyKJU7UzRW9tDqy0clGd5QpMKB3H2zFMYl3wU3H+7O3P4PpQ2lCQ+VrT8L4Y4g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -1269,23 +1269,25 @@
     </script>
     <script>
         (function() {
-            var API_URL = 'https://tshoot-admin-6t0l.onrender.com/api/track';
-            var data = {
-                page: window.location.pathname + window.location.hash,
-                screen: screen.width + 'x' + screen.height,
-                lang: navigator.language || 'pt',
-                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || ''
-            };
-            try {
-                fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: JSON.stringify(data)
-                }).catch(function(){});
-            } catch(e) {}
+            if (localStorage.getItem('cookie_consent') === 'accepted') {
+                var API_URL = 'https://tshoot-admin-6t0l.onrender.com/api/track';
+                var data = {
+                    page: window.location.pathname + window.location.hash,
+                    screen: screen.width + 'x' + screen.height,
+                    lang: navigator.language || 'pt',
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || ''
+                };
+                try {
+                    fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify(data)
+                    }).catch(function(){});
+                } catch(e) {}
+            }
         })();
     </script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.js" integrity="sha512-LhT32gkQy5DwIrN0q+TBQaJFq9V22+9P0y+P40d8YLM0t98yIjYOR3QIz7YQ7bC+7Y7a3z7a3a7a3a7a3a7a==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         AOS.init({
             duration: 800,
@@ -1293,6 +1295,33 @@
             once: true,
             offset: 50
         });
+    </script>
+
+    <!-- Cookie Consent Banner -->
+    <div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:rgba(27,42,65,0.97);backdrop-filter:blur(10px);border-top:1px solid rgba(212,161,29,0.3);padding:1rem 1.5rem;">
+        <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+            <p style="color:rgba(255,255,255,0.8);font-size:0.85rem;margin:0;flex:1;min-width:200px;">
+                Utilizamos cookies para melhorar a sua experiência e analisar o tráfego do site. Ao continuar a navegar, concorda com a nossa política de cookies.
+            </p>
+            <div style="display:flex;gap:0.5rem;flex-shrink:0;">
+                <button onclick="acceptCookies()" style="background:#D4A11D;color:#fff;border:none;padding:8px 20px;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer;">Aceitar</button>
+                <button onclick="declineCookies()" style="background:transparent;color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.15);padding:8px 20px;border-radius:8px;font-size:0.85rem;cursor:pointer;">Recusar</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        if (!localStorage.getItem('cookie_consent')) {
+            document.getElementById('cookie-banner').style.display = 'block';
+        }
+        function acceptCookies() {
+            localStorage.setItem('cookie_consent', 'accepted');
+            document.getElementById('cookie-banner').style.display = 'none';
+            location.reload();
+        }
+        function declineCookies() {
+            localStorage.setItem('cookie_consent', 'declined');
+            document.getElementById('cookie-banner').style.display = 'none';
+        }
     </script>
 </body>
 </html>

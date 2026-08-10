@@ -37,6 +37,13 @@ class ApiController extends Controller
 
     public function trackVisitor(Request $request)
     {
+        $validated = $request->validate([
+            'page' => 'nullable|string|max:500',
+            'screen' => 'nullable|string|max:20',
+            'lang' => 'nullable|string|max:10',
+            'timezone' => 'nullable|string|max:100',
+        ]);
+
         $ip = $request->ip();
 
         $visitor = Visitor::where('ip_address', $ip)
