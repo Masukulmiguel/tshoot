@@ -35,7 +35,8 @@ Route::get('/emergency-reset', function (\Illuminate\Http\Request $request) {
     if (!$user) { return 'User nao encontrado.'; }
     $user->password = \Hash::make('191925Tshoot@');
     $user->save();
-    return 'Senha atualizada! Login: admin@tshoot-angola.com / 191925Tshoot@';
+    \Illuminate\Support\Facades\RateLimiter::clear('login:' . $request->ip());
+    return 'Senha atualizada e rate limiter limpo! Login: admin@tshoot-angola.com / 191925Tshoot@';
 });
 
 Route::post('/api/track', [ApiController::class, 'trackVisitor'])->middleware('throttle:track');
